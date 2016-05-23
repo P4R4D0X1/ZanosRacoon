@@ -69,6 +69,8 @@ int closeInterface(sInterface *p_interface) {
 
 	SDL_DestroyRenderer(p_interface->renderer);
 	SDL_DestroyWindow(p_interface->window);
+
+	return 0;
 }
 
 /*

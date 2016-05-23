@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
 	printList(l_solutionPath);
 
 	//loadInterface(l_interface);
-
+	//closeInterface(l_interface);
 
 	if (SDL_Init(SDL_INIT_VIDEO))
 	{
