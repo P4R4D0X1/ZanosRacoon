@@ -10,8 +10,8 @@ typedef struct s_position {
 }sPosition;
 
 typedef struct s_dimension{
-	float height;
-	float width;
+	int height;
+	int width;
 }sDimension;
 
 #endif
