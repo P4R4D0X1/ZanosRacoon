@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	l_window = SDL_CreateWindow("-ZANOS-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
+	l_window = SDL_CreateWindow("-RACCOON ZANOS-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN);
 
 	if (l_window) {
 		pRenderer = SDL_CreateRenderer(l_window, -1, SDL_RENDERER_ACCELERATED);
