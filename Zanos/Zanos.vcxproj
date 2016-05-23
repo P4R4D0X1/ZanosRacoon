@@ -155,6 +155,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="graphx.c" />
     <ClCompile Include="liste.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="map.c" />
@@ -164,6 +165,7 @@
     <ClInclude Include="definition.h" />
     <ClInclude Include="graphe.h" />
     <ClInclude Include="graphix.h" />
+    <ClInclude Include="graphx.h" />
     <ClInclude Include="liste.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="metric.h" />
