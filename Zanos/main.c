@@ -8,17 +8,7 @@
 #include "include\SDL2\SDL.h"
 #include "include\SDL2\SDL_image.h"
 
-//Here we go. git FTW
-//Test modif commentaire
-//Aurore modifie ici
-//Je suis un kiwi
-//aurore est un kiwi
-//bonjour
-//J'ai ajouté une ligne
-//salut
-//test ajout d'une ligne par aurore
-//moi je rajoute une ligne
-//Pasteque
+//Coucou la famille
 
 int main(int argc, char **argv) {
 	int l_i;
