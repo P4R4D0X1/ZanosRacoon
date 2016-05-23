@@ -1,6 +1,9 @@
 #ifndef DEFINITION_H
 #define DEFINITION_H
 
+#define WINDOW_HEIGHT 500
+#define WINDOW_WIDTH 500
+
 #define CASE_HEIGHT 10
 #define CASE_WIDTH 10
 #define CASE_TYPE_AMOUNT 17
