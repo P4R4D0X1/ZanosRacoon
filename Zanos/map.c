@@ -6,17 +6,17 @@ int loadMap(sMap **p_map, char *p_recipePath) {
 	sMap *l_map = malloc(sizeof(sMap));
 
 	fopen_s(&(l_map->recipe), p_recipePath, "r");
-	fscanf_s(l_map->recipe, "%d\t%d\n", &(l_map->height), &(l_map->width));
+	fscanf_s(l_map->recipe, "%d\t%d\n", &(l_map->mapDimension.height), &(l_map->mapDimension.width));
 	fscanf_s(l_map->recipe, "%f\t%f\t%f\t%f\n", &(l_map->starting.y), &(l_map->starting.x), &(l_map->ending.y), &(l_map->ending.x));
 	l_map->nodeAmount = 0;
 
-	l_map->path = malloc(l_map->height * sizeof(sCase*));
-	for (l_i = 0; l_i < l_map->height; ++l_i) {
-		l_map->path[l_i] = malloc(l_map->width * sizeof(sCase));
+	l_map->path = malloc(l_map->mapDimension.height * sizeof(sCase*));
+	for (l_i = 0; l_i < l_map->mapDimension.height; ++l_i) {
+		l_map->path[l_i] = malloc(l_map->mapDimension.width * sizeof(sCase));
 	}
 
-	for (l_i = 0; l_i < l_map->height; ++l_i) {
-		for (l_j = 0; l_j < l_map->width; ++l_j) {
+	for (l_i = 0; l_i < l_map->mapDimension.height; ++l_i) {
+		for (l_j = 0; l_j < l_map->mapDimension.width; ++l_j) {
 			fscanf_s(l_map->recipe, "\t%d", &(l_map->path[l_i][l_j].type));
 			l_map->path[l_i][l_j].noded = FALSE;
 			l_map->path[l_i][l_j].position.x = (float)l_j;
@@ -44,8 +44,8 @@ int generateGraph(sMap *p_map) {
 
 	eCase_type l_tmpType;
 
-	for (l_i = 0; l_i < p_map->height; ++l_i) {
-		for (l_j = 0; l_j < p_map->width; ++l_j) {
+	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
+		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
 			l_tmpType = p_map->path[l_i][l_j].type;
 
 			p_map->path[l_i][l_j].node.neighbourUP = NULL;
@@ -139,8 +139,8 @@ sNode *findNeighbour(sMap *p_map, sPosition p_position, eDirection p_direction) 
 void printMap(sMap *p_map) {
 	int l_i, l_j;
 
-	for (l_i = 0; l_i < p_map->height; ++l_i) {
-		for (l_j = 0; l_j < p_map->width; ++l_j) {
+	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
+		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
 			if (p_map->path[l_i][l_j].noded) {
 				printf("X\t");
 			}

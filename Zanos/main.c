@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
 	l_solutionPath = dijkstra(l_map);
 	printf("\n");
 	printList(l_solutionPath);
-
+/*
 	if (SDL_Init(SDL_INIT_VIDEO))
 	{
 		fprintf(stdout, "[SDL] Initialization Error (%s)\n", SDL_GetError());
@@ -104,7 +104,8 @@ int main(int argc, char **argv) {
 	}
 
 	SDL_Quit();
-	
-	//system("pause");
+	*/
+
+	system("pause");
 	return EXIT_SUCCESS;
 }

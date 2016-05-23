@@ -13,18 +13,22 @@
 
 
 typedef struct s_interface {
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+	SDL_Event event;
+
+	SDL_Texture **caseSprite;
 	sPosition origin;
-	SDL_Texture **tCase;
 } sInterface;
 
 
 typedef struct s_player {
-	SDL_Texture ** player;
+	SDL_Texture **playerSprite;
 	sPosition position;
 } sPlayer;
 
 
-	
+
 
 
 #endif
