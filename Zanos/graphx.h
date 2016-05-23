@@ -6,11 +6,10 @@
 
 #include "definition.h"
 #include "metric.h"
+#include "map.h"
 
 #include "include\SDL2\SDL.h"
 #include "include\SDL2\SDL_image.h"
-
-
 
 typedef struct s_interface {
 	SDL_Window *window;
@@ -27,8 +26,7 @@ typedef struct s_player {
 	sPosition position;
 } sPlayer;
 
-
-
-
+int loadInterface(sInterface *p_interface);
+int displayMap(sInterface *p_interface, sMap *p_map);
 
 #endif

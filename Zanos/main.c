@@ -4,11 +4,11 @@
 #include "liste.h"
 #include "map.h"
 #include "pathfinding.h"
+#include "graphx.h"
 
 #include "include\SDL2\SDL.h"
 #include "include\SDL2\SDL_image.h"
 
-//Coucou la famille
 
 int main(int argc, char **argv) {
 	int l_i;
@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
 
 	sMap *l_map = NULL;
 	sList *l_solutionPath = NULL;
+	sInterface *l_interface = NULL;
 
 	SDL_Window *l_window = NULL;
 	SDL_Event ev;
@@ -30,6 +31,9 @@ int main(int argc, char **argv) {
 	l_solutionPath = dijkstra(l_map);
 	printf("\n");
 	printList(l_solutionPath);
+
+	loadInterface(l_interface);
+
 /*
 	if (SDL_Init(SDL_INIT_VIDEO))
 	{
