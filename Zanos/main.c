@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
 
 	if (l_window) {
 		pRenderer = SDL_CreateRenderer(l_window, -1, SDL_RENDERER_ACCELERATED);
-		pSprite = SDL_LoadBMP("./assets/sprite/frame-1.bmp");
+		pSprite = SDL_LoadBMP("./assets/sprite/perso_front.bmp");
 		SDL_SetColorKey(pSprite, SDL_TRUE, SDL_MapRGB(pSprite->format, 12, 255, 0) );
 		pTexture = SDL_CreateTextureFromSurface(pRenderer, pSprite);
 
