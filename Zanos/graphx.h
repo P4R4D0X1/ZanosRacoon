@@ -17,7 +17,7 @@ typedef struct s_interface {
 	SDL_Event event;
 
 	SDL_Texture **caseSprite;
-	sPlayer playerGraphx;
+	struct s_player *playerGraphx;
 	sPosition origin;
 } sInterface;
 
@@ -28,6 +28,6 @@ typedef struct s_player {
 } sPlayer;
 
 int loadInterface(sInterface *p_interface);
-int displayMap(sInterface *p_interface, sMap *p_map);
+//int displayMap(sInterface *p_interface, sMap *p_map);
 
 #endif

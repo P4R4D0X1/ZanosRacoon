@@ -7,6 +7,7 @@ int loadInterface(sInterface *p_interface) {
 	SDL_Surface *l_sprite;
 
 	p_interface = malloc(sizeof(sInterface));
+	p_interface->playerGraphx = malloc(sizeof(sPlayer));
 
 	if (SDL_Init(SDL_INIT_VIDEO)){
 		fprintf(stdout, "[SDL] Initialization Error (%s)\n", SDL_GetError());
@@ -22,7 +23,7 @@ int loadInterface(sInterface *p_interface) {
 	p_interface->renderer = SDL_CreateRenderer(p_interface->window, -1, SDL_RENDERER_ACCELERATED);
 	
 	p_interface->caseSprite = malloc(sizeof(SDL_Texture*) * CASE_TYPE_AMOUNT);
-	p_interface->playerGraphx.playerSprite = malloc(sizeof(SDL_Texture*) * 4);
+	p_interface->playerGraphx->playerSprite = malloc(sizeof(SDL_Texture*) * 4);
 
 	l_sprite = SDL_LoadBMP(l_casePath);
 	p_interface->caseSprite[0] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
@@ -40,7 +41,7 @@ int loadInterface(sInterface *p_interface) {
 		l_persoPath[22] = l_i + 48;
 		l_sprite = SDL_LoadBMP(l_persoPath);
 		SDL_SetColorKey(l_sprite, SDL_TRUE, SDL_MapRGB(l_sprite->format, 12, 255, 0));
-		p_interface->playerGraphx.playerSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+		p_interface->playerGraphx->playerSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_FreeSurface(l_sprite);
 	}
 
@@ -59,6 +60,7 @@ int loadInterface(sInterface *p_interface) {
 	return 0;
 }
 
+/*
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int i, j;
 
@@ -73,3 +75,4 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 
 
 }	
+*/

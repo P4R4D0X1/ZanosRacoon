@@ -26,6 +26,8 @@ int main(int argc, char **argv) {
 	generateGraph(l_map);
 	printMap(l_map);
 
+	l_position.x = 8;
+	l_position.y = 5;
 	l_solutionPath = dijkstra(l_map, l_position);
 	printf("\n");
 	printList(l_solutionPath);
@@ -44,7 +46,6 @@ int main(int argc, char **argv) {
 	if (l_window) {
 		pRenderer = SDL_CreateRenderer(l_window, -1, SDL_RENDERER_ACCELERATED);
 		SDL_SetRenderDrawColor(pRenderer, 255, 0, 0, 255);	
-		SDL_RenderClear(pRenderer);
 
 		while (l_solutionPath && l_solutionPath->next) {
 
