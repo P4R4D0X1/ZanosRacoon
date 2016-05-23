@@ -17,6 +17,7 @@ typedef struct s_interface {
 	SDL_Event event;
 
 	SDL_Texture **caseSprite;
+	sPlayer playerGraphx;
 	sPosition origin;
 } sInterface;
 

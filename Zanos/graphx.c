@@ -2,7 +2,7 @@
 
 int loadInterface(sInterface *p_interface) {
 	int l_i;
-	char l_casePath[50] = "./assets/sprite/case_01.bmp";
+	char l_casePath[50] = "./assets/sprite/case_01.bmp", l_persoPath[50] = "./assets/sprite/perso_0.bmp";
 
 	SDL_Surface *l_sprite;
 
@@ -22,6 +22,7 @@ int loadInterface(sInterface *p_interface) {
 	p_interface->renderer = SDL_CreateRenderer(p_interface->window, -1, SDL_RENDERER_ACCELERATED);
 	
 	p_interface->caseSprite = malloc(sizeof(SDL_Texture*) * CASE_TYPE_AMOUNT);
+	p_interface->playerGraphx.playerSprite = malloc(sizeof(SDL_Texture*) * 4);
 
 	l_sprite = SDL_LoadBMP(l_casePath);
 	p_interface->caseSprite[0] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
@@ -35,16 +36,27 @@ int loadInterface(sInterface *p_interface) {
 		SDL_FreeSurface(l_sprite);
 	}
 
+	for (l_i = 0; l_i < 4; ++l_i) {
+		l_persoPath[22] = l_i + 48;
+		l_sprite = SDL_LoadBMP(l_persoPath);
+		SDL_SetColorKey(l_sprite, SDL_TRUE, SDL_MapRGB(l_sprite->format, 12, 255, 0));
+		p_interface->playerGraphx.playerSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+		SDL_FreeSurface(l_sprite);
+	}
+
 	SDL_SetRenderDrawColor(p_interface->renderer, 0, 0, 0, 255);
-
 	SDL_RenderClear(p_interface->renderer);
-	SDL_Rect dest = { 10, 10, 50, 50 };
 
+	/*
+	SDL_Rect dest = { 10, 10, 50, 50 };
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
 		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[l_i], NULL, &dest);
 		SDL_RenderPresent(p_interface->renderer);
 		SDL_Delay(1000);
 	}
+	*/
+
+	return 0;
 }
 
 int displayMap(sInterface *p_interface, sMap *p_map) {
