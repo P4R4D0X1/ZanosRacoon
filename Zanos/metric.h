@@ -9,7 +9,7 @@ typedef struct s_position {
 	float y;
 }sPosition;
 
-typedef struct s_dimension
+typedef struct s_dimension {
 	float height;
 	float width;
 }sDimension;
