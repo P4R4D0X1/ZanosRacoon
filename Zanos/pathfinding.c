@@ -1,11 +1,13 @@
 #include "pathfinding.h"
 
-sList *dijkstra(sMap *p_map) {
+sList *dijkstra(sMap *p_map, sPosition p_startPoint) {
 	int l_i, l_j, l_k;
 
 	sNode **l_nodeList = malloc(p_map->nodeAmount * sizeof(sNode*));
 	sNode *l_tmpNode = NULL, *l_theFirendOfTheFirstTMPNode = NULL;
 	sList *l_solutionPath = NULL;
+
+	p_map->path[(int)(p_startPoint.y)][(int)(p_startPoint.x)].node.poids = 0;
 
 	l_k = 0;
 	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
@@ -16,6 +18,7 @@ sList *dijkstra(sMap *p_map) {
 			}
 		}
 	}
+
 	while (!(p_map->path[(int)(p_map->ending.y)][(int)(p_map->ending.x)].node.checked)) {
 		l_j = 0xFFFF;
 		l_k = 0;

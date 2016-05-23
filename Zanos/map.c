@@ -31,7 +31,7 @@ int loadMap(sMap **p_map, char *p_recipePath) {
 		fscanf_s(l_map->recipe, "\n");
 	}
 
-	l_map->path[(int)(l_map->starting.y)][(int)(l_map->starting.x)].node.poids = 0;
+	//l_map->path[(int)(l_map->starting.y)][(int)(l_map->starting.x)].node.poids = 0;
 
 	*p_map = l_map;
 

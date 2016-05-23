@@ -11,7 +11,7 @@
 #include "graphe.h"
 #include "liste.h"
 
-sList *dijkstra(sMap *p_map);
+sList *dijkstra(sMap *p_map, sPosition p_startPoint);
 int nodeDistance(sNode *p_node, eDirection p_direction);
 
 
