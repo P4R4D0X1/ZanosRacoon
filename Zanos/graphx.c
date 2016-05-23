@@ -25,11 +25,7 @@ int loadInterface(sInterface *p_interface) {
 	p_interface->caseSprite = malloc(sizeof(SDL_Texture*) * CASE_TYPE_AMOUNT);
 	p_interface->playerGraphx->playerSprite = malloc(sizeof(SDL_Texture*) * 4);
 
-	l_sprite = SDL_LoadBMP(l_casePath);
-	p_interface->caseSprite[0] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
-	SDL_FreeSurface(l_sprite);
-
-	for (l_i = 1; l_i < CASE_TYPE_AMOUNT; ++l_i) {
+	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
 		l_casePath[21] = (int)(l_i / 10) + 48; 
 		l_casePath[22] = (l_i - (int)(l_i / 10)) + 48;
 		l_sprite = SDL_LoadBMP(l_casePath);
@@ -58,6 +54,21 @@ int loadInterface(sInterface *p_interface) {
 	*/
 
 	return 0;
+}
+
+int closeInterface(sInterface *p_interface) {
+	int l_i;
+
+	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
+		SDL_DestroyTexture(p_interface->playerGraphx->playerSprite[l_i]);
+	}
+
+	for (l_i = 0; l_i < 4; ++l_i) {
+		SDL_DestroyTexture(p_interface->playerGraphx->playerSprite[l_i]);
+	}
+
+	SDL_DestroyRenderer(p_interface->renderer);
+	SDL_DestroyWindow(p_interface->window);
 }
 
 /*

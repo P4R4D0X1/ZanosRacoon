@@ -11,7 +11,6 @@
 
 
 int main(int argc, char **argv) {
-	int l_i;
 	bool l_loop = TRUE;
 
 	sMap *l_map = NULL;

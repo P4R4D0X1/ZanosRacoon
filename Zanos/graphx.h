@@ -28,6 +28,7 @@ typedef struct s_player {
 } sPlayer;
 
 int loadInterface(sInterface *p_interface);
+int closeInterface(sInterface *p_interface);
 //int displayMap(sInterface *p_interface, sMap *p_map);
 
 #endif
