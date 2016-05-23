@@ -86,12 +86,16 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 				case(SDL_KEYDOWN):
 					switch (p_interface->event.key.keysym.sym) {
 						case(SDLK_z):
+							moovePlayer(p_interface, p_map, DUP);
 							break;
 						case(SDLK_d):
+							moovePlayer(p_interface, p_map, DRIGHT);
 							break;
 						case(SDLK_s):
+							moovePlayer(p_interface, p_map, DDOWN);
 							break;
 						case(SDLK_q):
+							moovePlayer(p_interface, p_map, DLEFT);
 							break;
 					}
 					break;
@@ -105,10 +109,10 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	return 0;
 }
 
-/*
+
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int i, j;
-
+	/*
 	for (i = 0; i < p_map->mapDimension.height; ++i) {
 		for (j = 0; j < p_map->mapDimension.width; ++j) {
 			p_interface->caseSprite[p_map->path[i][j].type];
@@ -117,7 +121,48 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 		}
 
 	}
+	*/
 
+	//Coucou ma belle il est tard je te fait des petits TODO parceque je t'aime fort
+	//T'es adorable quand tu dort
+
+	//TODO : Afficher la map en parcourant le tableau de case
+
+	/*[ALGORITHME]
+		ENTIER: i, j
+		POSITION: positionCase
+
+		positionCase.x <= 0
+		positionCase.y <= 0
+
+		TANT QUE i PLUS PETIT QUE hauteur tableau FAIRE
+			TANT QUE j PLUS PETIT QUE largeur tableau FAIRE
+				rendercopy() de la texture corespondant au type de la case du tableau en positionCase
+				positionCase.x += tailleCase
+			FIN TANT QUE
+				positionCase.y += tailleCase
+		FIN TANT QUE
+		renderpresent() pour afficher le rendu
+
+		[FIN ALGORITHME]
+
+		(*)AIDE(*)
+			*obtenir le type de la case à l'index (i,j)*
+				-la structure sMap contien un tableau de sCase accesible par : p_map->path[i][j].type
+			
+			*rendercopy()*
+				SDL_RenderCopy(renderer, texture, NULL, &position)
+				(cette fonction te permet de charger dans le renderer un sprite a afficher à une certaine position)
+				-le renderer est contenu dans la structure sInterface : p_interface->renderer
+				-la texture de type x est stocké dans la structure d'interface : p_interface->caseSprite[x]
+				-la position est un type SDL_Rect
+
+			*renderpresent()*
+				SDL_RenderPresent(renderer);
+				(cette fonction affiche enfin à l'ecran toute les texture que tu aura chargé dans le renderer au cour de la double boucle)
+				-le renderer est contenu dans la structure sInterface : p_interface->renderer
+				
+	*/
 
 }	
-*/
+
