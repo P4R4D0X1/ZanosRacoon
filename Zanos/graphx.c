@@ -147,6 +147,11 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 		[FIN ALGORITHME]
 
 		(*)AIDE(*)
+			*obtenir la hauteur du tableau*
+				-la structure p_map contient une structure sDimension qui contient la hauteur : p_map->mapDimension.height
+			
+			*obtenir la largeur du tableau*
+				-la structure p_map contient une structure sDimension qui contient la largeur : p_map->mapDimension.width
 			*obtenir le type de la case à l'index (i,j)*
 				-la structure sMap contien un tableau de sCase accesible par : p_map->path[i][j].type
 			
