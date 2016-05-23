@@ -73,6 +73,38 @@ int closeInterface(sInterface *p_interface) {
 	return 0;
 }
 
+int gameLoop(sInterface *p_interface, sMap *p_map) {
+	int l_i;
+	bool l_loop = TRUE;
+
+	//displayMap(p_interface, p_map);
+
+	while (l_loop) {
+		while (SDL_PollEvent(&(p_interface->event))) {
+			
+			switch (p_interface->event.type) {
+				case(SDL_KEYDOWN):
+					switch (p_interface->event.key.keysym.sym) {
+						case(SDLK_z):
+							break;
+						case(SDLK_d):
+							break;
+						case(SDLK_s):
+							break;
+						case(SDLK_q):
+							break;
+					}
+					break;
+					
+			}
+		}
+	}
+}
+
+int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
+	return 0;
+}
+
 /*
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int i, j;
