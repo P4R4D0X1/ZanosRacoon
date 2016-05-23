@@ -6,8 +6,10 @@ int loadInterface(sInterface *p_interface) {
 
 	SDL_Surface *l_sprite;
 
-	p_interface = malloc(sizeof(sInterface));
-	p_interface->playerGraphx = malloc(sizeof(sPlayer));
+	//p_interface = malloc(sizeof(sInterface));
+	//p_interface->playerGraphx = malloc(sizeof(sPlayer));
+
+	printf("%p in initialisation fonction\n", p_interface);
 
 	if (SDL_Init(SDL_INIT_VIDEO)){
 		fprintf(stdout, "[SDL] Initialization Error (%s)\n", SDL_GetError());
@@ -22,8 +24,8 @@ int loadInterface(sInterface *p_interface) {
 
 	p_interface->renderer = SDL_CreateRenderer(p_interface->window, -1, SDL_RENDERER_ACCELERATED);
 	
-	p_interface->caseSprite = malloc(sizeof(SDL_Texture*) * CASE_TYPE_AMOUNT);
-	p_interface->playerGraphx->playerSprite = malloc(sizeof(SDL_Texture*) * 4);
+	//p_interface->caseSprite = malloc(sizeof(SDL_Texture*) * CASE_TYPE_AMOUNT);
+	//p_interface->playerGraphx.playerSprite = malloc(sizeof(SDL_Texture*) * 4);
 
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
 		l_casePath[21] = (int)(l_i / 10) + 48; 
@@ -37,11 +39,11 @@ int loadInterface(sInterface *p_interface) {
 		l_persoPath[22] = l_i + 48;
 		l_sprite = SDL_LoadBMP(l_persoPath);
 		SDL_SetColorKey(l_sprite, SDL_TRUE, SDL_MapRGB(l_sprite->format, 12, 255, 0));
-		p_interface->playerGraphx->playerSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+		p_interface->playerGraphx.playerSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_FreeSurface(l_sprite);
 	}
 
-	SDL_SetRenderDrawColor(p_interface->renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(p_interface->renderer, 255, 255, 255, 255);
 	SDL_RenderClear(p_interface->renderer);
 
 	return 0;
@@ -51,11 +53,11 @@ int closeInterface(sInterface *p_interface) {
 	int l_i;
 
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
-		SDL_DestroyTexture(p_interface->playerGraphx->playerSprite[l_i]);
+		SDL_DestroyTexture(p_interface->playerGraphx.playerSprite[l_i]);
 	}
 
 	for (l_i = 0; l_i < 4; ++l_i) {
-		SDL_DestroyTexture(p_interface->playerGraphx->playerSprite[l_i]);
+		SDL_DestroyTexture(p_interface->playerGraphx.playerSprite[l_i]);
 	}
 
 	SDL_DestroyRenderer(p_interface->renderer);
@@ -88,21 +90,32 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 						case(SDLK_q):
 							moovePlayer(p_interface, p_map, DLEFT);
 							break;
+						case(SDLK_ESCAPE):
+							l_loop = FALSE;
+							break;
 					}
 					break;
 					
 			}
 		}
 	}
+
+	closeInterface(p_interface);
+	SDL_Quit();
+
+	return 0;
 }
 
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	int l_i;
 
-	SDL_Rect l_playerPosition = {p_interface->playerGraphx->position.x, p_interface->playerGraphx->position.y, CASE_WIDTH, CASE_HEIGHT };
+	p_interface->playerGraphx.position.x = 0;
+	p_interface->playerGraphx.position.y = 0;
+
+	SDL_Rect l_playerPosition = {p_interface->playerGraphx.position.x, p_interface->playerGraphx.position.y, WINDOW_WIDTH / 10, WINDOW_HEIGHT/ 10 };
 	
-	SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx->position.x)][(int)(p_interface->playerGraphx->position.y)].type], NULL, &l_playerPosition);
-	SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx->playerSprite[p_direction], NULL, &l_playerPosition);
+	SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.x)][(int)(p_interface->playerGraphx.position.y)].type], NULL, &l_playerPosition);
+	SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx.playerSprite[p_direction], NULL, &l_playerPosition);
 	SDL_RenderPresent(p_interface->renderer);
 
 	switch (p_direction) {
