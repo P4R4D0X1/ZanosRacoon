@@ -11,19 +11,24 @@
 #include "include\SDL2\SDL_image.h"
 
 
+
 typedef struct s_interface {
+	SDL_Window *window;
+	SDL_Renderer *renderer;
+	SDL_Event event;
+
+	SDL_Texture **caseSprite;
 	sPosition origin;
-	SDL_Texture **t_case;
 } sInterface;
 
 
 typedef struct s_player {
-	SDL_Texture **t_player;
+	SDL_Texture **playerSprite;
 	sPosition position;
 } sPlayer;
 
 
-	
+
 
 
 #endif

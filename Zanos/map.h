@@ -12,8 +12,7 @@ typedef struct s_map {
 	FILE *recipe;
 	struct s_case **path;
 
-	int height;
-	int width;
+	sDimension mapDimension;
 	int nodeAmount;
 	sPosition starting;
 	sPosition ending;

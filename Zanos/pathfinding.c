@@ -8,8 +8,8 @@ sList *dijkstra(sMap *p_map) {
 	sList *l_solutionPath = NULL;
 
 	l_k = 0;
-	for (l_i = 0; l_i < p_map->height; ++l_i) {
-		for (l_j = 0; l_j < p_map->width; ++l_j) {
+	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
+		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
 			if (p_map->path[l_i][l_j].noded) {
 				l_nodeList[l_k] = &(p_map->path[l_i][l_j].node);
 				l_k++;
