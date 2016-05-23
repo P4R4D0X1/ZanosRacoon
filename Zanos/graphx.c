@@ -44,15 +44,6 @@ int loadInterface(sInterface *p_interface) {
 	SDL_SetRenderDrawColor(p_interface->renderer, 0, 0, 0, 255);
 	SDL_RenderClear(p_interface->renderer);
 
-	/*
-	SDL_Rect dest = { 10, 10, 50, 50 };
-	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
-		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[l_i], NULL, &dest);
-		SDL_RenderPresent(p_interface->renderer);
-		SDL_Delay(1000);
-	}
-	*/
-
 	return 0;
 }
 
@@ -106,22 +97,44 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 }
 
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
+	int l_i;
+
+	SDL_Rect l_playerPosition = {p_interface->playerGraphx->position.x, p_interface->playerGraphx->position.y, CASE_WIDTH, CASE_HEIGHT };
+	
+	SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx->position.x)][(int)(p_interface->playerGraphx->position.y)].type], NULL, &l_playerPosition);
+	SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx->playerSprite[p_direction], NULL, &l_playerPosition);
+	SDL_RenderPresent(p_interface->renderer);
+
+	switch (p_direction) {
+		case(DUP):
+
+			break;
+		case(DRIGHT):
+
+			break;
+		case(DDOWN):
+
+			break;
+		case(DLEFT):
+
+			break;
+	}
+
+	SDL_RenderPresent(p_interface->renderer);
 	return 0;
 }
 
 
 int displayMap(sInterface *p_interface, sMap *p_map) {
-	int i, j;
-	/*
-	for (i = 0; i < p_map->mapDimension.height; ++i) {
-		for (j = 0; j < p_map->mapDimension.width; ++j) {
-			p_interface->caseSprite[p_map->path[i][j].type];
+	int l_i, l_j;
+	
+	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
+		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
 
 
 		}
-
 	}
-	*/
+	
 
 	//Coucou ma belle il est tard je te fait des petits TODO parceque je t'aime fort
 	//T'es adorable quand tu dort
@@ -169,5 +182,6 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 				
 	*/
 
+	return 0;
 }	
 
