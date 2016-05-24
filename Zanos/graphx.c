@@ -159,50 +159,6 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 	}
 	SDL_RenderPresent(p_interface->renderer); 
 
-
-	//TODO : Afficher la map en parcourant le tableau de case
-
-	/*[ALGORITHME]
-		ENTIER: i, j
-		POSITION: positionCase
-
-		positionCase.x <= 0
-		positionCase.y <= 0
-
-		TANT QUE i PLUS PETIT QUE hauteur tableau FAIRE
-			TANT QUE j PLUS PETIT QUE largeur tableau FAIRE
-				rendercopy() de la texture corespondant au type de la case du tableau en positionCase
-				positionCase.x += tailleCase
-			FIN TANT QUE
-				positionCase.y += tailleCase
-		FIN TANT QUE
-		renderpresent() pour afficher le rendu
-
-		[FIN ALGORITHME]
-
-		(*)AIDE(*)
-			*obtenir la hauteur du tableau*
-				-la structure p_map contient une structure sDimension qui contient la hauteur : p_map->mapDimension.height
-			
-			*obtenir la largeur du tableau*
-				-la structure p_map contient une structure sDimension qui contient la largeur : p_map->mapDimension.width
-			*obtenir le type de la case à l'index (i,j)*
-				-la structure sMap contien un tableau de sCase accesible par : p_map->path[i][j].type
-			
-			*rendercopy()*
-				SDL_RenderCopy(renderer, texture, NULL, &position)
-				(cette fonction te permet de charger dans le renderer un sprite a afficher à une certaine position)
-				-le renderer est contenu dans la structure sInterface : p_interface->renderer
-				-la texture de type x est stocké dans la structure d'interface : p_interface->caseSprite[x]
-				-la position est un type SDL_Rect
-
-			*renderpresent()*
-				SDL_RenderPresent(renderer);
-				(cette fonction affiche enfin à l'ecran toute les texture que tu aura chargé dans le renderer au cour de la double boucle)
-				-le renderer est contenu dans la structure sInterface : p_interface->renderer
-				
-	*/
-
 	return 0;
 }	
 
