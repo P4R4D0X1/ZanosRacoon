@@ -64,20 +64,16 @@ int closeInterface(sInterface *p_interface) {
 	return 0;
 }
 
-
+int winCongrate(sInterface *p_interface, sMap *p_map) {
+	SDL_Surface *l_sprite;
+}
 
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE, l_win = FALSE;
 	
-	sSonor l_sonor;
-
 	loadInterface(p_interface, p_map);
 	displayMap(p_interface, p_map);
-	playSonor(&l_sonor);
-	printf("playSonor() lancé\n");
-
-
 
 	while (l_loop)
 	{
@@ -115,11 +111,13 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 				solveGame(p_interface, p_map);
 			}
 		}
+		if (l_win) {
+			winCongrate(p_interface, p_map);
+			l_loop = FALSE;
+		}
 	}
 
 	closeInterface(p_interface);
-	Mix_FreeMusic(l_sonor.music);
-	Mix_CloseAudio();
 	SDL_Quit();
 
 	return 0;
@@ -270,5 +268,9 @@ int solveGame(sInterface *p_interface, sMap *p_map) {
 }
 
 bool WinOrNot(sInterface *p_interface, sMap *p_map) {
+	if (p_interface->playerGraphx.position.x == p_map->starting.x && p_interface->playerGraphx.position.y == p_map->starting.y) {
+		return TRUE;
+	}
 
+	return FALSE;
 }

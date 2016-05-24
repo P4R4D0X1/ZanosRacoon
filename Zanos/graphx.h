@@ -34,6 +34,7 @@ typedef struct s_interface {
 
 int loadInterface(sInterface *p_interface, sMap *p_map);
 int closeInterface(sInterface *p_interface);
+int winCongrate(sInterface *p_interface, sMap *p_map);
 int gameLoop(sInterface *p_interface, sMap *p_map);
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int displayMap(sInterface *p_interface, sMap *p_map);
