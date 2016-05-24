@@ -127,33 +127,38 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 }
 
 int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
+	sNode *l_neighbour;
+
 	if (p_interface->player.isSliding) {
 		return 0;
 	}
 
-	if (p_direction == DUP && !(p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourUP)) {
+	p_interface->player.direction = p_direction;
+
+	switch (p_direction) {
+		case(DUP):
+			l_neighbour = p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourUP;
+			break;
+		case(DRIGHT):
+			l_neighbour = p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourRIGHT;
+			break;
+		case(DDOWN):
+			l_neighbour = p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourDOWN;
+			break;
+		case(DLEFT):
+			l_neighbour = p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourLEFT;
+			break;
+	}
+
+	if (!l_neighbour) {
 		p_interface->player.realDestination = p_interface->player.realPosition;
 	}else{
-
-	}
-
-	if (p_direction == DRIGHT && p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourRIGHT) {
-
-	}else {
-
-	}
-
-	if(p_direction == DDOWN && p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourDOWN) {
-
-	}else {
-
-	}
-
-	if(p_direction == DLEFT && p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourLEFT) {
-
+		p_interface->player.realDestination = getRealPosition(l_neighbour->position);
 	}
 
 	p_interface->player.isSliding = TRUE;
+
+	return 0;
 }
 
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
