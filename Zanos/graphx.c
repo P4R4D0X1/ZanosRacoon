@@ -113,6 +113,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 			}
 		}
 		updateVision(p_interface, p_map);
+		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
 	closeInterface(p_interface);
@@ -122,7 +123,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 }
 
 int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
-	sNode *l_neighbour;
+	sNode *l_neighbour = NULL;
 
 	if (p_interface->player.isSliding)
 		return 0;
@@ -193,11 +194,11 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 		if(p_interface->player.direction == DUP)
 			p_interface->player.realPosition.y -= ((WINDOW_HEIGHT / CASE_LINE_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
 		if (p_interface->player.direction == DRIGHT)
-			p_interface->player.realPosition.y += ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
+			p_interface->player.realPosition.x += ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
 		if (p_interface->player.direction == DDOWN)
 			p_interface->player.realPosition.y += ((WINDOW_HEIGHT / CASE_LINE_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
 		if (p_interface->player.direction == DLEFT)
-			p_interface->player.realPosition.y -= ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);	
+			p_interface->player.realPosition.x -= ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);	
 	}
 
 	SDL_RenderPresent(p_interface->renderer);
@@ -350,20 +351,20 @@ int solveGame(sInterface *p_interface, sMap *p_map) {
 }
 
 bool WinOrNot(sInterface *p_interface, sMap *p_map) {
-	SDL_Surface *l_sprite;
-	SDL_Texture *l_texture;
+	SDL_Surface *l_sprite = NULL;
+	SDL_Texture *l_texture = NULL;
 
 	SDL_Rect l_position = { 0, 0, 500, 500 };
 
 	if (p_interface->player.mapPosition.x == p_map->ending.x && p_interface->player.mapPosition.y == p_map->ending.y) {
 		l_sprite = IMG_Load("./assets/sprite/congratulation.png");
 		SDL_SetColorKey(l_sprite, SDL_TRUE, SDL_MapRGB(l_sprite->format, 12, 255, 0));
-		l_sprite = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
-		SDL_RenderCopy(p_interface->renderer, l_sprite, NULL, &l_position);
+		l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+		SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_position);
 		SDL_RenderPresent(p_interface->renderer);
 		SDL_Delay(1000);
-		//SDL_DestroyTexture(l_texture);
-		//SDL_FreeSurface(l_sprite);
+		SDL_DestroyTexture(l_texture);
+		SDL_FreeSurface(l_sprite);
 		return FALSE;
 	}
 
