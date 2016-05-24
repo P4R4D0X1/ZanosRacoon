@@ -102,7 +102,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 						case(SDLK_z):
 							//Play sound here
 							moovePlayer(p_interface, p_map, DUP);
-							//Stop sound here
 							break;
 						case(SDLK_d):
 							moovePlayer(p_interface, p_map, DRIGHT);

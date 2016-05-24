@@ -8,7 +8,7 @@ void playSonor(sSonor *p_sonor)
 		printf("ERROR : %s", Mix_GetError());
 	}
 
-	p_sonor->music = Mix_LoadMUS("SuperMarioBrosCuted.wav");
+	p_sonor->music = Mix_LoadMUS("./assets/songs/SuperMarioBrosCuted.wav");
 
 	Mix_PlayMusic(p_sonor->music, -1);
 }
