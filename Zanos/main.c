@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 	SDL_RenderCopy(pRenderer, fontTexture, NULL, &posTxt);
 
 	SDL_RenderPresent(pRenderer); // Affichage
-	SDL_Delay(3000); /* Attendre trois secondes, que l'utilisateur voit la fenêtre */
+	SDL_Delay(1000); /* Attendre trois secondes, que l'utilisateur voit la fenêtre */
 
 
 	while (continuer)

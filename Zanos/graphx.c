@@ -108,11 +108,11 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 							break;
 					}
 					while (SDL_PollEvent(&(p_interface->event)));
-					l_loop = WinOrNot(p_interface, p_map);
 					break;
 			}
 		}
 		updateVision(p_interface, p_map);
+		l_loop = WinOrNot(p_interface, p_map);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
@@ -177,14 +177,19 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
 		
 		if(p_interface->player.direction == DUP)
-			l_casePosition.y -= 1;
+			l_casePosition.y += 1;
 		if (p_interface->player.direction == DRIGHT)
 			l_casePosition.x += 1;
 		if (p_interface->player.direction == DDOWN)
 			l_casePosition.y += 1;
 		if (p_interface->player.direction == DLEFT)
-			l_casePosition.x -= 1;
+			l_casePosition.x += 1;
 		
+		if (l_casePosition.x >= 10)
+			l_casePosition.x = 9;
+		if (l_casePosition.y >= 10)
+			l_casePosition.y = 9;
+
 		l_caseRealPosition = getRealPosition(l_casePosition);
 		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
 				
@@ -256,7 +261,7 @@ bool WinOrNot(sInterface *p_interface, sMap *p_map) {
 
 	SDL_Rect l_position = { 0, 0, 500, 500 };
 
-	if (p_interface->player.mapPosition.x == p_map->ending.x && p_interface->player.mapPosition.y == p_map->ending.y) {
+	if (comparePositionRect(getRealPosition(p_map->ending), p_interface->player.realPosition)) {
 		l_sprite = IMG_Load("./assets/sprite/congratulation.png");
 		SDL_SetColorKey(l_sprite, SDL_TRUE, SDL_MapRGB(l_sprite->format, 12, 255, 0));
 		l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
