@@ -6,9 +6,6 @@ int loadInterface(sInterface *p_interface) {
 
 	SDL_Surface *l_sprite;
 
-	//p_interface = malloc(sizeof(sInterface));
-	//p_interface->playerGraphx = malloc(sizeof(sPlayer));
-
 	printf("%p in initialisation fonction\n", p_interface);
 
 	if (SDL_Init(SDL_INIT_VIDEO)){
@@ -23,9 +20,6 @@ int loadInterface(sInterface *p_interface) {
 	}
 
 	p_interface->renderer = SDL_CreateRenderer(p_interface->window, -1, SDL_RENDERER_ACCELERATED);
-	
-	//p_interface->caseSprite = malloc(sizeof(SDL_Texture*) * CASE_TYPE_AMOUNT);
-	//p_interface->playerGraphx.playerSprite = malloc(sizeof(SDL_Texture*) * 4);
 
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
 		l_casePath[21] = (int)(l_i / 10) + 48; 
@@ -67,8 +61,13 @@ int closeInterface(sInterface *p_interface) {
 }
 
 int gameLoop(sInterface *p_interface, sMap *p_map) {
-	int l_i;
 	bool l_loop = TRUE;
+
+	loadInterface(p_interface);
+	p_interface->playerGraphx.position.x = p_map->starting.x;
+	p_interface->playerGraphx.position.y = p_map->starting.y;
+
+	printf("(%f %f)\n", p_interface->playerGraphx.position.x, p_interface->playerGraphx.position.y);
 
 	//displayMap(p_interface, p_map);
 
@@ -107,20 +106,26 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 }
 
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
-	int l_i;
+	int l_i, l_j;
 
-	p_interface->playerGraphx.position.x = 0;
-	p_interface->playerGraphx.position.y = 0;
+	sCase *l_currentCase;
 
-	SDL_Rect l_playerPosition = {p_interface->playerGraphx.position.x, p_interface->playerGraphx.position.y, WINDOW_WIDTH / 10, WINDOW_HEIGHT/ 10 };
+	SDL_Rect l_playerPosition = {p_interface->playerGraphx.position.x * (WINDOW_WIDTH / 10), p_interface->playerGraphx.position.y * (WINDOW_HEIGHT / 10), WINDOW_WIDTH / 10, WINDOW_HEIGHT/ 10 };
 	
 	SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.x)][(int)(p_interface->playerGraphx.position.y)].type], NULL, &l_playerPosition);
 	SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx.playerSprite[p_direction], NULL, &l_playerPosition);
 	SDL_RenderPresent(p_interface->renderer);
 
+	l_currentCase = &(p_map->path[(int)(p_interface->playerGraphx.position.x)][(int)(p_interface->playerGraphx.position.y)]);
+
 	switch (p_direction) {
 		case(DUP):
-
+			if (l_currentCase->node.neighbourUP) {
+				for (p_interface->playerGraphx.position.y; p_interface->playerGraphx.position.y > l_currentCase->node.neighbourUP->position.y; (p_interface->playerGraphx.position.y)++) {
+					l_playerPosition.y = 0;
+					
+				}
+			}
 			break;
 		case(DRIGHT):
 

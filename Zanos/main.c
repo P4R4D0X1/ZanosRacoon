@@ -18,11 +18,7 @@ int main(int argc, char **argv) {
 
 	loadMap(&l_map, "map.txt");
 	generateGraph(l_map);
-
-	loadInterface(&l_interface);
-	printf("%p\n", &l_interface);
 	gameLoop(&l_interface, l_map);
-	closeInterface(&l_interface);
 
 /*
 
