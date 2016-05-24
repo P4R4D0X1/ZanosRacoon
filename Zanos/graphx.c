@@ -66,12 +66,18 @@ int closeInterface(sInterface *p_interface) {
 
 
 
-int gameLoop(sInterface *p_interface, sMap *p_map, sSonor *p_sonor) {
+int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
 	
+	sSonor l_sonor;
+
 	loadInterface(p_interface, p_map);
 	displayMap(p_interface, p_map);
+	playSonor(&l_sonor);
+	printf("playSonor() lancé\n");
+
+
 
 	while (l_loop)
 	{
@@ -110,7 +116,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map, sSonor *p_sonor) {
 	}
 
 	closeInterface(p_interface);
-	Mix_FreeMusic(p_sonor->music);
+	Mix_FreeMusic(l_sonor.music);
 	Mix_CloseAudio();
 	SDL_Quit();
 
