@@ -68,7 +68,7 @@ int closeInterface(sInterface *p_interface) {
 
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
-	bool l_loop = TRUE, l_solve = FALSE;
+	bool l_loop = TRUE, l_solve = FALSE, l_win = FALSE;
 	
 	sSonor l_sonor;
 
@@ -108,6 +108,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					break;
 			}
 			while (SDL_PollEvent(&(p_interface->event)));
+			
+			l_win = WinOrNot(p_interface, p_map);
 			if (l_solve) {
 				displayMap(p_interface, p_map);
 				solveGame(p_interface, p_map);
@@ -149,7 +151,7 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 				l_casePositionNext.x = l_casePosition.x;
 				l_casePositionNext.y = l_casePosition.y - (WINDOW_HEIGHT / 10);
 
-				for (l_playerPosition.y; l_playerPosition.y >= l_casePositionNext.y; l_playerPosition.y -= ((WINDOW_HEIGHT / 10)) / 10) {
+				for (l_playerPosition.y; l_playerPosition.y >= l_casePositionNext.y; l_playerPosition.y -= ((WINDOW_HEIGHT / 10)) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT) {
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.y)][(int)(p_interface->playerGraphx.position.x)].type], NULL, &l_casePosition);
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.y - 1)][(int)(p_interface->playerGraphx.position.x)].type], NULL, &l_casePositionNext);
 					SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx.playerSprite[p_direction], NULL, &l_playerPosition);
@@ -168,7 +170,7 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 				l_casePosition.y = p_interface->playerGraphx.position.y * (WINDOW_HEIGHT / 10);
 				l_casePositionNext.x = l_casePosition.x + (WINDOW_HEIGHT / 10);
 				l_casePositionNext.y = l_casePosition.y;
-				for (l_playerPosition.x; l_playerPosition.x <= l_casePositionNext.x; l_playerPosition.x += ((WINDOW_HEIGHT / 10)) / 10) {
+				for (l_playerPosition.x; l_playerPosition.x <= l_casePositionNext.x; l_playerPosition.x += ((WINDOW_HEIGHT / 10)) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT) {
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.y)][(int)(p_interface->playerGraphx.position.x)].type], NULL, &l_casePosition);
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.y)][(int)(p_interface->playerGraphx.position.x + 1)].type], NULL, &l_casePositionNext);
 					SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx.playerSprite[p_direction], NULL, &l_playerPosition);
@@ -188,7 +190,7 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 				l_casePosition.y = p_interface->playerGraphx.position.y * (WINDOW_HEIGHT / 10);
 				l_casePositionNext.x = l_casePosition.x;
 				l_casePositionNext.y = l_casePosition.y + (WINDOW_HEIGHT / 10);
-				for (l_playerPosition.y; l_playerPosition.y <= l_casePositionNext.y; l_playerPosition.y += ((WINDOW_HEIGHT / 10)) / 10) {
+				for (l_playerPosition.y; l_playerPosition.y <= l_casePositionNext.y; l_playerPosition.y += ((WINDOW_HEIGHT / 10)) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT) {
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.y)][(int)(p_interface->playerGraphx.position.x)].type], NULL, &l_casePosition);
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.y + 1)][(int)(p_interface->playerGraphx.position.x)].type], NULL, &l_casePositionNext);
 					SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx.playerSprite[p_direction], NULL, &l_playerPosition);
@@ -207,7 +209,7 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 				l_casePosition.y = p_interface->playerGraphx.position.y * (WINDOW_HEIGHT / 10);
 				l_casePositionNext.x = l_casePosition.x - (WINDOW_HEIGHT / 10);
 				l_casePositionNext.y = l_casePosition.y;
-				for (l_playerPosition.x; l_playerPosition.x >= l_casePositionNext.x; l_playerPosition.x -= ((WINDOW_HEIGHT / 10)) / 10) {
+				for (l_playerPosition.x; l_playerPosition.x >= l_casePositionNext.x; l_playerPosition.x -= ((WINDOW_HEIGHT / 10)) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT) {
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.y)][(int)(p_interface->playerGraphx.position.x)].type], NULL, &l_casePosition);
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->playerGraphx.position.y)][(int)(p_interface->playerGraphx.position.x - 1)].type], NULL, &l_casePositionNext);
 					SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx.playerSprite[p_direction], NULL, &l_playerPosition);
@@ -246,6 +248,7 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 	return 0;
 }	
 
+
 int solveGame(sInterface *p_interface, sMap *p_map) {
 	sList *l_solutionPath = NULL;
 	
@@ -264,4 +267,8 @@ int solveGame(sInterface *p_interface, sMap *p_map) {
 	SDL_RenderCopy(p_interface->renderer, p_interface->playerGraphx.playerSprite[p_interface->playerGraphx.direction], NULL, &l_playerPosition);
 	SDL_RenderPresent(p_interface->renderer);
 	return 0;
+}
+
+bool WinOrNot(sInterface *p_interface, sMap *p_map) {
+
 }
