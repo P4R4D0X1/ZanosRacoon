@@ -1,9 +1,21 @@
 #include "menu.h"
 
-void createMenu() {
+void initFont(sText *p_text, SDL_Renderer *p_renderer, char* toWrite) {
+	p_text->font = TTF_OpenFont("./assets/fonts/m12.ttf", 25);
+	p_text->color.r = 0;
+	p_text->color.g = 0;
+	p_text->color.b = 0;
+	p_text->surfaceText = TTF_RenderText_Blended(p_text->font, toWrite, p_text->color);
 
-	//-----Partie test d'Aurore------------------------------------------------------
-	SDL_Surface *texte = NULL;
+	//p_text->posText.y = 640 / 2 - pSprite->w / 2 + 100;
+	//p_text->posText.y = 480 / 2 - pSprite->h / 2 + 200;
+
+	p_text->fontTexture = SDL_CreateTextureFromSurface(p_renderer, p_text);
+	SDL_QueryTexture(p_text->fontTexture, NULL, NULL, &(p_text->posText.w), &(p_text->posText.h));
+	SDL_RenderCopy(p_renderer, p_text->fontTexture, NULL, &p_text->posText);
+}
+
+void createWindow() {
 	SDL_Event event;
 
 	int continuer = 1;
@@ -24,20 +36,7 @@ void createMenu() {
 	SDL_Surface* pSprite = SDL_LoadBMP("./assets/sprite/snow97.bmp");
 	SDL_Texture* pTexture = SDL_CreateTextureFromSurface(pRenderer, pSprite); // Préparation du sprite	
 	SDL_Rect posSnow = { 640 / 2 - pSprite->w / 2,480 / 2 - pSprite->h / 2, pSprite->w, pSprite->h };
-
-
-	TTF_Font *font = NULL;
-	font = TTF_OpenFont("./assets/fonts/m12.ttf", 25);
-	SDL_Color noir = { 0, 0, 0 };
-
-	texte = TTF_RenderText_Blended(font, "PLAY", noir);
-	SDL_Rect posTxt = { 640 / 2 - pSprite->w / 2 + 100, 480 / 2 - pSprite->h / 2 + 200, 0, 0 };
-	SDL_Texture *fontTexture = SDL_CreateTextureFromSurface(pRenderer, texte);
-	SDL_QueryTexture(fontTexture, NULL, NULL, &posTxt.w, &posTxt.h);
-
-
-	SDL_RenderCopy(pRenderer, pTexture, NULL, &posSnow); // Copie du sprite grâce au SDL_Renderer
-	SDL_RenderCopy(pRenderer, fontTexture, NULL, &posTxt);
+	SDL_RenderCopy(pRenderer, pTexture, NULL, &posSnow);
 
 	SDL_RenderPresent(pRenderer); // Affichage
 	SDL_Delay(3000); /* Attendre trois secondes, que l'utilisateur voit la fenêtre */
@@ -50,8 +49,8 @@ void createMenu() {
 		{
 		case SDL_MOUSEBUTTONDOWN:
 			SDL_GetMouseState(&posMouseX, &posMouseY);
-			if (posTxt.x <= posMouseX <= posTxt.x + posTxt.w && posTxt.y <= posMouseY <= posTxt.y + posTxt.h)
-				printf("\nOKAY\n");
+			/*if (p_text->posText.x <= posMouseX <= posTxt.x + posTxt.w && posTxt.y <= posMouseY <= posTxt.y + posTxt.h)
+				printf("\nOKAY\n");*/
 			break;
 
 		case SDL_QUIT:
@@ -60,20 +59,19 @@ void createMenu() {
 		}
 
 	}
+}
 
-	SDL_DestroyTexture(pTexture); // Libération de la mémoire associée à la texture
-	SDL_FreeSurface(pSprite); // Libération de la ressource occupée par le sprite
+void createMenu(sText *p_text) {
 
-	TTF_CloseFont(font);
-	TTF_Quit();
-	SDL_FreeSurface(texte);
-	SDL_Quit();
+
+
 }
 
 
-void closeFonts(font) {
-
-	TTF_CloseFont(font);
+void closeFonts(sText *p_text) {
+	SDL_DestroyTexture(p_text->fontTexture); // Libération de la mémoire associée à la texture
+	SDL_FreeSurface(p_text->surfaceText);
+	TTF_CloseFont(p_text->font);
 	TTF_Quit();
 
 }

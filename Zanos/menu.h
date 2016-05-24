@@ -12,7 +12,16 @@
 #include "include\SDL2\SDL_image.h"
 #include "include\SDL2\SDL_ttf.h"
 
-void createMenu();
-void closeFonts();
+typedef struct s_text {
+	TTF_Font *font;
+	SDL_Surface *surfaceText;
+	SDL_Rect posText;
+	SDL_Color color;
+	SDL_Texture *fontTexture;
+
+} sText;
+
+void createMenu(sText *p_text);
+void closeFonts(font);
 
 #endif
