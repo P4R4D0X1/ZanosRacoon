@@ -35,17 +35,20 @@ typedef struct s_interface {
 } sInterface;
 
 
-
 int loadInterface(sInterface *p_interface, sMap *p_map);
 int closeInterface(sInterface *p_interface);
+
 int gameLoop(sInterface *p_interface, sMap *p_map);
 int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int updateVision(sInterface *p_interface, sMap *p_map);
+
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int displayMap(sInterface *p_interface, sMap *p_map);
 int solveGame(sInterface *p_interface, sMap *p_map);
+
 bool WinOrNot(sInterface *p_interface, sMap *p_map);
 SDL_Rect getRealPosition(sPosition p_position);
+sPosition getMapPosition(SDL_Rect p_position);
 bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition);
 //void playSong();
 

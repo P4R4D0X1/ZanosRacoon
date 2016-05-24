@@ -78,8 +78,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	displayMap(p_interface, p_map);
 	playSonor(&l_sonor);
 
-	while (l_loop)
-	{
+	while (l_loop){
 
 		if(SDL_PollEvent(&(p_interface->event))) {
 			switch (p_interface->event.type) {
@@ -88,22 +87,18 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 						case(SDLK_z):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DUP);
-							//moovePlayer(p_interface, p_map, DUP);
 							break;
 						case(SDLK_d):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DRIGHT);
-							//moovePlayer(p_interface, p_map, DRIGHT);
 							break;
 						case(SDLK_s):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DDOWN);
-							//moovePlayer(p_interface, p_map, DDOWN);
 							break;
 						case(SDLK_q):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
-							updateGoal(p_interface, p_map, DLEFT);
-							//moovePlayer(p_interface, p_map, DLEFT);
+							updateGoal(p_interface, p_map, DLEFT);			
 							break;
 						case(SDLK_x):
 							l_solve = !l_solve;
@@ -162,17 +157,52 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 }
 
 int updateVision(sInterface *p_interface, sMap *p_map) {
+	sPosition l_casePosition;
+	SDL_Rect l_caseRealPosition;
+
 	if (!(p_interface->player.isSliding))
 		return 0;
 
 	if (comparePositionRect(p_interface->player.realPosition, p_interface->player.realDestination)) {
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
+		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
 		p_interface->player.isSliding = FALSE;
+	}else {
+		
+		//Blit case basse et case haute
+		l_casePosition = getMapPosition(p_interface->player.realPosition);
+
+		l_caseRealPosition = getRealPosition(l_casePosition);
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
+		
+		if(p_interface->player.direction == DUP)
+			l_casePosition.y -= 1;
+		if (p_interface->player.direction == DRIGHT)
+			l_casePosition.x += 1;
+		if (p_interface->player.direction == DDOWN)
+			l_casePosition.y += 1;
+		if (p_interface->player.direction == DLEFT)
+			l_casePosition.x -= 1;
+		
+		l_caseRealPosition = getRealPosition(l_casePosition);
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
+				
+		//Blit player	
+		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
+		
+		if(p_interface->player.direction == DUP)
+			p_interface->player.realPosition.y -= ((WINDOW_HEIGHT / CASE_LINE_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
+		if (p_interface->player.direction == DRIGHT)
+			p_interface->player.realPosition.y += ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
+		if (p_interface->player.direction == DDOWN)
+			p_interface->player.realPosition.y += ((WINDOW_HEIGHT / CASE_LINE_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
+		if (p_interface->player.direction == DLEFT)
+			p_interface->player.realPosition.y -= ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);	
 	}
-	else {
-		//Incrementation de la position en fonction de la direction
-		//Blit des couples de case en fonction de la direction du deplacement
-		//Blit du player à sa position réelle
-	}
+
+	SDL_RenderPresent(p_interface->renderer);
+
+	return 0;
 }
 
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
@@ -323,7 +353,7 @@ bool WinOrNot(sInterface *p_interface, sMap *p_map) {
 	SDL_Surface *l_sprite;
 	SDL_Texture *l_texture;
 
-	SDL_Rect l_position = { 0, 0,500, 500 };
+	SDL_Rect l_position = { 0, 0, 500, 500 };
 
 	if (p_interface->player.mapPosition.x == p_map->ending.x && p_interface->player.mapPosition.y == p_map->ending.y) {
 		l_sprite = IMG_Load("./assets/sprite/congratulation.png");
@@ -347,6 +377,15 @@ SDL_Rect getRealPosition(sPosition p_position) {
 	l_position.y = (p_position.y * (WINDOW_HEIGHT / CASE_LINE_AMOUNT));
 	l_position.h = (WINDOW_HEIGHT / CASE_LINE_AMOUNT);
 	l_position.w = (WINDOW_WIDTH / CASE_COLUMN_AMOUNT);
+
+	return l_position;
+}
+
+sPosition getMapPosition(SDL_Rect p_position) {
+	sPosition l_position;
+
+	l_position.x = p_position.x / (WINDOW_WIDTH / CASE_COLUMN_AMOUNT);
+	l_position.y = p_position.y / (WINDOW_HEIGHT / CASE_LINE_AMOUNT);
 
 	return l_position;
 }
