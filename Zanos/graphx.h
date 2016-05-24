@@ -17,6 +17,7 @@
 typedef struct s_player {
 	SDL_Texture *playerSprite[4];
 	sPosition position;
+	eDirection direction;
 } sPlayer;
 
 typedef struct s_interface {
@@ -31,7 +32,7 @@ typedef struct s_interface {
 
 
 
-int loadInterface(sInterface *p_interface);
+int loadInterface(sInterface *p_interface, sMap *p_map);
 int closeInterface(sInterface *p_interface);
 int gameLoop(sInterface *p_interface, sMap *p_map);
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction);

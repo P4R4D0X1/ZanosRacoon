@@ -8,6 +8,8 @@
 #define CASE_WIDTH 10
 #define CASE_TYPE_AMOUNT 17
 
+#define SDL_ANIMATION_FRAMETIME 10
+
 typedef enum e_caseType{
 	MAGICALKIWI,
 	FREE, 
