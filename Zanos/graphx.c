@@ -29,7 +29,8 @@ int loadInterface(sInterface *p_interface) {
 
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
 		l_casePath[21] = (int)(l_i / 10) + 48; 
-		l_casePath[22] = (l_i - (int)(l_i / 10)) + 48;
+		l_casePath[22] = (l_i - (int)(l_i / 10)*10) + 48;
+		printf("%s \n", l_casePath);
 		l_sprite = SDL_LoadBMP(l_casePath);
 		p_interface->caseSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_FreeSurface(l_sprite);
@@ -70,7 +71,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	int l_i;
 	bool l_loop = TRUE;
 
-	//displayMap(p_interface, p_map);
+	displayMap(p_interface, p_map);
 
 	while (l_loop) {
 		while (SDL_PollEvent(&(p_interface->event))) {
@@ -140,17 +141,24 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int l_i, l_j;
+	SDL_Rect posCase;
 	
+	posCase.x = 0;
+	posCase.y = 0;
+	posCase.h = WINDOW_HEIGHT / 10;
+	posCase.w = WINDOW_WIDTH / 10;
+
 	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
 		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
-
-
+			SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[ p_map->path[l_i][l_j].type ], NULL, &posCase );
+			posCase.x += WINDOW_WIDTH / 10;
+			printf("%d %d T: %d\n", l_i, l_j, p_map->path[l_i][l_j].type);
 		}
+		posCase.x = 0;
+		posCase.y += WINDOW_HEIGHT / 10;
 	}
-	
+	SDL_RenderPresent(p_interface->renderer); 
 
-	//Coucou ma belle il est tard je te fait des petits TODO parceque je t'aime fort
-	//T'es adorable quand tu dort
 
 	//TODO : Afficher la map en parcourant le tableau de case
 
