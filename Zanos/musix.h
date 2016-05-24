@@ -14,6 +14,8 @@
 
 typedef struct s_sonor {
 	Mix_Music *music;
+	Mix_Chunk *slide;
+	Mix_Chunk *applause;
 
 }sSonor;
 
