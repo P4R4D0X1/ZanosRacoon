@@ -145,12 +145,25 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int l_i, l_j;
-	
+	SDL_Rect posCase;
+
+	posCase.x = 0;
+	posCase.y = 0;
+	posCase.h = WINDOW_HEIGHT / 10;
+	posCase.w = WINDOW_WIDTH / 10;
+
 	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
 		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
-
-
+			SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_i][l_j].type], NULL, &posCase);
+			posCase.x += WINDOW_WIDTH / 10;
+			printf("%d %d T: %d\n", l_i, l_j, p_map->path[l_i][l_j].type);
 		}
+		posCase.x = 0;
+		posCase.y += WINDOW_HEIGHT / 10;
+	}
+
+	SDL_RenderPresent(p_interface->renderer);
+
 	}
 	
 
