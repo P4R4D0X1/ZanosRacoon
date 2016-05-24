@@ -72,9 +72,11 @@ int winCongrate(sInterface *p_interface, sMap *p_map) {
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE, l_win = FALSE;
+	sSonor l_sonor;
 	
 	loadInterface(p_interface, p_map);
 	displayMap(p_interface, p_map);
+	playSonor(&l_sonor);
 
 	while (l_loop)
 	{
