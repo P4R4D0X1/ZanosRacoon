@@ -7,7 +7,7 @@ int loadMap(sMap **p_map, char *p_recipePath) {
 
 	fopen_s(&(l_map->recipe), p_recipePath, "r");
 	fscanf_s(l_map->recipe, "%d\t%d\n", &(l_map->mapDimension.height), &(l_map->mapDimension.width));
-	fscanf_s(l_map->recipe, "%f\t%f\t%f\t%f\n", &(l_map->starting.y), &(l_map->starting.x), &(l_map->ending.y), &(l_map->ending.x));
+	fscanf_s(l_map->recipe, "%d\t%d\t%d\t%d\n", &(l_map->starting.y), &(l_map->starting.x), &(l_map->ending.y), &(l_map->ending.x));
 	l_map->nodeAmount = 0;
 
 	l_map->path = malloc(l_map->mapDimension.height * sizeof(sCase*));
@@ -19,14 +19,14 @@ int loadMap(sMap **p_map, char *p_recipePath) {
 		for (l_j = 0; l_j < l_map->mapDimension.width; ++l_j) {
 			fscanf_s(l_map->recipe, "\t%d", &(l_map->path[l_i][l_j].type));
 			l_map->path[l_i][l_j].noded = FALSE;
-			l_map->path[l_i][l_j].position.x = (float)l_j;
-			l_map->path[l_i][l_j].position.y = (float)l_i;
+			l_map->path[l_i][l_j].position.x = l_j;
+			l_map->path[l_i][l_j].position.y = l_i;
 
 			l_map->path[l_i][l_j].node.poids = -1;
 			l_map->path[l_i][l_j].node.checked = FALSE;
 			l_map->path[l_i][l_j].node.previous = NULL; 
-			l_map->path[l_i][l_j].node.position.x = (float)l_j;
-			l_map->path[l_i][l_j].node.position.y = (float)l_i;
+			l_map->path[l_i][l_j].node.position.x = l_j;
+			l_map->path[l_i][l_j].node.position.y = l_i;
 		}
 		fscanf_s(l_map->recipe, "\n");
 	}

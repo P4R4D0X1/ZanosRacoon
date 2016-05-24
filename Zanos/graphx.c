@@ -78,8 +78,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	displayMap(p_interface, p_map);
 	playSonor(&l_sonor);
 
-	while (l_loop)
-	{
+	while (l_loop){
 
 		if(SDL_PollEvent(&(p_interface->event))) {
 			switch (p_interface->event.type) {
@@ -88,22 +87,18 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 						case(SDLK_z):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DUP);
-							//moovePlayer(p_interface, p_map, DUP);
 							break;
 						case(SDLK_d):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DRIGHT);
-							//moovePlayer(p_interface, p_map, DRIGHT);
 							break;
 						case(SDLK_s):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DDOWN);
-							//moovePlayer(p_interface, p_map, DDOWN);
 							break;
 						case(SDLK_q):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
-							updateGoal(p_interface, p_map, DLEFT);
-							//moovePlayer(p_interface, p_map, DLEFT);
+							updateGoal(p_interface, p_map, DLEFT);			
 							break;
 						case(SDLK_x):
 							l_solve = !l_solve;
@@ -117,7 +112,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					break;
 			}
 		}
-
+		updateVision(p_interface, p_map);
+		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
 	closeInterface(p_interface);
@@ -127,132 +123,86 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 }
 
 int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
-	if (p_interface->player.isSliding) {
+	sNode *l_neighbour = NULL;
+
+	if (p_interface->player.isSliding)
 		return 0;
-	}
 
-	if (p_direction == DUP && !(p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourUP)) {
-		p_interface->player.realDestination = p_interface->player.realPosition;
-	}else{
-
-	}
-
-	if (p_direction == DRIGHT && p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourRIGHT) {
-
-	}else {
-
-	}
-
-	if(p_direction == DDOWN && p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourDOWN) {
-
-	}else {
-
-	}
-
-	if(p_direction == DLEFT && p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourLEFT) {
-
-	}
-
-	p_interface->player.isSliding = TRUE;
-}
-
-int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
-
-	sCase *l_currentCase;
-
-	SDL_Rect l_playerPosition = { (float)(p_interface->player.mapPosition.x * (WINDOW_WIDTH / 10)), (float)(p_interface->player.mapPosition.y * (WINDOW_HEIGHT / 10)), WINDOW_WIDTH / 10, WINDOW_HEIGHT / 10 };
-	SDL_Rect l_casePosition = { 0, 0, WINDOW_WIDTH / 10, WINDOW_HEIGHT / 10 };
-	SDL_Rect l_casePositionNext = { 0, 0, WINDOW_WIDTH / 10, WINDOW_HEIGHT / 10 };
-
-	SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y)][(int)(p_interface->player.mapPosition.x)].type], NULL, &l_playerPosition);
-	SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_direction], NULL, &l_playerPosition);
-	SDL_RenderPresent(p_interface->renderer);
-
-
-	l_currentCase = &(p_map->path[(int)(p_interface->player.mapPosition.y)][(int)(p_interface->player.mapPosition.x)]);
 	p_interface->player.direction = p_direction;
 
 	switch (p_direction) {
-	case(DUP):
-		if (l_currentCase->node.neighbourUP) {
-			for (p_interface->player.mapPosition.y; p_interface->player.mapPosition.y > l_currentCase->node.neighbourUP->position.y; p_interface->player.mapPosition.y--) {
-				l_playerPosition.y = p_interface->player.mapPosition.y * (WINDOW_HEIGHT / 10);
-				l_casePosition.x = p_interface->player.mapPosition.x * (WINDOW_WIDTH / 10);
-				l_casePosition.y = p_interface->player.mapPosition.y * (WINDOW_HEIGHT / 10);
-				l_casePositionNext.x = l_casePosition.x;
-				l_casePositionNext.y = l_casePosition.y - (WINDOW_HEIGHT / 10);
+		case(DUP):
+			l_neighbour = p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourUP;
+			break;
+		case(DRIGHT):
+			l_neighbour = p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourRIGHT;
+			break;
+		case(DDOWN):
+			l_neighbour = p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourDOWN;
+			break;
+		case(DLEFT):
+			l_neighbour = p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].node.neighbourLEFT;
+			break;
+	}
 
-				for (l_playerPosition.y; l_playerPosition.y >= l_casePositionNext.y; l_playerPosition.y -= ((WINDOW_HEIGHT / 10)) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT) {
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y)][(int)(p_interface->player.mapPosition.x)].type], NULL, &l_casePosition);
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y - 1)][(int)(p_interface->player.mapPosition.x)].type], NULL, &l_casePositionNext);
-					SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_direction], NULL, &l_playerPosition);
-					SDL_RenderPresent(p_interface->renderer);
-					SDL_Delay(SDL_ANIMATION_FRAMETIME);
-				}
-			}
-		}
-		break;
+	if (!l_neighbour) {
+		p_interface->player.realDestination = p_interface->player.realPosition;
+	}else{
+		p_interface->player.realDestination = getRealPosition(l_neighbour->position);
+		p_interface->player.mapPosition = l_neighbour->position;
+	}
 
-	case(DRIGHT):
-		if (l_currentCase->node.neighbourRIGHT) {
-			for (p_interface->player.mapPosition.x; p_interface->player.mapPosition.x < l_currentCase->node.neighbourRIGHT->position.x; p_interface->player.mapPosition.x++) {
-				l_playerPosition.x = p_interface->player.mapPosition.x * (WINDOW_HEIGHT / 10);
-				l_casePosition.x = p_interface->player.mapPosition.x * (WINDOW_WIDTH / 10);
-				l_casePosition.y = p_interface->player.mapPosition.y * (WINDOW_HEIGHT / 10);
-				l_casePositionNext.x = l_casePosition.x + (WINDOW_HEIGHT / 10);
-				l_casePositionNext.y = l_casePosition.y;
-				for (l_playerPosition.x; l_playerPosition.x <= l_casePositionNext.x; l_playerPosition.x += ((WINDOW_HEIGHT / 10)) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT) {
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y)][(int)(p_interface->player.mapPosition.x)].type], NULL, &l_casePosition);
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y)][(int)(p_interface->player.mapPosition.x + 1)].type], NULL, &l_casePositionNext);
-					SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_direction], NULL, &l_playerPosition);
-					SDL_RenderPresent(p_interface->renderer);
-					SDL_Delay(SDL_ANIMATION_FRAMETIME);
-				}
-			}
-		}
-		break;
+	p_interface->player.isSliding = TRUE;
 
-	case(DDOWN):
-		if (l_currentCase->node.neighbourDOWN) {
+	return 0;
+}
 
-			for (p_interface->player.mapPosition.y; p_interface->player.mapPosition.y < l_currentCase->node.neighbourDOWN->position.y; p_interface->player.mapPosition.y++) {
-				l_playerPosition.y = p_interface->player.mapPosition.y * (WINDOW_HEIGHT / 10);
-				l_casePosition.x = p_interface->player.mapPosition.x * (WINDOW_WIDTH / 10);
-				l_casePosition.y = p_interface->player.mapPosition.y * (WINDOW_HEIGHT / 10);
-				l_casePositionNext.x = l_casePosition.x;
-				l_casePositionNext.y = l_casePosition.y + (WINDOW_HEIGHT / 10);
-				for (l_playerPosition.y; l_playerPosition.y <= l_casePositionNext.y; l_playerPosition.y += ((WINDOW_HEIGHT / 10)) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT) {
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y)][(int)(p_interface->player.mapPosition.x)].type], NULL, &l_casePosition);
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y + 1)][(int)(p_interface->player.mapPosition.x)].type], NULL, &l_casePositionNext);
-					SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_direction], NULL, &l_playerPosition);
-					SDL_RenderPresent(p_interface->renderer);
-					SDL_Delay(SDL_ANIMATION_FRAMETIME);
-				}
-			}
-		}
-		break;
+int updateVision(sInterface *p_interface, sMap *p_map) {
+	sPosition l_casePosition;
+	SDL_Rect l_caseRealPosition;
 
-	case(DLEFT):
-		if (l_currentCase->node.neighbourLEFT) {
-			for (p_interface->player.mapPosition.x; p_interface->player.mapPosition.x > l_currentCase->node.neighbourLEFT->position.x; p_interface->player.mapPosition.x--) {
-				l_playerPosition.x = p_interface->player.mapPosition.x * (WINDOW_HEIGHT / 10);
-				l_casePosition.x = p_interface->player.mapPosition.x * (WINDOW_WIDTH / 10);
-				l_casePosition.y = p_interface->player.mapPosition.y * (WINDOW_HEIGHT / 10);
-				l_casePositionNext.x = l_casePosition.x - (WINDOW_HEIGHT / 10);
-				l_casePositionNext.y = l_casePosition.y;
-				for (l_playerPosition.x; l_playerPosition.x >= l_casePositionNext.x; l_playerPosition.x -= ((WINDOW_HEIGHT / 10)) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT) {
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y)][(int)(p_interface->player.mapPosition.x)].type], NULL, &l_casePosition);
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[(int)(p_interface->player.mapPosition.y)][(int)(p_interface->player.mapPosition.x - 1)].type], NULL, &l_casePositionNext);
-					SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_direction], NULL, &l_playerPosition);
-					SDL_RenderPresent(p_interface->renderer);
-					SDL_Delay(SDL_ANIMATION_FRAMETIME);
-				}
-			}
-		}
-		break;
+	if (!(p_interface->player.isSliding))
+		return 0;
+
+	if (comparePositionRect(p_interface->player.realPosition, p_interface->player.realDestination)) {
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
+		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
+		p_interface->player.isSliding = FALSE;
+	}else {
+		
+		//Blit case basse et case haute
+		l_casePosition = getMapPosition(p_interface->player.realPosition);
+
+		l_caseRealPosition = getRealPosition(l_casePosition);
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
+		
+		if(p_interface->player.direction == DUP)
+			l_casePosition.y -= 1;
+		if (p_interface->player.direction == DRIGHT)
+			l_casePosition.x += 1;
+		if (p_interface->player.direction == DDOWN)
+			l_casePosition.y += 1;
+		if (p_interface->player.direction == DLEFT)
+			l_casePosition.x -= 1;
+		
+		l_caseRealPosition = getRealPosition(l_casePosition);
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
+				
+		//Blit player	
+		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
+		
+		if(p_interface->player.direction == DUP)
+			p_interface->player.realPosition.y -= ((WINDOW_HEIGHT / CASE_LINE_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
+		if (p_interface->player.direction == DRIGHT)
+			p_interface->player.realPosition.x += ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
+		if (p_interface->player.direction == DDOWN)
+			p_interface->player.realPosition.y += ((WINDOW_HEIGHT / CASE_LINE_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);
+		if (p_interface->player.direction == DLEFT)
+			p_interface->player.realPosition.x -= ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);	
 	}
 
 	SDL_RenderPresent(p_interface->renderer);
+
 	return 0;
 }
 
@@ -301,20 +251,20 @@ int solveGame(sInterface *p_interface, sMap *p_map) {
 }
 
 bool WinOrNot(sInterface *p_interface, sMap *p_map) {
-	SDL_Surface *l_sprite;
-	SDL_Texture *l_texture;
+	SDL_Surface *l_sprite = NULL;
+	SDL_Texture *l_texture = NULL;
 
-	SDL_Rect l_position = { 0, 0,500, 500 };
+	SDL_Rect l_position = { 0, 0, 500, 500 };
 
 	if (p_interface->player.mapPosition.x == p_map->ending.x && p_interface->player.mapPosition.y == p_map->ending.y) {
 		l_sprite = IMG_Load("./assets/sprite/congratulation.png");
 		SDL_SetColorKey(l_sprite, SDL_TRUE, SDL_MapRGB(l_sprite->format, 12, 255, 0));
-		l_sprite = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
-		SDL_RenderCopy(p_interface->renderer, l_sprite, NULL, &l_position);
+		l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+		SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_position);
 		SDL_RenderPresent(p_interface->renderer);
 		SDL_Delay(1000);
-		//SDL_DestroyTexture(l_texture);
-		//SDL_FreeSurface(l_sprite);
+		SDL_DestroyTexture(l_texture);
+		SDL_FreeSurface(l_sprite);
 		return FALSE;
 	}
 
@@ -330,4 +280,21 @@ SDL_Rect getRealPosition(sPosition p_position) {
 	l_position.w = (WINDOW_WIDTH / CASE_COLUMN_AMOUNT);
 
 	return l_position;
+}
+
+sPosition getMapPosition(SDL_Rect p_position) {
+	sPosition l_position;
+
+	l_position.x = p_position.x / (WINDOW_WIDTH / CASE_COLUMN_AMOUNT);
+	l_position.y = p_position.y / (WINDOW_HEIGHT / CASE_LINE_AMOUNT);
+
+	return l_position;
+}
+
+bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition) {
+	if (p_firstPosition.x != p_secondPosition.x || p_firstPosition.y != p_secondPosition.y) {
+		return FALSE;
+	}
+
+	return TRUE;
 }

@@ -49,13 +49,6 @@ int addFirst(sList **p_ppRoot, sPosition p_position) {
 	return 0;
 }
 
-int addFirstPTR(sList **p_ppRoot, sList *p_listNode) {
-	(sList*)(p_listNode->next) = *p_ppRoot;
-	*p_ppRoot = p_listNode;
-
-	return 0;
-}
-
 int addLast(sList **p_ppRoot, sPosition p_position) {
 	sList *l_lastNode = *p_ppRoot, *l_newNode = NULL;
 
@@ -74,25 +67,6 @@ int addLast(sList **p_ppRoot, sPosition p_position) {
 		return 666;
 
 	(sList*)(l_lastNode->next) = l_newNode;
-
-	return 0;
-}
-
-int addLastPTR(sList **p_ppRoot, sList *p_listNode) {
-	sList *l_lastNode = *p_ppRoot, *l_newNode = NULL;
-	if (!p_listNode)
-		return 0;
-
-	if (!*p_ppRoot) {
-		p_ppRoot = p_listNode;
-		return 0;
-	}
-
-	while (l_lastNode->next) {
-		l_lastNode = (sList*)(l_lastNode->next);
-	}
-
-	(sList*)(l_lastNode->next) = p_listNode;
 
 	return 0;
 }
