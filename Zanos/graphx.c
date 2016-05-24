@@ -8,7 +8,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 
 	printf("%p in initialisation fonction\n", p_interface);
 
-	if (SDL_Init(SDL_INIT_VIDEO)){
+	if (SDL_Init(SDL_INIT_EVERYTHING)){
 		fprintf(stdout, "[SDL] Initialization Error (%s)\n", SDL_GetError());
 		return EXIT_FAILURE;
 	}

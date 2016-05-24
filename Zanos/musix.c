@@ -10,9 +10,12 @@ void playSonor(sSonor *p_sonor)
 
 	if (p_sonor->music = Mix_LoadMUS("./assets/songs/SuperMarioBros.ogg") == NULL)
 	{
-		printf("ERROR : %s", Mix_GetError());
+		printf("ERROR WHEN LOADING MUSIC: %s", Mix_GetError());
 	}
 
 	Mix_VolumeMusic(MIX_MAX_VOLUME);
-	Mix_PlayMusic(p_sonor->music, -1);
+	if (Mix_PlayMusic(p_sonor->music, -1) == -1)
+	{
+		printf("ERROR WHEN PLAYING MUSIC: %s", Mix_GetError());
+	}
 }
