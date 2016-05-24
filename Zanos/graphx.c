@@ -53,7 +53,7 @@ int closeInterface(sInterface *p_interface) {
 	int l_i;
 
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
-		SDL_DestroyTexture(p_interface->playerGraphx.playerSprite[l_i]);
+		SDL_DestroyTexture(p_interface->caseSprite[l_i]);
 	}
 
 	for (l_i = 0; l_i < 4; ++l_i) {
