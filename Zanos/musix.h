@@ -14,8 +14,10 @@
 
 typedef struct s_sonor {
 	Mix_Music *music;
+
 }sSonor;
 
 void playSonor(sSonor *p_sonor);
+void closeMixer(sSonor *p_sonor);
 
 #endif

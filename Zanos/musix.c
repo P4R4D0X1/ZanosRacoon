@@ -13,3 +13,7 @@ void playSonor(sSonor *p_sonor)
 	Mix_PlayMusic(p_sonor->music, -1);
 }
 
+void closeMixer(sSonor *p_sonor) {
+	Mix_FreeMusic(p_sonor->music); 
+	Mix_CloseAudio(); 
+}

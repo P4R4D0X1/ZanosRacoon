@@ -100,7 +100,9 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 				case(SDL_KEYDOWN):
 					switch (p_interface->event.key.keysym.sym) {
 						case(SDLK_z):
+							//Play sound here
 							moovePlayer(p_interface, p_map, DUP);
+							//Stop sound here
 							break;
 						case(SDLK_d):
 							moovePlayer(p_interface, p_map, DRIGHT);
