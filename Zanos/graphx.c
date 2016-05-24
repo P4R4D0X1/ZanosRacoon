@@ -100,17 +100,19 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 				case(SDL_KEYDOWN):
 					switch (p_interface->event.key.keysym.sym) {
 						case(SDLK_z):
-							//Play sound here
+							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							moovePlayer(p_interface, p_map, DUP);
-							//Stop sound here
 							break;
 						case(SDLK_d):
+							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							moovePlayer(p_interface, p_map, DRIGHT);
 							break;
 						case(SDLK_s):
+							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							moovePlayer(p_interface, p_map, DDOWN);
 							break;
 						case(SDLK_q):
+							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							moovePlayer(p_interface, p_map, DLEFT);
 							break;
 						case(SDLK_x):

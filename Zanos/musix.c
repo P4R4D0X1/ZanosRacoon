@@ -8,9 +8,17 @@ void playSonor(sSonor *p_sonor)
 		printf("ERROR : %s", Mix_GetError());
 	}
 
-	p_sonor->music = Mix_LoadMUS("SuperMarioBrosCuted.wav");
+	Mix_AllocateChannels(3);
 
+	p_sonor->music = Mix_LoadMUS("./assets/songs/SuperMarioBrosCuted.wav");
+	Mix_VolumeMusic(MIX_MAX_VOLUME/2);
 	Mix_PlayMusic(p_sonor->music, -1);
+
+	p_sonor->slide = Mix_LoadWAV("./assets/songs/slide.wav");
+	Mix_VolumeChunk(p_sonor->slide, MIX_MAX_VOLUME/2);
+
+
+
 }
 
 void closeMixer(sSonor *p_sonor) {
