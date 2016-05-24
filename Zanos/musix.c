@@ -2,8 +2,7 @@
 
 
 /*
-Mix_FreeMusic(music);
-Mix_CloseAudio();
+
 */
 
 void playSonor(sSonor *p_sonor)
