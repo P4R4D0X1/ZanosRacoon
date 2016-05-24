@@ -66,6 +66,7 @@ int closeInterface(sInterface *p_interface) {
 
 int winCongrate(sInterface *p_interface, sMap *p_map) {
 	SDL_Surface *l_sprite;
+	SDL_Rect l_casePositionNext = { 0, 0, WINDOW_WIDTH / 10, WINDOW_HEIGHT / 10 };
 }
 
 int gameLoop(sInterface *p_interface, sMap *p_map) {
@@ -268,7 +269,7 @@ int solveGame(sInterface *p_interface, sMap *p_map) {
 }
 
 bool WinOrNot(sInterface *p_interface, sMap *p_map) {
-	if (p_interface->playerGraphx.position.x == p_map->starting.x && p_interface->playerGraphx.position.y == p_map->starting.y) {
+	if (p_interface->playerGraphx.position.x == p_map->ending.x && p_interface->playerGraphx.position.y == p_map->ending.y) {
 		return TRUE;
 	}
 
