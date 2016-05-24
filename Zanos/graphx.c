@@ -157,6 +157,7 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 		posCase.x = 0;
 		posCase.y += WINDOW_HEIGHT / 10;
 	}
+
 	SDL_RenderPresent(p_interface->renderer); 
 
 	return 0;
