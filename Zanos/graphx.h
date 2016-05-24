@@ -10,7 +10,6 @@
 
 #include "include\SDL2\SDL.h"
 #include "include\SDL2\SDL_image.h"
-#include "include\SDL2\SDL_mixer.h"
 
 typedef struct s_player {
 	SDL_Texture *playerSprite[4];
