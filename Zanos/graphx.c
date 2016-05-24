@@ -128,7 +128,7 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	if (p_interface->player.isSliding)
 		return 0;
 
-		solveGame(p_interface, p_map);
+		//solveGame(p_interface, p_map);
 	
 
 	p_interface->player.direction = p_direction;

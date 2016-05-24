@@ -85,6 +85,5 @@ int main(int argc, char **argv) {
 	generateGraph(l_map);
 
 	gameLoop(&l_interface, l_map);
-	system("pause");
 	return EXIT_SUCCESS;
 }
