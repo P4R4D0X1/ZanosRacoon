@@ -38,6 +38,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map);
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int displayMap(sInterface *p_interface, sMap *p_map);
 int solveGame(sInterface *p_interface, sMap *p_map);
+bool WinOrNot(sInterface *p_interface, sMap *p_map);
 //void playSong();
 
 #endif
