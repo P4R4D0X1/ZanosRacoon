@@ -23,7 +23,7 @@ int loadInterface(sInterface *p_interface) {
 
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
 		l_casePath[21] = (int)(l_i / 10) + 48; 
-		l_casePath[22] = (l_i - (int)(l_i / 10)) + 48;
+		l_casePath[22] = (l_i - (int)(l_i / 10)*10) + 48;
 		l_sprite = SDL_LoadBMP(l_casePath);
 		p_interface->caseSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_FreeSurface(l_sprite);
