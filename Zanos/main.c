@@ -16,9 +16,6 @@ int main(int argc, char **argv) {
 	sMap *l_map = NULL;
 	sInterface l_interface;
 
-	loadMap(&l_map, "map.txt");
-	generateGraph(l_map);
-
 //-----Partie test d'Aurore------------------------------------------------------
 	SDL_Surface *texte = NULL;
 	SDL_Event event;
@@ -68,6 +65,8 @@ int main(int argc, char **argv) {
 			continuer = 0;
 			break;
 		}
+		SDL_Delay(30); 
+		continuer = 0;
 
 	}
 
@@ -81,8 +80,11 @@ int main(int argc, char **argv) {
 	SDL_Quit();
 
 //---------------------------------------------------------------------------------
+	
+	loadMap(&l_map, "map.txt");
+	generateGraph(l_map);
 
-	//gameLoop(&l_interface, l_map);
+	gameLoop(&l_interface, l_map);
 	system("pause");
 	return EXIT_SUCCESS;
 }
