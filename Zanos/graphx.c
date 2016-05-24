@@ -111,9 +111,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					break;
 			}
 		}
-		if (l_solve) {
-			solveGame(p_interface, p_map);
-		}
 		updateVision(p_interface, p_map);
 		l_loop = WinOrNot(p_interface, p_map);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
@@ -130,6 +127,9 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 
 	if (p_interface->player.isSliding)
 		return 0;
+
+		solveGame(p_interface, p_map);
+	
 
 	p_interface->player.direction = p_direction;
 
@@ -243,7 +243,7 @@ int solveGame(sInterface *p_interface, sMap *p_map) {
 	
 	SDL_Rect l_playerPosition = { p_interface->player.mapPosition.x * (WINDOW_WIDTH / 10), p_interface->player.mapPosition.y * (WINDOW_HEIGHT / 10), WINDOW_WIDTH / 10, WINDOW_HEIGHT / 10 };
 
-	l_solutionPath = dijkstra(p_map, p_interface->player.mapPosition);
+	l_solutionPath = dijkstra(p_map, getMapPosition(p_interface->player.realPosition));
 	l_solutionNext = l_solutionPath->next;
 	while (l_solutionPath && l_solutionNext && !(comparePositionMap(l_solutionNext->position, getMapPosition(p_interface->player.realPosition)))) {
 
