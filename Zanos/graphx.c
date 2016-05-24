@@ -60,6 +60,8 @@ int closeInterface(sInterface *p_interface) {
 	return 0;
 }
 
+
+
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	bool l_loop = TRUE;
 
@@ -71,7 +73,17 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 
 	//displayMap(p_interface, p_map);
 
-	while (l_loop) {
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1) //Initialisation de l'API Mixer
+	{
+		printf("%s", Mix_GetError());
+	}
+
+	Mix_Music *music;
+	music = Mix_LoadMUS("./assets/songs/SuperMarioBros.mp3");
+	Mix_PlayMusic(music, -1);
+
+	while (l_loop)
+	{
 		while (SDL_PollEvent(&(p_interface->event))) {
 			
 			switch (p_interface->event.type) {
@@ -100,6 +112,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	}
 
 	closeInterface(p_interface);
+	Mix_FreeMusic(music);
+	Mix_CloseAudio();
 	SDL_Quit();
 
 	return 0;
