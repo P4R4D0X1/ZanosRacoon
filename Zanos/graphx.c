@@ -8,10 +8,11 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 
 	printf("%p in initialisation fonction\n", p_interface);
 
-	if (SDL_Init(SDL_INIT_EVERYTHING)){
+	if (SDL_Init(SDL_INIT_EVERYTHING)) {
 		fprintf(stdout, "[SDL] Initialization Error (%s)\n", SDL_GetError());
 		return EXIT_FAILURE;
 	}
+	IMG_Init(IMG_INIT_PNG);
 
 	p_interface->window = SDL_CreateWindow("-RACCOON ZANOS-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	if (!(p_interface->window)) {
@@ -66,7 +67,20 @@ int closeInterface(sInterface *p_interface) {
 
 int winCongrate(sInterface *p_interface, sMap *p_map) {
 	SDL_Surface *l_sprite;
-	SDL_Rect l_casePositionNext = { 0, 0, WINDOW_WIDTH / 10, WINDOW_HEIGHT / 10 };
+	SDL_Texture *l_texture;
+
+	SDL_Rect l_position = { 0, 0,500, 500 };
+	
+	l_sprite = IMG_Load("./assets/sprite/congratulation.png");
+	SDL_SetColorKey(l_sprite, SDL_TRUE, SDL_MapRGB(l_sprite->format, 12, 255, 0));
+	l_sprite = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+	SDL_RenderCopy(p_interface->renderer, l_sprite, NULL, &l_position);
+	SDL_RenderPresent(p_interface->renderer);
+	SDL_Delay(1000);
+	//SDL_DestroyTexture(l_texture);
+	//SDL_FreeSurface(l_sprite);
+	
+	return 0;
 }
 
 int gameLoop(sInterface *p_interface, sMap *p_map) {
