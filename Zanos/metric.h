@@ -5,8 +5,8 @@
 #include <stdio.h>
 
 typedef struct s_position {
-	float x;
-	float y;
+	int x;
+	int y;
 }sPosition;
 
 typedef struct s_dimension{

@@ -17,7 +17,9 @@
 typedef struct s_player {
 	SDL_Texture *playerSprite[4];
 	SDL_Rect realPosition;
+	SDL_Rect realDestination;
 
+	bool isSliding;
 	sPosition mapPosition;
 	eDirection direction;
 } sPlayer;
@@ -28,7 +30,7 @@ typedef struct s_interface {
 	SDL_Event event;
 
 	SDL_Texture *caseSprite[CASE_TYPE_AMOUNT];
-	struct s_player playerGraphx;
+	struct s_player player;
 	sPosition origin;
 } sInterface;
 
@@ -36,8 +38,8 @@ typedef struct s_interface {
 
 int loadInterface(sInterface *p_interface, sMap *p_map);
 int closeInterface(sInterface *p_interface);
-int winCongrate(sInterface *p_interface, sMap *p_map);
 int gameLoop(sInterface *p_interface, sMap *p_map);
+int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int displayMap(sInterface *p_interface, sMap *p_map);
 int solveGame(sInterface *p_interface, sMap *p_map);
