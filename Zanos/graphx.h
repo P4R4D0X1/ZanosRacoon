@@ -16,7 +16,9 @@
 
 typedef struct s_player {
 	SDL_Texture *playerSprite[4];
-	sPosition position;
+	SDL_Rect realPosition;
+
+	sPosition mapPosition;
 	eDirection direction;
 } sPlayer;
 
@@ -40,6 +42,7 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int displayMap(sInterface *p_interface, sMap *p_map);
 int solveGame(sInterface *p_interface, sMap *p_map);
 bool WinOrNot(sInterface *p_interface, sMap *p_map);
+SDL_Rect getRealPosition(sPosition p_position);
 //void playSong();
 
 #endif
