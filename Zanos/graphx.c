@@ -66,7 +66,7 @@ int closeInterface(sInterface *p_interface) {
 
 
 
-int gameLoop(sInterface *p_interface, sMap *p_map) {
+int gameLoop(sInterface *p_interface, sMap *p_map, sSonor *p_sonor) {
 	
 	bool l_loop = TRUE, l_solve = FALSE, l_win = FALSE;
 	
@@ -112,7 +112,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	}
 
 	closeInterface(p_interface);
-
+	Mix_FreeMusic(p_sonor->music);
+	Mix_CloseAudio();
 	SDL_Quit();
 
 	return 0;
