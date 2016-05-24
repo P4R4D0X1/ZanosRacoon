@@ -117,7 +117,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					break;
 			}
 		}
-
+		updateVision(p_interface, p_map);
 	}
 
 	closeInterface(p_interface);
@@ -129,9 +129,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	sNode *l_neighbour;
 
-	if (p_interface->player.isSliding) {
+	if (p_interface->player.isSliding)
 		return 0;
-	}
 
 	p_interface->player.direction = p_direction;
 
@@ -154,11 +153,26 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 		p_interface->player.realDestination = p_interface->player.realPosition;
 	}else{
 		p_interface->player.realDestination = getRealPosition(l_neighbour->position);
+		p_interface->player.mapPosition = l_neighbour->position;
 	}
 
 	p_interface->player.isSliding = TRUE;
 
 	return 0;
+}
+
+int updateVision(sInterface *p_interface, sMap *p_map) {
+	if (!(p_interface->player.isSliding))
+		return 0;
+
+	if (comparePositionRect(p_interface->player.realPosition, p_interface->player.realDestination)) {
+		p_interface->player.isSliding = FALSE;
+	}
+	else {
+		//Incrementation de la position en fonction de la direction
+		//Blit des couples de case en fonction de la direction du deplacement
+		//Blit du player à sa position réelle
+	}
 }
 
 int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
@@ -335,4 +349,12 @@ SDL_Rect getRealPosition(sPosition p_position) {
 	l_position.w = (WINDOW_WIDTH / CASE_COLUMN_AMOUNT);
 
 	return l_position;
+}
+
+bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition) {
+	if (p_firstPosition.x != p_secondPosition.x || p_firstPosition.y != p_secondPosition.y) {
+		return FALSE;
+	}
+
+	return TRUE;
 }

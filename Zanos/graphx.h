@@ -46,6 +46,7 @@ int displayMap(sInterface *p_interface, sMap *p_map);
 int solveGame(sInterface *p_interface, sMap *p_map);
 bool WinOrNot(sInterface *p_interface, sMap *p_map);
 SDL_Rect getRealPosition(sPosition p_position);
+bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition);
 //void playSong();
 
 #endif
