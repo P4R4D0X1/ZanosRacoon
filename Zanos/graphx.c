@@ -63,19 +63,18 @@ int closeInterface(sInterface *p_interface) {
 
 
 int gameLoop(sInterface *p_interface, sMap *p_map) {
+	
 	bool l_loop = TRUE;
-
+	
 	loadInterface(p_interface);
 	p_interface->playerGraphx.position.x = p_map->starting.x;
 	p_interface->playerGraphx.position.y = p_map->starting.y;
 
-	printf("(%f %f)\n", p_interface->playerGraphx.position.x, p_interface->playerGraphx.position.y);
-
-	//displayMap(p_interface, p_map);
+	displayMap(p_interface, p_map);
 
 	while (l_loop)
 	{
-		while (SDL_PollEvent(&(p_interface->event))) {
+		if (SDL_PollEvent(&(p_interface->event))) {
 			
 			switch (p_interface->event.type) {
 				case(SDL_KEYDOWN):
@@ -91,6 +90,9 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 							break;
 						case(SDLK_q):
 							moovePlayer(p_interface, p_map, DLEFT);
+							break;
+						case(SDLK_x):
+							solveGame(p_interface, p_map);
 							break;
 						case(SDLK_ESCAPE):
 							l_loop = FALSE;
@@ -209,7 +211,6 @@ int moovePlayer(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	return 0;
 }
 
-
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int l_i, l_j;
 	SDL_Rect posCase;
@@ -234,3 +235,17 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 	return 0;
 }	
 
+int solveGame(sInterface *p_interface, sMap *p_map) {
+	sList *l_solutionPath = NULL;
+	
+	l_solutionPath = dijkstra(p_map, p_interface->playerGraphx.position);
+	while (l_solutionPath && l_solutionPath->next) {
+
+		SDL_RenderDrawLine(p_interface->renderer, ((WINDOW_WIDTH / 10) * l_solutionPath->position.x) + (WINDOW_WIDTH / 20), ((WINDOW_HEIGHT / 10) * l_solutionPath->position.y) + (WINDOW_HEIGHT/20), ((WINDOW_WIDTH / 10) * (l_solutionPath->next)->position.x) + (WINDOW_WIDTH/20), ((WINDOW_HEIGHT / 10) * (l_solutionPath->next)->position.y) + (WINDOW_HEIGHT/20));
+		SDL_RenderPresent(p_interface->renderer);
+
+		l_solutionPath = l_solutionPath->next;
+	}
+
+	return 0;
+}

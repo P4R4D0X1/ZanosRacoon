@@ -13,7 +13,6 @@
 int main(int argc, char **argv) {
 
 	sMap *l_map = NULL;
-	sList *l_solutionPath = NULL;
 	sInterface l_interface;
 
 	loadMap(&l_map, "map.txt");

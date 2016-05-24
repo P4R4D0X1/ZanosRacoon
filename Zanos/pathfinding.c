@@ -72,6 +72,12 @@ sList *dijkstra(sMap *p_map, sPosition p_startPoint) {
 		l_tmpNode = l_theFirendOfTheFirstTMPNode;
 	}
 	
+	for (l_i = 0; l_i < p_map->nodeAmount; ++l_i) {
+		l_nodeList[l_i]->checked = FALSE;
+		l_nodeList[l_i]->poids = -1;
+		l_nodeList[l_i]->previous = NULL;
+	}
+
 	return l_solutionPath;
 }
 
