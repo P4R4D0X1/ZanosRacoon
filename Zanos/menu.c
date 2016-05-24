@@ -18,8 +18,7 @@ void initFont(sText *p_text, SDL_Renderer *p_renderer, char* toWrite) {
 void createWindow() {
 	SDL_Event event;
 
-	int continuer = 1;
-	int posMouseX, posMouseY;
+	int continuer = 1, posMouseX, posMouseY, leftButtonState;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
 	TTF_Init();
@@ -48,9 +47,7 @@ void createWindow() {
 		switch (event.type)
 		{
 		case SDL_MOUSEBUTTONDOWN:
-			SDL_GetMouseState(&posMouseX, &posMouseY);
-			/*if (p_text->posText.x <= posMouseX <= posTxt.x + posTxt.w && posTxt.y <= posMouseY <= posTxt.y + posTxt.h)
-				printf("\nOKAY\n");*/
+			leftButtonState = 1;
 			break;
 
 		case SDL_QUIT:
@@ -59,10 +56,13 @@ void createWindow() {
 		}
 
 	}
+	if (leftButtonState == 1) {
+		SDL_GetMouseState(&posMouseX, &posMouseY);
+		//if (posMouseX)
+	}
 }
 
 void createMenu(sText *p_text) {
-	//comment
 
 
 }
