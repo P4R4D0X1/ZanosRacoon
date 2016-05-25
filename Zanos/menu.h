@@ -7,6 +7,7 @@
 #include "definition.h"
 #include "metric.h"
 #include "map.h"
+#include "graphx.h"
 
 #include "include\SDL2\SDL.h"
 #include "include\SDL2\SDL_image.h"
@@ -21,7 +22,8 @@ typedef struct s_text {
 
 } sText;
 
-void createMenu(sText *p_text);
-void closeFonts(font);
+void createFont(sText *p_text, SDL_Renderer *p_renderer, char* toWrite);
+void createMenu(sInterface *p_interface);
+void closeFonts(sText p_text);
 
 #endif

@@ -1,4 +1,5 @@
 #include "graphx.h"
+#include "menu.h"
 
 int loadInterface(sInterface *p_interface, sMap *p_map) {
 	int l_i;
