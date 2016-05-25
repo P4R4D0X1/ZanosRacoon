@@ -7,8 +7,8 @@ void initFont(sText *p_text, SDL_Renderer *p_renderer, char* toWrite) {
 	p_text->color.b = 0;
 	p_text->surfaceText = TTF_RenderText_Blended(p_text->font, toWrite, p_text->color);
 
-	//p_text->posText.y = 640 / 2 - pSprite->w / 2 + 100;
-	//p_text->posText.y = 480 / 2 - pSprite->h / 2 + 200;
+	p_text->posText.y = 100;
+	p_text->posText.y = 200;
 
 	p_text->fontTexture = SDL_CreateTextureFromSurface(p_renderer, p_text->surfaceText);
 	SDL_QueryTexture(p_text->fontTexture, NULL, NULL, &(p_text->posText.w), &(p_text->posText.h));
