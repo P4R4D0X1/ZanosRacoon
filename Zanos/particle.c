@@ -1,9 +1,11 @@
+#include "graphx.h"
 #include "particle.h"
+
 
 int initParticleSystem(sParticleSystem *p_particleSystem, int p_lifeTime, int p_particleAmount, SDL_Rect p_position){
 	int l_i;
 	
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 
 	p_particleSystem = malloc(sizeof(sParticleSystem));
 
@@ -16,7 +18,7 @@ int initParticleSystem(sParticleSystem *p_particleSystem, int p_lifeTime, int p_
 	p_particleSystem->particle = malloc(sizeof(sParticle*) * p_particleAmount);
 
 	for (l_i = 0; l_i < p_particleSystem->particleAmount; ++l_i) {
-		initParticle(p_particleSystem, p_particleSystem->particle[l_i]);
+		initParticle(p_particleSystem, &(p_particleSystem->particle[l_i]));
 	}
 
 	return 0;
@@ -32,7 +34,7 @@ int initParticle(sParticleSystem *p_particleSystem, sParticle **p_particle) {
 	return 0;
 }
 
-int updateParticle(sParticleSystem *p_particleSystem, sInterface *p_interface) {
+int updateParticle(sParticleSystem *p_particleSystem, struct s_interface *p_interface) {
 	int l_i;
 
 	if (p_particleSystem->alive) {

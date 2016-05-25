@@ -11,9 +11,11 @@
 #include "pathfinding.h"
 #include "musix.h"
 
+
 #include "include\SDL2\SDL.h"
 #include "include\SDL2\SDL_image.h"
 #include "include\SDL2\SDL_ttf.h"
+
 
 typedef struct s_player {
 	SDL_Texture *playerSprite[4];
@@ -35,15 +37,6 @@ typedef struct s_interface {
 	sPosition origin;
 } sInterface;
 
-typedef struct s_text {
-	TTF_Font *font;
-	SDL_Surface *surfaceText;
-	SDL_Rect posText;
-	SDL_Color color;
-	SDL_Texture *fontTexture;
-
-} sText;
-
 
 int loadInterface(sInterface *p_interface, sMap *p_map);
 int closeInterface(sInterface *p_interface);
@@ -61,9 +54,6 @@ sPosition getMapPosition(SDL_Rect p_position);
 bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition);
 bool comparePositionMap(sPosition p_firstPosition, sPosition p_secondPosition);
 
-void createFont(sText *p_text, SDL_Renderer *p_renderer, char* toWrite);
-void createMenu(sInterface *p_interface, sMap *p_map);
-void closeFonts(sText p_text);
 //void playSong();
 
 #endif

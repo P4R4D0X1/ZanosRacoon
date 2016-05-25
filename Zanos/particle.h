@@ -7,9 +7,9 @@
 
 #include "definition.h"
 #include "metric.h"
-#include "graphx.h"
 
 #include "include\SDL2\SDL.h"
+
 
 typedef struct s_particle {
 	int lifeTime;
@@ -30,6 +30,6 @@ typedef struct s_particleSystem {
 
 int initParticleSystem(sParticleSystem *p_particleSystem, int p_lifeTime, int p_particleAmount, SDL_Rect p_position);
 int initParticle(sParticleSystem *p_particleSystem, sParticle **p_particle);
-int updateParticle(sParticleSystem *p_particleSystem, sInterface *p_interface);
+int updateParticle(sParticleSystem *p_particleSystem, struct s_interface *p_interface);
 
 #endif
