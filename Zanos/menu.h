@@ -22,8 +22,8 @@ typedef struct s_text {
 
 } sText;
 
-void initFont(sText *p_text, SDL_Renderer *p_renderer, char* toWrite);
-void createMenu(sInterface *p_interface, sText *p_text);
-void closeFonts(sText *p_text);
+void createFont(sText *p_text, SDL_Renderer *p_renderer, char* toWrite);
+void createMenu(sInterface *p_interface);
+void closeFonts(sText p_text);
 
 #endif

@@ -17,10 +17,11 @@ int main(int argc, char **argv) {
 	sInterface l_interface;
 	sText l_text;
 
-	createMenu(&l_interface, &l_text);
-	
 	loadMap(&l_map, "map.txt");
 	generateGraph(l_map);
+
+	loadInterface(&l_interface, l_map);
+	//createMenu(&l_interface, &l_text);
 
 	gameLoop(&l_interface, l_map);
 	return EXIT_SUCCESS;
