@@ -43,14 +43,14 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	
 	l_posBG.x = 0;
 	l_posBG.y = 0;
-	l_posBG.h = 100;
-	l_posBG.w = 100;
+	l_posBG.h = WINDOW_HEIGHT;
+	l_posBG.w = WINDOW_WIDTH;
 
 	loadAnimation(&l_animation, 3, l_posBG, 30,"./assets/sprite/anim/mountain_", p_interface);
 
 	while (l_loop) {
 
-		while (SDL_WaitEvent(&(p_interface->event))) {
+		while (SDL_PollEvent(&(p_interface->event))) {
 			switch (p_interface->event.type) {
 				case SDL_MOUSEBUTTONDOWN:
 					SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
@@ -71,6 +71,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 					break;
 			}
 		}
+		//SDL_RenderCopy(p_interface->renderer, l_animation->sprite[l_animation->actualFrame], NULL, &(l_animation->position));
 		updateAnimation(l_animation, p_interface);
 		SDL_RenderPresent(p_interface->renderer);
 	}
