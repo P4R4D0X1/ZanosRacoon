@@ -77,7 +77,10 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
 	sSonor l_sonor;
+	sParticleSystem *l_particleSystem = NULL;
 	
+	SDL_Rect l_CursorPosition;
+
 	displayMap(p_interface, p_map);
 	playSonor(&l_sonor);
 
@@ -112,9 +115,19 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					}
 					while (SDL_PollEvent(&(p_interface->event)));
 					break;
+				case(SDL_MOUSEBUTTONDOWN):
+					SDL_GetMouseState(&(l_CursorPosition.x), &(l_CursorPosition.y));
+					
+					if (!l_particleSystem) {
+						printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_CursorPosition.x, l_CursorPosition.y);
+						initParticleSystem(&l_particleSystem, 1000, 20, l_CursorPosition);
+					}
+					break;
 			}
 		}
+		displayMap(p_interface, p_map);
 		updateVision(p_interface, p_map);
+		updateParticle(&l_particleSystem, p_interface);
 		l_loop = WinOrNot(p_interface, p_map);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
