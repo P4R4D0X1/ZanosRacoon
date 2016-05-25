@@ -166,10 +166,8 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 
 	if (p_interface->player.isSliding)
 		return 0;
-
-		//solveGame(p_interface, p_map);
 	
-
+	//solveGame(p_interface, p_map);
 	p_interface->player.direction = p_direction;
 
 	switch (p_direction) {
@@ -208,6 +206,7 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 		return 0;
 	}
 
+	
 
 	if (comparePositionRect(p_interface->player.realPosition, p_interface->player.realDestination)) {
 		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
@@ -279,12 +278,29 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 
 
 int solveGame(sInterface *p_interface, sMap *p_map) {
-	sList *l_solutionPath = NULL;
+	sList *l_solutionPath = NULL, *l_solution = NULL;
+
+	SDL_Rect l_posA, l_posB;
 	
-	l_solutionPath = dijkstra(p_map, getMapPosition(p_interface->player.realPosition));
+	l_solution = dijkstra(p_map, getMapPosition(p_interface->player.realPosition));
+	l_solutionPath = l_solution;
+	if (l_solutionPath && l_solutionPath->next) {
+		l_solutionPath = l_solutionPath->next;
 
+		l_posA = getRealPosition(l_solutionPath->position);
+		SDL_RenderDrawLine(p_interface->renderer, p_interface->player.realPosition.x + 25, p_interface->player.realPosition.y + 25, l_posA.x + 25, l_posA.y + 25);
 
-	SDL_RenderPresent(p_interface->renderer);
+		while (l_solutionPath->next) {
+			l_posB = getRealPosition((l_solutionPath->next)->position);
+			SDL_RenderDrawLine(p_interface->renderer, l_posA.x + 25, l_posA.y + 25, l_posB.x + 25, l_posB.y + 25);
+			l_posA.x = l_posB.x;
+			l_posA.y = l_posB.y;
+			l_solutionPath = l_solutionPath->next;
+			SDL_RenderPresent(p_interface->renderer);
+		}
+
+		freeList(&l_solution);
+	}
 	return 0;
 }
 
