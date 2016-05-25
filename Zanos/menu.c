@@ -87,3 +87,70 @@ void closeFonts(sText p_text) {
 	TTF_CloseFont(p_text.font);
 	TTF_Quit();
 }
+
+void createAnim() {
+	int l_i, continuer =1;
+	char l_snowPath[158] = "./assets/sprite/frame-001.bmp";
+
+	SDL_Window *window;
+	SDL_Surface *l_tmpsprite;
+	SDL_Renderer *renderer;
+	SDL_Texture *snowTab[158];
+	SDL_Event event;
+
+	if (SDL_Init(SDL_INIT_EVERYTHING)) {
+		fprintf(stdout, "[SDL] Initialization Error (%s)\n", SDL_GetError());
+		return EXIT_FAILURE;
+	}
+	IMG_Init(IMG_INIT_PNG);
+
+	window = SDL_CreateWindow("-TEST ANIM'-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	if (!window) {
+		fprintf(stderr, "[SDL] Window creation error (%s)\n", SDL_GetError());
+		return EXIT_FAILURE;
+	}
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	for (l_i = 0; l_i < 158; ++l_i) {
+		l_snowPath[21] = (int)(l_i / 10) + 48;
+		l_snowPath[22] = (l_i - (int)(l_i / 10) * 10) + 48;
+		l_tmpsprite = SDL_LoadBMP(l_snowPath);
+		snowTab[l_i] = SDL_CreateTextureFromSurface(renderer, l_tmpsprite);
+		SDL_FreeSurface(l_tmpsprite);
+		}
+
+		/*SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_RenderClear(renderer);*/
+
+		SDL_RenderPresent(renderer); // Affichage
+
+
+		while (continuer)
+		{
+			SDL_WaitEvent(&(event));
+			switch (event.type)
+			{
+			case SDL_MOUSEBUTTONDOWN:
+				break;
+
+			case SDL_KEYDOWN:
+				switch (event.key.keysym.sym)
+				{
+				case SDLK_ESCAPE:
+					continuer = 0;
+					break;
+
+				default:
+					break;
+				}
+			case SDL_QUIT:
+				continuer = 0;
+				break;
+
+			}
+		}
+
+		SDL_Quit();
+		return;
+}

@@ -18,6 +18,7 @@ int main(int argc, char **argv) {
 
 	loadMap(&l_map, "map.txt");
 	generateGraph(l_map);
+
 	createMenu(&l_interface, l_map);
 
 	return EXIT_SUCCESS;
