@@ -17,7 +17,6 @@ void createFont(sText *p_text, SDL_Renderer *p_renderer, char *p_message) {
 
 	p_text->fontTexture = SDL_CreateTextureFromSurface(p_renderer, p_text->surfaceText);
 	SDL_QueryTexture(p_text->fontTexture, NULL, NULL, &(p_text->posText.w), &(p_text->posText.h));
-	SDL_RenderCopy(p_renderer, p_text->fontTexture, NULL, &p_text->posText);
 
 	return;
 }
@@ -71,8 +70,9 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 					break;
 			}
 		}
-		//SDL_RenderCopy(p_interface->renderer, l_animation->sprite[l_animation->actualFrame], NULL, &(l_animation->position));
+
 		updateAnimation(l_animation, p_interface);
+		SDL_RenderCopy(p_interface->renderer, l_play.fontTexture, NULL, &l_play.posText);
 		SDL_RenderPresent(p_interface->renderer);
 	}
 
