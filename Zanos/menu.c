@@ -64,6 +64,16 @@ void createMenu(sInterface *p_interface, sMap *p_map) {
 				}
 				break;
 
+			case SDL_KEYDOWN:
+				switch (p_interface->event.key.keysym.sym)
+				{
+				case SDLK_ESCAPE :
+					continuer = 0;
+					break;
+
+				default:
+					break;
+				}
 			case SDL_QUIT:
 				continuer = 0;
 				break;
@@ -72,7 +82,7 @@ void createMenu(sInterface *p_interface, sMap *p_map) {
 	}
 
 	closeFonts(l_play);
-
+	closeInterface(p_interface);
 }
 
 
