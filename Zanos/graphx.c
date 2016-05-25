@@ -74,11 +74,18 @@ int closeInterface(sInterface *p_interface) {
 	return 0;
 }
 
+void compteur(sInterface *p_interface, int *cmpt) {
+
+
+}
+
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
 	int compteur = 0;
+	char txtCmpt[32];
 	sSonor l_sonor;
+	sText l_cmptText;
 	sParticleSystem *l_particleSystem = NULL;
 	
 	SDL_Rect l_CursorPosition;
@@ -98,19 +105,25 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 							updateGoal(p_interface, p_map, DUP);
 							compteur += 1;
 							printf("CMPT: %d\n", compteur);
+
+							snprintf(txtCmpt, 255, "%d", compteur);
+							createFont(&l_cmptText, p_interface->renderer, txtCmpt);
 							break;
+
 						case(SDLK_d):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DRIGHT);
 							compteur += 1;
 							printf("CMPT: %d\n", compteur);
 							break;
+
 						case(SDLK_s):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DDOWN);
 							compteur += 1;
 							printf("CMPT: %d\n", compteur);
 							break;
+
 						case(SDLK_q):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DLEFT);	
@@ -126,15 +139,15 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					}
 					while (SDL_PollEvent(&(p_interface->event)));
 					break;
-				case(SDL_MOUSEBUTTONDOWN):
-					SDL_GetMouseState(&(l_CursorPosition.x), &(l_CursorPosition.y));
+					case(SDL_MOUSEBUTTONDOWN):
+						SDL_GetMouseState(&(l_CursorPosition.x), &(l_CursorPosition.y));
 					
-					if (!l_particleSystem) {
-						l_mapPosition = getMapPosition(l_CursorPosition);
-						printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_mapPosition.x, l_mapPosition.y);
-						initParticleSystem(&l_particleSystem, PATRICLE_SYSTEM_LIFETIME, PARTICLE_AMOUNT, l_CursorPosition);
-					}
-					break;
+						if (!l_particleSystem) {
+							l_mapPosition = getMapPosition(l_CursorPosition);
+							printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_mapPosition.x, l_mapPosition.y);
+							initParticleSystem(&l_particleSystem, PATRICLE_SYSTEM_LIFETIME, PARTICLE_AMOUNT, l_CursorPosition);
+						}
+						break;
 			}
 		}
 
