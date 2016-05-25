@@ -50,7 +50,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 	p_interface->player.direction = DUP;
 
 
-	SDL_SetRenderDrawColor(p_interface->renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(p_interface->renderer, 255, 0, 0, 255);
 	SDL_RenderClear(p_interface->renderer);
 
 	return 0;
@@ -80,6 +80,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	sParticleSystem *l_particleSystem = NULL;
 	
 	SDL_Rect l_CursorPosition;
+	sPosition l_mapPosition;
 
 	displayMap(p_interface, p_map);
 	playSonor(&l_sonor);
@@ -119,7 +120,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					SDL_GetMouseState(&(l_CursorPosition.x), &(l_CursorPosition.y));
 					
 					if (!l_particleSystem) {
-						printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_CursorPosition.x, l_CursorPosition.y);
+						l_mapPosition = getMapPosition(l_CursorPosition);
+						printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_mapPosition.x, l_mapPosition.y);
 						initParticleSystem(&l_particleSystem, 100, 20, l_CursorPosition);
 					}
 					break;

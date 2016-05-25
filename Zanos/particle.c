@@ -93,7 +93,7 @@ int renderParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 			if ((*p_particleSystem)->particle[l_i]) {	
 				l_mapPosition = getMapPosition((*p_particleSystem)->particle[l_i]->position);
 				l_realPosition = getRealPosition(l_mapPosition);
-				if(l_mapPosition.x >=0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y)
+				if(l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
 			}
 		}
