@@ -15,8 +15,11 @@ int main(int argc, char **argv) {
 
 	sMap *l_map = NULL;
 	sInterface l_interface;
+	sText l_text;
 
-//-----Partie test d'Aurore------------------------------------------------------
+	createMenu(&l_interface, &l_text);
+
+/*-----Partie test d'Aurore------------------------------------------------------
 	SDL_Surface *texte = NULL;
 	SDL_Event event;
 
@@ -53,7 +56,7 @@ int main(int argc, char **argv) {
 	SDL_RenderCopy(pRenderer, fontTexture, NULL, &posTxt);
 
 	SDL_RenderPresent(pRenderer); // Affichage
-	SDL_Delay(1000); /* Attendre trois secondes, que l'utilisateur voit la fenêtre */
+	SDL_Delay(1000); // Attendre trois secondes, que l'utilisateur voit la fenêtre
 
 
 	while (continuer)
@@ -79,7 +82,7 @@ int main(int argc, char **argv) {
 	SDL_FreeSurface(texte);
 	SDL_Quit();
 
-//---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------*/
 	
 	loadMap(&l_map, "map.txt");
 	generateGraph(l_map);
