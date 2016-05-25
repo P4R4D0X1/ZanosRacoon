@@ -29,7 +29,7 @@ typedef struct s_animation {
 	int frameAmount;
 	int actualFrame;
 
-	SDL_Surface **sprite;
+	SDL_Texture **sprite;
 	SDL_Rect position;
 } sAnimation;
 

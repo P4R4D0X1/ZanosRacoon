@@ -44,31 +44,33 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	
 	createFont(&l_play, p_interface->renderer, "PLAY");
 
-	SDL_RenderPresent(p_interface->renderer); // Affichage
+	SDL_RenderPresent(p_interface->renderer); 
 
 
-	while (l_loop){
-		SDL_WaitEvent(&(p_interface->event));
-		
-		switch (p_interface->event.type){
-			case SDL_MOUSEBUTTONDOWN:
-				SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
+	while (l_loop) {
 
-				if (l_play.posText.x < l_posMouse.x && l_posMouse.x < l_play.posText.x + l_play.posText.w && l_play.posText.y < l_posMouse.y && l_posMouse.y < l_play.posText.y + l_play.posText.h) {
-					gameLoop(p_interface, p_map);
-					l_loop = 0;
-				}
-				break;
-			case SDL_KEYDOWN:
-				switch (p_interface->event.key.keysym.sym) {
-					case SDLK_ESCAPE:
+		while (SDL_WaitEvent(&(p_interface->event))) {
+			switch (p_interface->event.type) {
+				case SDL_MOUSEBUTTONDOWN:
+					SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
+
+					if (l_play.posText.x < l_posMouse.x && l_posMouse.x < l_play.posText.x + l_play.posText.w && l_play.posText.y < l_posMouse.y && l_posMouse.y < l_play.posText.y + l_play.posText.h) {
+						gameLoop(p_interface, p_map);
+						l_loop = 0;
+					}
+					break;
+				case SDL_KEYDOWN:
+					switch (p_interface->event.key.keysym.sym) {
+						case SDLK_ESCAPE:
 						l_loop = 0;
 						break;
-				}
-			case SDL_QUIT:
-				l_loop = 0;
-				break;
+					}
+				case SDL_QUIT:
+					l_loop = 0;
+					break;
+			}
 		}
+		
 	}
 
 	closeFonts(l_play);
@@ -78,6 +80,11 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 }
 
 void loadAnimation(sAnimation *p_animation, int p_frameAmount, SDL_Rect p_position, int p_idIndex, char *p_path) {
+	p_animation = malloc(sizeof(sAnimation));
 
+	p_animation->frameAmount = p_frameAmount;
+	p_animation->actualFrame = 0;
+	p_animation->position = p_position;
+	p_animation->sprite = malloc(sizeof(SDL_Texture*) * p_frameAmount);
 }
 
