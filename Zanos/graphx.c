@@ -120,14 +120,15 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					
 					if (!l_particleSystem) {
 						printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_CursorPosition.x, l_CursorPosition.y);
-						initParticleSystem(&l_particleSystem, 1000, 20, l_CursorPosition);
+						initParticleSystem(&l_particleSystem, 100, 20, l_CursorPosition);
 					}
 					break;
 			}
 		}
-		displayMap(p_interface, p_map);
+		//displayMap(p_interface, p_map);
 		updateVision(p_interface, p_map);
 		updateParticle(&l_particleSystem, p_interface);
+		SDL_RenderPresent(p_interface->renderer);
 		l_loop = WinOrNot(p_interface, p_map);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
@@ -177,8 +178,12 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 	sPosition l_casePosition;
 	SDL_Rect l_caseRealPosition;
 
-	if (!(p_interface->player.isSliding))
+	if (!(p_interface->player.isSliding)) {
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
+		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
 		return 0;
+	}
+
 
 	if (comparePositionRect(p_interface->player.realPosition, p_interface->player.realDestination)) {
 		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
@@ -221,8 +226,6 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 		if (p_interface->player.direction == DLEFT)
 			p_interface->player.realPosition.x -= ((WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / SDL_ANIMATION_SLIDE_FRAMEAMOUNT);	
 	}
-
-	SDL_RenderPresent(p_interface->renderer);
 
 	return 0;
 }

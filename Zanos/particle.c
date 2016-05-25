@@ -29,8 +29,8 @@ int initParticle(sParticle **p_particle, SDL_Rect p_position) {
 
 	(*p_particle)->lifeTime = (rand() % (PARTICLE_LIFETIME_MAX - PARTICLE_LIFETIME_MIN)) + PARTICLE_LIFETIME_MIN;
 	(*p_particle)->position = p_position;
-	(*p_particle)->velocity.x = (rand() % 100) - 50;
-	(*p_particle)->velocity.y = (rand() % 100) - 50;
+	(*p_particle)->velocity.x = (rand() % 10) - 5;
+	(*p_particle)->velocity.y = (rand() % 10) - 5;
 	return 0;
 }
 
