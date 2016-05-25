@@ -50,7 +50,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 	p_interface->player.direction = DUP;
 
 
-	SDL_SetRenderDrawColor(p_interface->renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(p_interface->renderer, 255, 0, 0, 255);
 	SDL_RenderClear(p_interface->renderer);
 
 	return 0;
@@ -80,6 +80,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	sParticleSystem *l_particleSystem = NULL;
 	
 	SDL_Rect l_CursorPosition;
+	sPosition l_mapPosition;
 
 	displayMap(p_interface, p_map);
 	playSonor(&l_sonor);
@@ -119,15 +120,16 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					SDL_GetMouseState(&(l_CursorPosition.x), &(l_CursorPosition.y));
 					
 					if (!l_particleSystem) {
-						printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_CursorPosition.x, l_CursorPosition.y);
+						l_mapPosition = getMapPosition(l_CursorPosition);
+						printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_mapPosition.x, l_mapPosition.y);
 						initParticleSystem(&l_particleSystem, 100, 20, l_CursorPosition);
 					}
 					break;
 			}
 		}
-		//displayMap(p_interface, p_map);
+
 		updateVision(p_interface, p_map);
-		updateParticle(&l_particleSystem, p_interface);
+		renderParticle(&l_particleSystem, p_interface, p_map);
 		SDL_RenderPresent(p_interface->renderer);
 		l_loop = WinOrNot(p_interface, p_map);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
@@ -179,8 +181,6 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 	SDL_Rect l_caseRealPosition;
 
 	if (!(p_interface->player.isSliding)) {
-		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
-		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
 		return 0;
 	}
 
