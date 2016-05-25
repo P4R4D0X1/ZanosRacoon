@@ -5,11 +5,9 @@
 
 int loadInterface(sInterface *p_interface, sMap *p_map) {
 	int l_i;
-	char l_casePath[50] = "./assets/sprite/case_01.bmp", l_persoPath[50] = "./assets/sprite/perso_0.bmp";
+	char l_casePath[50] = "./assets/sprite/case_01.bmp", l_persoPath[50] = "./assets/sprite/perso_0.png";
 
 	SDL_Surface *l_sprite;
-
-	printf("%p in initialisation fonction\n", p_interface);
 
 	if (SDL_Init(SDL_INIT_EVERYTHING)) {
 		fprintf(stdout, "[SDL] Initialization Error (%s)\n", SDL_GetError());
@@ -36,8 +34,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 
 	for (l_i = 0; l_i < 4; ++l_i) {
 		l_persoPath[22] = l_i + 48;
-		l_sprite = SDL_LoadBMP(l_persoPath);
-		SDL_SetColorKey(l_sprite, SDL_TRUE, SDL_MapRGB(l_sprite->format, 12, 255, 0));
+		l_sprite = IMG_Load(l_persoPath);
 		p_interface->player.playerSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_FreeSurface(l_sprite);
 	}
