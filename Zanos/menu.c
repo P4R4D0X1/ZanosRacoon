@@ -34,18 +34,19 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	bool l_loop = TRUE;
 
 	sText l_play;
+	sAnimation *l_animation = NULL;
 
-	SDL_Rect l_posMouse, l_positionBG;
-	SDL_Surface* l_background;
-	SDL_Texture* l_backTexture;
+	SDL_Rect l_posMouse, l_posBG;
 
-	loadInterface(p_interface, p_map);
-	gameLoop(p_interface, p_map);
-	
+	loadInterface(p_interface, p_map);	
 	createFont(&l_play, p_interface->renderer, "PLAY");
+	
+	l_posBG.x = 0;
+	l_posBG.y = 0;
+	l_posBG.h = 100;
+	l_posBG.w = 100;
 
-	SDL_RenderPresent(p_interface->renderer); 
-
+	loadAnimation(&l_animation, 3, l_posBG, 30,"./assets/sprite/anim/mountain_", p_interface);
 
 	while (l_loop) {
 
@@ -62,15 +63,16 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 				case SDL_KEYDOWN:
 					switch (p_interface->event.key.keysym.sym) {
 						case SDLK_ESCAPE:
-						l_loop = 0;
-						break;
+							l_loop = FALSE;
+							break;
 					}
 				case SDL_QUIT:
-					l_loop = 0;
+					l_loop = FALSE;
 					break;
 			}
 		}
-		
+		updateAnimation(l_animation, p_interface);
+		SDL_RenderPresent(p_interface->renderer);
 	}
 
 	closeFonts(l_play);
@@ -79,12 +81,51 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	return;
 }
 
-void loadAnimation(sAnimation *p_animation, int p_frameAmount, SDL_Rect p_position, int p_idIndex, char *p_path) {
-	p_animation = malloc(sizeof(sAnimation));
+void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, int p_idIndex, char *p_path, struct s_interface *p_interface) {
+	int l_i, l_j, l_digitAmount = 0, l_tmp = p_frameAmount;
+	char l_path[100] = "", l_tmpy[50] = "";
 
-	p_animation->frameAmount = p_frameAmount;
-	p_animation->actualFrame = 0;
-	p_animation->position = p_position;
-	p_animation->sprite = malloc(sizeof(SDL_Texture*) * p_frameAmount);
+	SDL_Surface *l_sprite;
+
+	strcpy_s(l_path, sizeof(l_path), p_path);
+	
+	*p_animation = malloc(sizeof(sAnimation));
+
+	(*p_animation)->frameAmount = p_frameAmount;
+	(*p_animation)->actualFrame = 0;
+	(*p_animation)->position = p_position;
+	(*p_animation)->sprite = malloc(sizeof(SDL_Texture*) * p_frameAmount);
+
+	while (l_tmp != 0) {
+		l_digitAmount++;
+		l_tmp /= 10;
+	}
+
+	for (l_i = 0; l_i < p_frameAmount; ++l_i) {
+		strcpy_s(l_path, sizeof(l_path), "");
+		strcat_s(l_path, sizeof(l_path), p_path);
+
+		for (l_j = l_digitAmount-1; l_j >= 0; l_j--) {
+			memset(l_tmpy, getDigit(l_i, l_j)+48, 1);
+			strcat_s(l_path, sizeof(l_path), l_tmpy);
+		}
+		strcat_s(l_path, sizeof(l_path), ".bmp");
+
+		l_sprite = SDL_LoadBMP(l_path);
+		(*p_animation)->sprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+		SDL_FreeSurface(l_sprite);
+
+		printf("%s\n", l_path);
+	}
+	
 }
 
+void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface) {
+	SDL_RenderCopy(p_interface->renderer, p_animation->sprite[p_animation->actualFrame], NULL, &(p_animation->position));
+	p_animation->actualFrame++;
+	p_animation->actualFrame %= p_animation->frameAmount;
+}
+
+int getDigit(int p_number, int p_digit) {
+	return (int)(((p_number / pow(10, p_digit)) - ((p_number/10) * 10)));
+}

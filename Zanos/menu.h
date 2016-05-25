@@ -3,6 +3,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
+#include <string.h>
 
 #include "definition.h"
 #include "metric.h"
@@ -36,6 +38,8 @@ typedef struct s_animation {
 void createFont(sText *p_text, SDL_Renderer *p_renderer, char *p_message);
 void closeFonts(sText p_text);
 void createMenu(struct s_interface *p_interface, sMap *p_map);
-void loadAnimation(sAnimation *p_animation, int p_frameAmount, SDL_Rect p_position, int p_idIndex, char *p_path);
+void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, int p_idIndex, char *p_path, struct s_interface *p_interface);
+void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface);
+int getDigit(int p_number, int p_index);
 
 #endif
