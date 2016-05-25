@@ -126,7 +126,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					if (!l_particleSystem) {
 						l_mapPosition = getMapPosition(l_CursorPosition);
 						printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_mapPosition.x, l_mapPosition.y);
-						initParticleSystem(&l_particleSystem, 100, 20, l_CursorPosition);
+						initParticleSystem(&l_particleSystem, PATRICLE_SYSTEM_LIFETIME, PARTICLE_AMOUNT, l_CursorPosition);
 					}
 					break;
 			}
