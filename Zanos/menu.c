@@ -29,7 +29,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 
 	loadInterface(p_interface, p_map);
 
-	l_background = SDL_LoadBMP("./assets/sprite/snow97.bmp");
+	l_background = SDL_LoadBMP("./assets/sprite/snowRaccoon.bmp");
 	l_backTexture = SDL_CreateTextureFromSurface(p_interface->renderer, l_background); // Préparation du sprite	
 	posBack.x = 640 / 2 - l_background->w / 2;
 	posBack.y = 480 / 2 - l_background->h / 2;
