@@ -65,6 +65,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 							l_loop = FALSE;
 							break;
 					}
+					break;
 				case SDL_QUIT:
 					l_loop = FALSE;
 					break;
