@@ -80,6 +80,7 @@ int closeInterface(sInterface *p_interface) {
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
+	int compteur = 0;
 	sSonor l_sonor;
 	sParticleSystem *l_particleSystem = NULL;
 	
@@ -98,18 +99,26 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 						case(SDLK_z):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DUP);
+							compteur += 1;
+							printf("CMPT: %d\n", compteur);
 							break;
 						case(SDLK_d):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DRIGHT);
+							compteur += 1;
+							printf("CMPT: %d\n", compteur);
 							break;
 						case(SDLK_s):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
 							updateGoal(p_interface, p_map, DDOWN);
+							compteur += 1;
+							printf("CMPT: %d\n", compteur);
 							break;
 						case(SDLK_q):
 							Mix_PlayChannel(-1, l_sonor.slide, 0);
-							updateGoal(p_interface, p_map, DLEFT);			
+							updateGoal(p_interface, p_map, DLEFT);	
+							compteur += 1;
+							printf("CMPT: %d\n", compteur);
 							break;
 						case(SDLK_x):
 							l_solve = !l_solve;
