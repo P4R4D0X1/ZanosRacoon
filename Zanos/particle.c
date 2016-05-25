@@ -29,6 +29,8 @@ int initParticle(sParticle **p_particle, SDL_Rect p_position) {
 
 	(*p_particle)->lifeTime = (rand() % (PARTICLE_LIFETIME_MAX - PARTICLE_LIFETIME_MIN)) + PARTICLE_LIFETIME_MIN;
 	(*p_particle)->position = p_position;
+	(*p_particle)->position.h = WINDOW_HEIGHT / CASE_LINE_AMOUNT;
+	(*p_particle)->position.w = WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
 	(*p_particle)->velocity.x = (rand() % 10) - 5;
 	(*p_particle)->velocity.y = (rand() % 10) - 5;
 	return 0;
@@ -40,7 +42,8 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 	if ((*p_particleSystem)) {
 		for (l_i = 0; l_i < (*p_particleSystem)->particleAmount; ++l_i) {
 			if ((*p_particleSystem)->particle[l_i]) {
-				SDL_RenderDrawPoint(p_interface->renderer, (*p_particleSystem)->particle[l_i]->position.x, (*p_particleSystem)->particle[l_i]->position.y);				
+				//SDL_RenderDrawPoint(p_interface->renderer, (*p_particleSystem)->particle[l_i]->position.x, (*p_particleSystem)->particle[l_i]->position.y);				
+				SDL_RenderCopy(p_interface->renderer, p_interface->effect.particleSprite, NULL, &((*p_particleSystem)->particle[l_i]->position));
 				//on update la particule
 				(*p_particleSystem)->particle[l_i]->position.x += (*p_particleSystem)->particle[l_i]->velocity.x;
 				(*p_particleSystem)->particle[l_i]->position.y += (*p_particleSystem)->particle[l_i]->velocity.y;
@@ -94,6 +97,21 @@ int renderParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 				l_mapPosition = getMapPosition((*p_particleSystem)->particle[l_i]->position);
 				l_realPosition = getRealPosition(l_mapPosition);
 				if(l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
+					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
+				
+				l_mapPosition.x++;
+				l_realPosition = getRealPosition(l_mapPosition);
+				if (l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
+					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
+				
+				l_mapPosition.y++;
+				l_realPosition = getRealPosition(l_mapPosition);
+				if (l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
+					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
+				
+				l_mapPosition.x--;
+				l_realPosition = getRealPosition(l_mapPosition);
+				if (l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
 					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
 			}
 		}
