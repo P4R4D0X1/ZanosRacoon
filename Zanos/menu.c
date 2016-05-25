@@ -45,7 +45,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_posBG.h = WINDOW_HEIGHT;
 	l_posBG.w = WINDOW_WIDTH;
 
-	loadAnimation(&l_animation, 3, l_posBG, 30,"./assets/sprite/anim/mountain_", p_interface);
+	loadAnimation(&l_animation, 159, l_posBG, 30,"./assets/sprite/anim/mountain_", p_interface);
 
 	while (l_loop) {
 
@@ -74,6 +74,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 		updateAnimation(l_animation, p_interface);
 		SDL_RenderCopy(p_interface->renderer, l_play.fontTexture, NULL, &l_play.posText);
 		SDL_RenderPresent(p_interface->renderer);
+		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
 	closeFonts(l_play);
@@ -128,5 +129,5 @@ void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface) {
 }
 
 int getDigit(int p_number, int p_digit) {
-	return (int)(((p_number / pow(10, p_digit)) - ((p_number/10) * 10)));
+	return (int)(((p_number / (int)pow(10, p_digit)) - (((p_number / (int)pow(10, p_digit)) /10) * 10)));
 }
