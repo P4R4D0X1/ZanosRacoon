@@ -27,6 +27,11 @@ typedef struct s_player {
 	eDirection direction;
 } sPlayer;
 
+typedef struct s_effect {
+	SDL_Texture *particleSprite;
+
+}sEffect;
+
 typedef struct s_interface {
 	SDL_Window *window;
 	SDL_Renderer *renderer;
@@ -34,6 +39,7 @@ typedef struct s_interface {
 
 	SDL_Texture *caseSprite[CASE_TYPE_AMOUNT];
 	struct s_player player;
+	struct s_effect effect;
 	sPosition origin;
 } sInterface;
 
