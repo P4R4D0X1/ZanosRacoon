@@ -50,7 +50,6 @@ SDL_Rect getRealPosition(sPosition p_position);
 sPosition getMapPosition(SDL_Rect p_position);
 bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition);
 bool comparePositionMap(sPosition p_firstPosition, sPosition p_secondPosition);
-
 //void playSong();
 
 #endif

@@ -161,6 +161,7 @@
     <ClCompile Include="map.c" />
     <ClCompile Include="menu.c" />
     <ClCompile Include="musix.c" />
+    <ClCompile Include="particle.c" />
     <ClCompile Include="pathfinding.c" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +174,7 @@
     <ClInclude Include="menu.h" />
     <ClInclude Include="metric.h" />
     <ClInclude Include="musix.h" />
+    <ClInclude Include="particle.h" />
     <ClInclude Include="pathfinding.h" />
   </ItemGroup>
   <ItemGroup>
