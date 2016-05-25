@@ -125,9 +125,9 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 					break;
 			}
 		}
-		//displayMap(p_interface, p_map);
+
 		updateVision(p_interface, p_map);
-		updateParticle(&l_particleSystem, p_interface);
+		renderParticle(&l_particleSystem, p_interface, p_map);
 		SDL_RenderPresent(p_interface->renderer);
 		l_loop = WinOrNot(p_interface, p_map);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
@@ -179,8 +179,6 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 	SDL_Rect l_caseRealPosition;
 
 	if (!(p_interface->player.isSliding)) {
-		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
-		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
 		return 0;
 	}
 
