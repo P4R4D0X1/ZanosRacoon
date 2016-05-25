@@ -26,13 +26,16 @@ typedef struct s_text {
 } sText;
 
 typedef struct s_animation {
-	SDL_Surface *sprite;
+	int frameAmount;
+	int actualFrame;
 
+	SDL_Surface **sprite;
+	SDL_Rect position;
+} sAnimation;
 
-
-} sAnim;
-
-void createFont(sText *p_text, SDL_Renderer *p_renderer, char* toWrite);
-void createMenu(struct s_interface *p_interface, sMap *p_map);
+void createFont(sText *p_text, SDL_Renderer *p_renderer, char *p_message);
 void closeFonts(sText p_text);
+void createMenu(struct s_interface *p_interface, sMap *p_map);
+void loadAnimation(sAnimation *p_animation, int p_frameAmount, SDL_Rect p_position, int p_idIndex, char *p_path);
+
 #endif
