@@ -28,13 +28,18 @@ void closeFonts(sText p_text) {
 	TTF_Quit();
 }
 
+void centrerPosition(SDL_Rect *p_posSprite, SDL_Rect p_offset) {
+	p_posSprite->x = ((WINDOW_WIDTH - p_posSprite->w)/2) + (p_offset.w * (WINDOW_WIDTH / p_offset.x));
+	p_posSprite->y = ((WINDOW_HEIGHT - p_posSprite->h) / 2) + (p_offset.h * (WINDOW_HEIGHT / p_offset.y));
+}
+
 void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	bool l_loop = TRUE;
 
 	sText l_play;
 	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo=NULL;
 
-	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo;
+	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offsetRaccoon, l_offsetLogo;
 
 	loadInterface(p_interface, p_map);	
 	createFont(&l_play, p_interface->renderer, "PLAY");
@@ -44,15 +49,21 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_posBG.h = WINDOW_HEIGHT;
 	l_posBG.w = WINDOW_WIDTH;
 
-	l_posRaccoon.x = WINDOW_WIDTH - 300;
-	l_posRaccoon.y = WINDOW_HEIGHT - 350;
 	l_posRaccoon.h = 400;
 	l_posRaccoon.w = 400;
+	l_offsetRaccoon.x = (WINDOW_WIDTH * 20) / 500;
+	l_offsetRaccoon.y = (WINDOW_HEIGHT * 20) / 500;
+	l_offsetRaccoon.w = 5;
+	l_offsetRaccoon.h = 4;
+	centrerPosition(&l_posRaccoon, l_offsetRaccoon);
 
-	l_posLogo.x = WINDOW_WIDTH - 300;
-	l_posLogo.y = WINDOW_HEIGHT - 600;
 	l_posLogo.h = 400;
 	l_posLogo.w = 400;
+	l_offsetLogo.x = (WINDOW_WIDTH * 20) / 500;
+	l_offsetLogo.y = (WINDOW_HEIGHT * 20) / 500;
+	l_offsetLogo.w = 0;
+	l_offsetLogo.h = -2;
+	centrerPosition(&l_posLogo, l_offsetLogo);
 
 
 	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface, 2);

@@ -43,5 +43,6 @@ void createMenu(struct s_interface *p_interface, sMap *p_map);
 void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface, int p_speed);
 void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface);
 int getDigit(int p_number, int p_index);
+void centrerPosition(SDL_Rect *p_posSprite, SDL_Rect p_offset);
 
 #endif
