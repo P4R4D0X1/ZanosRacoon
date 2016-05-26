@@ -69,9 +69,9 @@ void createMenu() {
 	centrerPosition(&l_posPlay, l_offset);
 
 
-	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", &l_interface, 2);
+	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", &l_interface, 3);
 	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", &l_interface, 10);
-	loadAnimation(1, &l_logo, 1, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 2);
+	loadAnimation(1, &l_logo, 2, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 100);
 	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
 
 	while (l_loop) {
