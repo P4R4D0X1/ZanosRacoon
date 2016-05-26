@@ -6,14 +6,8 @@ void createFont(sText *p_text, SDL_Renderer *p_renderer, char *p_message) {
 	p_text->color.r = 0;
 	p_text->color.g = 0;
 	p_text->color.b = 0;
-
-	p_text->posText.w = 50;
-	p_text->posText.h = 50;
-	p_text->posText.x = (WINDOW_WIDTH / 2) - (p_text->posText.w / 2);
-	p_text->posText.y = WINDOW_HEIGHT - (WINDOW_HEIGHT/20);
 	
 	p_text->surfaceText = TTF_RenderText_Blended(p_text->font, p_message, p_text->color);
-
 
 	p_text->fontTexture = SDL_CreateTextureFromSurface(p_renderer, p_text->surfaceText);
 	SDL_QueryTexture(p_text->fontTexture, NULL, NULL, &(p_text->posText.w), &(p_text->posText.h));
@@ -38,10 +32,16 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 
 	sText l_play;
 	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo=NULL;
+	SDL_Surface *icon;
 
 	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offsetRaccoon, l_offsetLogo;
 
-	loadInterface(p_interface, p_map);	
+	loadInterface(p_interface, p_map);
+
+	l_play.posText.w = 50;
+	l_play.posText.h = 50;
+	l_play.posText.x = (WINDOW_WIDTH / 2) - (l_play.posText.w / 2) -100;
+	l_play.posText.y = (WINDOW_HEIGHT/2) - (WINDOW_HEIGHT / 20);
 	createFont(&l_play, p_interface->renderer, "PLAY");
 	
 	l_posBG.x = 0;
@@ -54,7 +54,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_offsetRaccoon.x = (WINDOW_WIDTH * 20) / 500;
 	l_offsetRaccoon.y = (WINDOW_HEIGHT * 20) / 500;
 	l_offsetRaccoon.w = 5;
-	l_offsetRaccoon.h = 4;
+	l_offsetRaccoon.h = 5;
 	centrerPosition(&l_posRaccoon, l_offsetRaccoon);
 
 	l_posLogo.h = 400;
@@ -62,7 +62,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_offsetLogo.x = (WINDOW_WIDTH * 20) / 500;
 	l_offsetLogo.y = (WINDOW_HEIGHT * 20) / 500;
 	l_offsetLogo.w = 0;
-	l_offsetLogo.h = -2;
+	l_offsetLogo.h = -5;
 	centrerPosition(&l_posLogo, l_offsetLogo);
 
 
@@ -82,6 +82,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 						l_loop = 0;
 					}
 					break;
+
 				case SDL_KEYDOWN:
 					switch (p_interface->event.key.keysym.sym) {
 						case SDLK_ESCAPE:
