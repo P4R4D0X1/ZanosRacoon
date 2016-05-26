@@ -13,14 +13,7 @@
 
 int main(int argc, char **argv) {
 
-	sMap *l_map = NULL;
-	sInterface l_interface;
-
-		loadMap(&l_map, "map.txt");
-		generateGraph(l_map);
-
-
-	createMenu(&l_interface, l_map);
+	createMenu();
 
 	return EXIT_SUCCESS;
 }

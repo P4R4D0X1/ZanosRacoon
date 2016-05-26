@@ -47,7 +47,7 @@ typedef struct s_interface {
 } sInterface;
 
 
-int loadInterface(sInterface *p_interface, sMap *p_map);
+int loadInterface(sInterface *p_interface);
 int closeInterface(sInterface *p_interface);
 
 int gameLoop(sInterface *p_interface, sMap *p_map);

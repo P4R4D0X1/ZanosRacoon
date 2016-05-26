@@ -3,7 +3,7 @@
 #include "graphx.h"
 
 
-int loadInterface(sInterface *p_interface, sMap *p_map) {
+int loadInterface(sInterface *p_interface) {
 	int l_i;
 	char l_casePath[50] = "./assets/sprite/case_01.png", l_persoPath[50] = "./assets/sprite/perso_0.png";
 
@@ -46,10 +46,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 
 	p_interface->backgroundSprite = SDL_CreateTexture(p_interface->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-	p_interface->player.mapPosition.x = p_map->starting.x;
-	p_interface->player.mapPosition.y = p_map->starting.y;
-	p_interface->player.realPosition = getRealPosition(p_interface->player.mapPosition);
-	p_interface->player.realDestination = getRealPosition(p_interface->player.mapPosition);
+
 	p_interface->player.isSliding = FALSE;
 	p_interface->player.direction = DUP;
 
@@ -92,6 +89,10 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	sSonor l_sonor;
 	sText l_cmptText;
 
+	p_interface->player.mapPosition.x = p_map->starting.x;
+	p_interface->player.mapPosition.y = p_map->starting.y;
+	p_interface->player.realPosition = getRealPosition(p_interface->player.mapPosition);
+	p_interface->player.realDestination = getRealPosition(p_interface->player.mapPosition);
 
 	displayMap(p_interface, p_map);
 	playSonor(&l_sonor);

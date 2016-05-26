@@ -27,15 +27,17 @@ void centrerPosition(SDL_Rect *p_posSprite, SDL_Rect p_offset) {
 	p_posSprite->y = ((WINDOW_HEIGHT - p_posSprite->h)/2) + (p_offset.h * (WINDOW_HEIGHT / p_offset.y));
 }
 
-void createMenu(struct s_interface *p_interface, sMap *p_map) {
-	bool l_loop = TRUE;
+void createMenu() {
+	sMap *l_map = NULL;
+	sInterface l_interface;
 
+	bool l_loop = TRUE;
 	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo = NULL, *l_play = NULL;
 
 	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offset, l_posPlay;
 
-	loadInterface(p_interface, p_map);
-	
+	loadInterface(&l_interface);
+
 	l_posBG.x = 0;
 	l_posBG.y = 0;
 	l_posBG.h = WINDOW_HEIGHT;
@@ -49,7 +51,6 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_offset.y = 1000;
 	l_offset.w = -1;
 	l_offset.h = -1;
-	//centrerPosition(&l_posRaccoon, l_offset);
 
 	l_posLogo.h = 400;
 	l_posLogo.w = 400;
@@ -68,26 +69,40 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	centrerPosition(&l_posPlay, l_offset);
 
 
-	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface, 2);
-	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", p_interface, 10);
-	loadAnimation(1, &l_logo, 1, l_posLogo, "./assets/sprite/anim/raccoonzanos_", p_interface, 2);
-	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", p_interface, 5);
+	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", &l_interface, 2);
+	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", &l_interface, 10);
+	loadAnimation(1, &l_logo, 1, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 2);
+	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
 
 	while (l_loop) {
 
-		while (SDL_PollEvent(&(p_interface->event))) {
-			switch (p_interface->event.type) {
+		while (SDL_PollEvent(&(l_interface.event))) {
+			switch (l_interface.event.type) {
 				case SDL_MOUSEBUTTONDOWN:
 					SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
 
 					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
-						gameLoop(p_interface, p_map);
+						loadMap(&l_map, "map0.txt");
+						generateGraph(l_map);
+						gameLoop(&l_interface, l_map);
+
+						free(l_map);
+
+						loadMap(&l_map, "map1.txt");
+						generateGraph(l_map);
+						gameLoop(&l_interface, l_map);
+					
+						free(l_map);
+
+						loadMap(&l_map, "map2.txt");
+						generateGraph(l_map);
+						gameLoop(&l_interface, l_map);
 						l_loop = 0;
 					}
 					break;
 
 				case SDL_KEYDOWN:
-					switch (p_interface->event.key.keysym.sym) {
+					switch (l_interface.event.key.keysym.sym) {
 						case SDLK_ESCAPE:
 							l_loop = FALSE;
 							break;
@@ -101,21 +116,21 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 
 
 
-		updateAnimation(l_animation, p_interface);
-		updateAnimation(l_raccoon, p_interface);
-		updateAnimation(l_logo, p_interface);
+		updateAnimation(l_animation, &l_interface);
+		updateAnimation(l_raccoon, &l_interface);
+		updateAnimation(l_logo, &l_interface);
 		
 		SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
 		if (!(l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h)) {
 			l_play->load = 1;
 		}
 
-		updateAnimation(l_play, p_interface);
-		SDL_RenderPresent(p_interface->renderer);
+		updateAnimation(l_play, &l_interface);
+		SDL_RenderPresent(l_interface.renderer);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
-	closeInterface(p_interface);
+	closeInterface(&l_interface);
 	SDL_Quit();
 	return;
 }
