@@ -45,7 +45,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_posBG.h = WINDOW_HEIGHT;
 	l_posBG.w = WINDOW_WIDTH;
 
-	loadAnimation(&l_animation, 159, l_posBG, 30,"./assets/sprite/anim/mountain_", p_interface);
+	loadAnimation(&l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface);
 
 	while (l_loop) {
 
@@ -84,7 +84,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	return;
 }
 
-void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, int p_idIndex, char *p_path, struct s_interface *p_interface) {
+void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface) {
 	int l_i, l_j, l_digitAmount = 0, l_tmp = p_frameAmount;
 	char l_path[100] = "", l_tmpy[50] = "";
 
