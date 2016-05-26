@@ -49,8 +49,8 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_posRaccoon.h = 400;
 	l_posRaccoon.w = 400;
 
-	l_posLogo.x = 0;
-	l_posLogo.y = 0;
+	l_posLogo.x = WINDOW_WIDTH - 300;
+	l_posLogo.y = WINDOW_HEIGHT - 600;
 	l_posLogo.h = 400;
 	l_posLogo.w = 400;
 
