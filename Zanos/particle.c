@@ -51,20 +51,17 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 				(*p_particleSystem)->particle[l_i]->lifeTime--;
 				//si il est nul et que le system est en vie on reinit la particule sinon on la tue
 				if ((*p_particleSystem)->particle[l_i]->lifeTime == 0) {
-					if ((*p_particleSystem)->alive) {
+					if ((*p_particleSystem)->alive && PARTICLE_LOOP) {
 						free((*p_particleSystem)->particle[l_i]);
 						initParticle(&((*p_particleSystem)->particle[l_i]), (*p_particleSystem)->position);
 						(*p_particleSystem)->lifeTime--;
-						printf("[PARTICLE SYSTEM LIFETIME] %d\n", (*p_particleSystem)->lifeTime);
 					} else {
 						(*p_particleSystem)->particleAliveAmount--;
-						printf("[PARTICLE AMOUNT] %d\n", (*p_particleSystem)->particleAliveAmount);
 						free((*p_particleSystem)->particle[l_i]);
 					}
 				}
 			}
 		}
-		SDL_RenderPresent(p_interface->renderer);
 	}else {
 		return 0;
 	}
@@ -86,37 +83,7 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 }
 
 int renderParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface, sMap *p_map) {
-	int l_i;
-
-	SDL_Rect l_realPosition;
-	sPosition l_mapPosition;
-
-	if ((*p_particleSystem)) {
-		for (l_i = 0; l_i < (*p_particleSystem)->particleAmount; ++l_i) {
-			if ((*p_particleSystem)->particle[l_i]) {	
-				l_mapPosition = getMapPosition((*p_particleSystem)->particle[l_i]->position);
-				l_realPosition = getRealPosition(l_mapPosition);
-				if(l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
-				
-				l_mapPosition.x++;
-				l_realPosition = getRealPosition(l_mapPosition);
-				if (l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
-				
-				l_mapPosition.y++;
-				l_realPosition = getRealPosition(l_mapPosition);
-				if (l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
-				
-				l_mapPosition.x--;
-				l_realPosition = getRealPosition(l_mapPosition);
-				if (l_mapPosition.x >= 0 && l_mapPosition.x <= 9 && l_mapPosition.y >= 0 && l_mapPosition.y <= 9)
-					SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_mapPosition.y][l_mapPosition.x].type], NULL, &(l_realPosition));
-			}
-		}
+	if ((*p_particleSystem)) 
 		updateParticle(p_particleSystem, p_interface);
-	}
-
 	return 0;
 }

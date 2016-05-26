@@ -22,7 +22,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 		return EXIT_FAILURE;
 	}
 
-	p_interface->renderer = SDL_CreateRenderer(p_interface->window, -1, SDL_RENDERER_ACCELERATED);
+	p_interface->renderer = SDL_CreateRenderer(p_interface->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
 		l_casePath[21] = (int)(l_i / 10) + 48; 
@@ -39,9 +39,12 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 		SDL_FreeSurface(l_sprite);
 	}
 
+	p_interface->effect.particle = NULL;
 	l_sprite = IMG_Load("./assets/sprite/particle.png");
 	p_interface->effect.particleSprite = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 	SDL_FreeSurface(l_sprite);
+
+	p_interface->backgroundSprite = SDL_CreateTexture(p_interface->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 	p_interface->player.mapPosition.x = p_map->starting.x;
 	p_interface->player.mapPosition.y = p_map->starting.y;
@@ -50,6 +53,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 	p_interface->player.isSliding = FALSE;
 	p_interface->player.direction = DUP;
 
+	p_interface->solution = NULL;
 
 	SDL_SetRenderDrawColor(p_interface->renderer, 255, 0, 0, 255);
 	SDL_RenderClear(p_interface->renderer);
@@ -86,10 +90,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	char txtCmpt[32];
 	sSonor l_sonor;
 	sText l_cmptText;
-	sParticleSystem *l_particleSystem = NULL;
-	
-	SDL_Rect l_CursorPosition;
-	sPosition l_mapPosition;
+
 
 	displayMap(p_interface, p_map);
 	playSonor(&l_sonor);
@@ -137,22 +138,20 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 							l_loop = FALSE;
 							break;
 					}
-					while (SDL_PollEvent(&(p_interface->event)));
 					break;
-					case(SDL_MOUSEBUTTONDOWN):
-						SDL_GetMouseState(&(l_CursorPosition.x), &(l_CursorPosition.y));
-					
-						if (!l_particleSystem) {
-							l_mapPosition = getMapPosition(l_CursorPosition);
-							printf("[SPAWN PARTICLE SYSTEM] %d %d\n", l_mapPosition.x, l_mapPosition.y);
-							initParticleSystem(&l_particleSystem, PATRICLE_SYSTEM_LIFETIME, PARTICLE_AMOUNT, l_CursorPosition);
-						}
-						break;
+				case(SDL_MOUSEBUTTONDOWN):
+					break;
 			}
+			while (SDL_PollEvent(&(p_interface->event)));
 		}
 
-		renderParticle(&l_particleSystem, p_interface, p_map);
+		SDL_RenderClear(p_interface->renderer);
+		SDL_RenderCopy(p_interface->renderer, p_interface->backgroundSprite, NULL, NULL);
+
+		showSolution(p_interface, p_interface->solution);
+		renderParticle(&(p_interface->effect.particle), p_interface, p_map);
 		updateVision(p_interface, p_map);
+
 		SDL_RenderPresent(p_interface->renderer);
 		l_loop = WinOrNot(p_interface, p_map);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
@@ -167,7 +166,6 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	if (p_interface->player.isSliding)
 		return 0;
 	
-	//solveGame(p_interface, p_map);
 	p_interface->player.direction = p_direction;
 
 	switch (p_direction) {
@@ -198,46 +196,21 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 }
 
 int updateVision(sInterface *p_interface, sMap *p_map) {
-	sPosition l_casePosition;
-	SDL_Rect l_caseRealPosition;
 
 	if (!(p_interface->player.isSliding)) {
 		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
 		return 0;
 	}
 
-	
 
 	if (comparePositionRect(p_interface->player.realPosition, p_interface->player.realDestination)) {
-		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
 		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
+		p_interface->solution = dijkstra(p_map, getMapPosition(p_interface->player.realPosition));
 		p_interface->player.isSliding = FALSE;
 	}else {
-		
-		//Blit case basse et case haute
-		l_casePosition = getMapPosition(p_interface->player.realPosition);
+		if(!(p_interface->effect.particle))
+			initParticleSystem(&(p_interface->effect.particle), PATRICLE_SYSTEM_LIFETIME, PARTICLE_AMOUNT, p_interface->player.realPosition);
 
-		l_caseRealPosition = getRealPosition(l_casePosition);
-		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
-		
-		if(p_interface->player.direction == DUP)
-			l_casePosition.y += 1;
-		if (p_interface->player.direction == DRIGHT)
-			l_casePosition.x += 1;
-		if (p_interface->player.direction == DDOWN)
-			l_casePosition.y += 1;
-		if (p_interface->player.direction == DLEFT)
-			l_casePosition.x += 1;
-		
-		if (l_casePosition.x >= 10)
-			l_casePosition.x = 9;
-		if (l_casePosition.y >= 10)
-			l_casePosition.y = 9;
-
-		l_caseRealPosition = getRealPosition(l_casePosition);
-		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
-				
-		//Blit player	
 		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
 		
 		if(p_interface->player.direction == DUP)
@@ -259,47 +232,48 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 
 	posCase.x = 0;
 	posCase.y = 0;
-	posCase.h = WINDOW_HEIGHT / 10;
-	posCase.w = WINDOW_WIDTH / 10;
+	posCase.h = WINDOW_HEIGHT / CASE_LINE_AMOUNT;
+	posCase.w = WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
+
+	SDL_SetRenderTarget(p_interface->renderer, p_interface->backgroundSprite);
+	SDL_SetRenderDrawColor(p_interface->renderer, 0, 0, 0, 0);
+	SDL_RenderClear(p_interface->renderer);
 
 	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
 		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
 			SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_i][l_j].type], NULL, &posCase);
-			posCase.x += WINDOW_WIDTH / 10;
+			posCase.x += WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
 		}
 		posCase.x = 0;
-		posCase.y += WINDOW_HEIGHT / 10;
+		posCase.y += WINDOW_HEIGHT / CASE_LINE_AMOUNT;
 	}
 
-	SDL_RenderPresent(p_interface->renderer);
+	SDL_SetRenderTarget(p_interface->renderer, NULL);
 
 	return 0;
 }	
 
 
-int solveGame(sInterface *p_interface, sMap *p_map) {
-	sList *l_solutionPath = NULL, *l_solution = NULL;
+int showSolution(sInterface *p_interface, sList *p_solutionPath) {
 
-	SDL_Rect l_posA, l_posB;
-	
-	l_solution = dijkstra(p_map, getMapPosition(p_interface->player.realPosition));
-	l_solutionPath = l_solution;
-	if (l_solutionPath && l_solutionPath->next) {
-		l_solutionPath = l_solutionPath->next;
+	SDL_Rect l_posA, l_posB, l_middleOffset;
 
-		l_posA = getRealPosition(l_solutionPath->position);
-		SDL_RenderDrawLine(p_interface->renderer, p_interface->player.realPosition.x + 25, p_interface->player.realPosition.y + 25, l_posA.x + 25, l_posA.y + 25);
+	l_middleOffset.x = (WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / 2;
+	l_middleOffset.y = (WINDOW_HEIGHT / CASE_LINE_AMOUNT) / 2;
 
-		while (l_solutionPath->next) {
-			l_posB = getRealPosition((l_solutionPath->next)->position);
-			SDL_RenderDrawLine(p_interface->renderer, l_posA.x + 25, l_posA.y + 25, l_posB.x + 25, l_posB.y + 25);
+	if (p_solutionPath && p_solutionPath->next) {
+		p_solutionPath = p_solutionPath->next;
+
+		l_posA = getRealPosition(p_solutionPath->position);
+		SDL_RenderDrawLine(p_interface->renderer, p_interface->player.realPosition.x + l_middleOffset.x, p_interface->player.realPosition.y + l_middleOffset.y, l_posA.x + l_middleOffset.x, l_posA.y + l_middleOffset.y);
+
+		while (p_solutionPath->next) {
+			l_posB = getRealPosition((p_solutionPath->next)->position);
+			SDL_RenderDrawLine(p_interface->renderer, l_posA.x + l_middleOffset.x, l_posA.y + l_middleOffset.y, l_posB.x + l_middleOffset.x, l_posB.y + l_middleOffset.y);
 			l_posA.x = l_posB.x;
 			l_posA.y = l_posB.y;
-			l_solutionPath = l_solutionPath->next;
-			SDL_RenderPresent(p_interface->renderer);
+			p_solutionPath = p_solutionPath->next;
 		}
-
-		freeList(&l_solution);
 	}
 	return 0;
 }
