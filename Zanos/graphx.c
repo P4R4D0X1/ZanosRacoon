@@ -96,7 +96,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	l_animPos.h = WINDOW_HEIGHT;
 	l_animPos.w = WINDOW_WIDTH;
 
-	loadAnimation(1, &l_snow, 20, l_animPos, "./assets/sprite/anim/snow_", p_interface, 10);
+	loadAnimation(1, &l_snow, 20, l_animPos, "./assets/sprite/anim/snow_", p_interface, 1);
 
 	p_interface->player.mapPosition.x = p_map->starting.x;
 	p_interface->player.mapPosition.y = p_map->starting.y;
