@@ -209,7 +209,7 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 	
 
 	if (comparePositionRect(p_interface->player.realPosition, p_interface->player.realDestination)) {
-	//	SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[p_interface->player.mapPosition.y][p_interface->player.mapPosition.x].type], NULL, &(p_interface->player.realDestination));
 		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
 		p_interface->player.isSliding = FALSE;
 	}else {
@@ -218,7 +218,7 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 		l_casePosition = getMapPosition(p_interface->player.realPosition);
 
 		l_caseRealPosition = getRealPosition(l_casePosition);
-		//SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
 		
 		if(p_interface->player.direction == DUP)
 			l_casePosition.y += 1;
@@ -235,7 +235,7 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 			l_casePosition.y = 9;
 
 		l_caseRealPosition = getRealPosition(l_casePosition);
-		//SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
+		SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_casePosition.y][l_casePosition.x].type], NULL, &(l_caseRealPosition));
 				
 		//Blit player	
 		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
