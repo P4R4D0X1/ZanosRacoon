@@ -24,25 +24,17 @@ void closeFonts(sText p_text) {
 
 void centrerPosition(SDL_Rect *p_posSprite, SDL_Rect p_offset) {
 	p_posSprite->x = ((WINDOW_WIDTH - p_posSprite->w)/2) + (p_offset.w * (WINDOW_WIDTH / p_offset.x));
-	p_posSprite->y = ((WINDOW_HEIGHT - p_posSprite->h) / 2) + (p_offset.h * (WINDOW_HEIGHT / p_offset.y));
+	p_posSprite->y = ((WINDOW_HEIGHT - p_posSprite->h)/2) + (p_offset.h * (WINDOW_HEIGHT / p_offset.y));
 }
 
 void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	bool l_loop = TRUE;
 
-	sText l_play;
-	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo=NULL;
-	SDL_Surface *icon;
+	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo = NULL, *l_play = NULL;
 
-	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offsetRaccoon, l_offsetLogo;
+	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offset, l_posPlay;
 
 	loadInterface(p_interface, p_map);
-
-	l_play.posText.w = 50;
-	l_play.posText.h = 50;
-	l_play.posText.x = (WINDOW_WIDTH / 2) - (l_play.posText.w / 2) -100;
-	l_play.posText.y = (WINDOW_HEIGHT/2) - (WINDOW_HEIGHT / 20);
-	createFont(&l_play, p_interface->renderer, "PLAY");
 	
 	l_posBG.x = 0;
 	l_posBG.y = 0;
@@ -51,24 +43,33 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 
 	l_posRaccoon.h = 400;
 	l_posRaccoon.w = 400;
-	l_offsetRaccoon.x = (WINDOW_WIDTH * 20) / 500;
-	l_offsetRaccoon.y = (WINDOW_HEIGHT * 20) / 500;
-	l_offsetRaccoon.w = 5;
-	l_offsetRaccoon.h = 5;
-	centrerPosition(&l_posRaccoon, l_offsetRaccoon);
+	l_offset.x = (WINDOW_WIDTH * 20) / 500;
+	l_offset.y = (WINDOW_HEIGHT * 20) / 500;
+	l_offset.w = 5;
+	l_offset.h = 5;
+	centrerPosition(&l_posRaccoon, l_offset);
 
 	l_posLogo.h = 400;
 	l_posLogo.w = 400;
-	l_offsetLogo.x = (WINDOW_WIDTH * 20) / 500;
-	l_offsetLogo.y = (WINDOW_HEIGHT * 20) / 500;
-	l_offsetLogo.w = 0;
-	l_offsetLogo.h = -5;
-	centrerPosition(&l_posLogo, l_offsetLogo);
+	l_offset.x = 10;
+	l_offset.y = 10;
+	l_offset.w = 0;
+	l_offset.h = -1;
+	centrerPosition(&l_posLogo, l_offset);
+
+	l_posPlay.w = 200;
+	l_posPlay.h = 100;
+	l_offset.x = 10;
+	l_offset.y = 10;
+	l_offset.w = 0;
+	l_offset.h = 0;
+	centrerPosition(&l_posPlay, l_offset);
 
 
 	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface, 2);
 	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", p_interface, 10);
 	loadAnimation(1, &l_logo, 1, l_posLogo, "./assets/sprite/anim/raccoonzanos_", p_interface, 2);
+	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", p_interface, 5);
 
 	while (l_loop) {
 
@@ -77,7 +78,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 				case SDL_MOUSEBUTTONDOWN:
 					SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
 
-					if (l_play.posText.x < l_posMouse.x && l_posMouse.x < l_play.posText.x + l_play.posText.w && l_play.posText.y < l_posMouse.y && l_posMouse.y < l_play.posText.y + l_play.posText.h) {
+					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
 						gameLoop(p_interface, p_map);
 						l_loop = 0;
 					}
@@ -96,15 +97,22 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 			}
 		}
 
+
+
 		updateAnimation(l_animation, p_interface);
 		updateAnimation(l_raccoon, p_interface);
 		updateAnimation(l_logo, p_interface);
-		SDL_RenderCopy(p_interface->renderer, l_play.fontTexture, NULL, &l_play.posText);
+		
+		SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
+		if (!(l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h)) {
+			l_play->load = 1;
+		}
+
+		updateAnimation(l_play, p_interface);
 		SDL_RenderPresent(p_interface->renderer);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
-	closeFonts(l_play);
 	closeInterface(p_interface);
 	SDL_Quit();
 	return;
