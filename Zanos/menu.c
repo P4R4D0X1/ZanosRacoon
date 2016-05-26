@@ -82,6 +82,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 						l_loop = 0;
 					}
 					break;
+
 				case SDL_KEYDOWN:
 					switch (p_interface->event.key.keysym.sym) {
 						case SDLK_ESCAPE:
