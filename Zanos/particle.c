@@ -12,31 +12,46 @@ int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p
 	(*p_particleSystem)->lifeTime = p_lifeTime;
 	(*p_particleSystem)->particleAmount = p_particleAmount;
 	(*p_particleSystem)->particleAliveAmount = p_particleAmount;
+	(*p_particleSystem)->direction = p_direction;
 	(*p_particleSystem)->alive = TRUE;
 	(*p_particleSystem)->position = p_position;
 
 	(*p_particleSystem)->particle = malloc(sizeof(sParticle*) * p_particleAmount);
 
 	for (l_i = 0; l_i < (*p_particleSystem)->particleAmount; ++l_i) {
-		initParticle(&((*p_particleSystem)->particle[l_i]), p_position);
+		initParticle(&((*p_particleSystem)->particle[l_i]), p_position, p_direction);
 	}
 
 	return 0;
 }
 
-int initParticle(sParticle **p_particle, SDL_Rect p_position) {
+int initParticle(sParticle **p_particle, SDL_Rect p_position, eDirection p_direction) {
 	(*p_particle) = malloc(sizeof(sParticle));
 
 	(*p_particle)->lifeTime = (rand() % (PARTICLE_LIFETIME_MAX - PARTICLE_LIFETIME_MIN)) + PARTICLE_LIFETIME_MIN;
 	(*p_particle)->position = p_position;
 	(*p_particle)->position.h = WINDOW_HEIGHT / CASE_LINE_AMOUNT;
 	(*p_particle)->position.w = WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
-	(*p_particle)->velocity.x = (rand() % 10) - 5;
-	(*p_particle)->velocity.y = (rand() % 10) - 5;
+
+	switch (p_direction) {
+		case(DUP):
+			break;
+		case(DRIGHT):
+			break;
+		case(DDOWN):
+			break;
+		case(DLEFT):
+			break;
+		default:
+			(*p_particle)->velocity.x = ((float)((rand() % 100)-50)/10);
+			(*p_particle)->velocity.y = ((float)((rand() % 100)-50)/10);
+			break;
+	}
+
 	return 0;
 }
 
-int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface) {
+int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface, bool p_followPlayer) {
 	int l_i;
 
 	if ((*p_particleSystem)) {
@@ -44,15 +59,19 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 			if ((*p_particleSystem)->particle[l_i]) {
 				SDL_RenderCopy(p_interface->renderer, p_interface->effect.particleSprite, NULL, &((*p_particleSystem)->particle[l_i]->position));
 				//on update la particule
-				(*p_particleSystem)->particle[l_i]->position.x += (*p_particleSystem)->particle[l_i]->velocity.x;
-				(*p_particleSystem)->particle[l_i]->position.y += (*p_particleSystem)->particle[l_i]->velocity.y;
+				(*p_particleSystem)->particle[l_i]->position.x += (int)(*p_particleSystem)->particle[l_i]->velocity.x;
+				(*p_particleSystem)->particle[l_i]->position.y += (int)(*p_particleSystem)->particle[l_i]->velocity.y;
 				//On baisse son temps de vie
 				(*p_particleSystem)->particle[l_i]->lifeTime--;
 				//si il est nul et que le system est en vie on reinit la particule sinon on la tue
 				if ((*p_particleSystem)->particle[l_i]->lifeTime == 0) {
 					if ((*p_particleSystem)->alive && PARTICLE_LOOP) {
 						free((*p_particleSystem)->particle[l_i]);
-						initParticle(&((*p_particleSystem)->particle[l_i]), (*p_particleSystem)->position);
+						if (p_followPlayer) {
+							initParticle(&((*p_particleSystem)->particle[l_i]), p_interface->player.realPosition, (*p_particleSystem)->direction);
+						}else{
+							initParticle(&((*p_particleSystem)->particle[l_i]), (*p_particleSystem)->position, (*p_particleSystem)->direction);
+						}
 						(*p_particleSystem)->lifeTime--;
 					} else {
 						(*p_particleSystem)->particleAliveAmount--;
@@ -72,7 +91,7 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 	if ((*p_particleSystem)->particleAliveAmount <= 0) {
 		//free((*p_particleSystem)->particle);
 		(*p_particleSystem)->particle = NULL;
-		//free((*p_particleSystem));
+		free((*p_particleSystem));
 		(*p_particleSystem) = NULL;
 		p_particleSystem = NULL;
 
@@ -81,8 +100,8 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 	return 0;
 }
 
-int renderParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface, sMap *p_map) {
+int renderParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface, sMap *p_map, bool p_followPlayer) {
 	if ((*p_particleSystem)) 
-		updateParticle(p_particleSystem, p_interface);
+		updateParticle(p_particleSystem, p_interface, p_followPlayer);
 	return 0;
 }

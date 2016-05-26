@@ -14,4 +14,9 @@ typedef struct s_dimension{
 	int width;
 }sDimension;
 
+typedef struct s_velocity {
+	float x;
+	float y;
+}sVelocity;
+
 #endif
