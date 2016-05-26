@@ -33,9 +33,9 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	bool l_loop = TRUE;
 
 	sText l_play;
-	sAnimation *l_animation = NULL;
+	sAnimation *l_animation = NULL, *l_raccoon = NULL;
 
-	SDL_Rect l_posMouse, l_posBG;
+	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo;
 
 	loadInterface(p_interface, p_map);	
 	createFont(&l_play, p_interface->renderer, "PLAY");
@@ -45,7 +45,19 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_posBG.h = WINDOW_HEIGHT;
 	l_posBG.w = WINDOW_WIDTH;
 
-	loadAnimation(&l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface);
+	l_posRaccoon.x = WINDOW_WIDTH - 300;
+	l_posRaccoon.y = WINDOW_HEIGHT - 350;
+	l_posRaccoon.h = 400;
+	l_posRaccoon.w = 400;
+
+	l_posLogo.x = 0;
+	l_posLogo.y = 0;
+	l_posLogo.h = WINDOW_HEIGHT;
+	l_posLogo.w = WINDOW_WIDTH;
+
+
+	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface);
+	loadAnimation(1, &l_raccoon, 1, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", p_interface);
 
 	while (l_loop) {
 
@@ -73,6 +85,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 		}
 
 		updateAnimation(l_animation, p_interface);
+		updateAnimation(l_raccoon, p_interface);
 		SDL_RenderCopy(p_interface->renderer, l_play.fontTexture, NULL, &l_play.posText);
 		SDL_RenderPresent(p_interface->renderer);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
@@ -84,7 +97,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	return;
 }
 
-void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface) {
+void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface) {
 	int l_i, l_j, l_digitAmount = 0, l_tmp = p_frameAmount;
 	char l_path[100] = "", l_tmpy[50] = "";
 
@@ -112,9 +125,16 @@ void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_posit
 			memset(l_tmpy, getDigit(l_i, l_j)+48, 1);
 			strcat_s(l_path, sizeof(l_path), l_tmpy);
 		}
-		strcat_s(l_path, sizeof(l_path), ".bmp");
 
-		l_sprite = SDL_LoadBMP(l_path);
+		if (type == 0) {
+			strcat_s(l_path, sizeof(l_path), ".bmp");
+			l_sprite = SDL_LoadBMP(l_path);
+		}
+		else if (type == 1) {
+			strcat_s(l_path, sizeof(l_path), ".png");
+			l_sprite = IMG_Load(l_path);
+		}
+		
 		(*p_animation)->sprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_FreeSurface(l_sprite);
 
