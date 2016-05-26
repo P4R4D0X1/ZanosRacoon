@@ -30,6 +30,5 @@ int loadMap(sMap **p_map, char *p_recipePath);
 int generateGraph(sMap *p_map);
 sNode *findNeighbour(sMap *p_map, sPosition p_position, eDirection p_direction);
 void printMap(sMap *p_map);
-void mapGenerator();
 
 #endif
