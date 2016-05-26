@@ -51,8 +51,8 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 
 	l_posLogo.x = 0;
 	l_posLogo.y = 0;
-	l_posLogo.h = 66;
-	l_posLogo.w = 500;
+	l_posLogo.h = 400;
+	l_posLogo.w = 400;
 
 
 	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface, 2);
