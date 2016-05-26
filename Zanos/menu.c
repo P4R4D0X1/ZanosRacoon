@@ -36,6 +36,9 @@ void createMenu() {
 
 	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offset, l_posPlay;
 
+	l_posMouse.w = 19;
+	l_posMouse.h = 19;
+
 	loadInterface(&l_interface);
 
 	l_posBG.x = 0;
@@ -123,11 +126,17 @@ void createMenu() {
 		updateAnimation(l_logo, &l_interface);
 		
 		SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
+
 		if (!(l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h)) {
 			l_play->load = 1;
 		}
 
 		updateAnimation(l_play, &l_interface);
+
+		l_posMouse.x -= l_posMouse.w / 2;
+		l_posMouse.y -= l_posMouse.h / 2;
+
+		SDL_RenderCopy(l_interface.renderer, l_interface.cursor, NULL, &(l_posMouse));
 		SDL_RenderPresent(l_interface.renderer);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
@@ -141,7 +150,7 @@ void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Re
 	int l_i, l_j, l_digitAmount = 0, l_tmp = p_frameAmount;
 	char l_path[100] = "", l_tmpy[50] = "";
 
-	SDL_Surface *l_sprite;
+	SDL_Surface *l_sprite = NULL;
 
 	strcpy_s(l_path, sizeof(l_path), p_path);
 	
@@ -150,7 +159,7 @@ void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Re
 	(*p_animation)->frameAmount = p_frameAmount;
 	(*p_animation)->actualFrame = 0;
 	(*p_animation)->position = p_position;
-	(*p_animation)->sprite = malloc(sizeof(SDL_Texture*) * p_frameAmount);
+	(*p_animation)->sprite = malloc(p_frameAmount * sizeof(SDL_Texture*));
 	(*p_animation)->speed = p_speed;
 	(*p_animation)->load = 0;
 

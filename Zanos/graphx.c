@@ -21,6 +21,7 @@ int loadInterface(sInterface *p_interface) {
 		fprintf(stderr, "[SDL] Window creation error (%s)\n", SDL_GetError());
 		return EXIT_FAILURE;
 	}
+	SDL_ShowCursor(SDL_DISABLE);
 
 	p_interface->renderer = SDL_CreateRenderer(p_interface->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE);
 
@@ -40,8 +41,16 @@ int loadInterface(sInterface *p_interface) {
 	}
 
 	p_interface->effect.particle = NULL;
-	l_sprite = IMG_Load("./assets/sprite/particle.png");
-	p_interface->effect.particleSprite = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+	l_sprite = IMG_Load("./assets/sprite/particle_0.png");
+	p_interface->effect.particleSprite[0] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+	l_sprite = IMG_Load("./assets/sprite/particle_1.png");
+	p_interface->effect.particleSprite[1] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+	l_sprite = IMG_Load("./assets/sprite/particle_2.png");
+	p_interface->effect.particleSprite[2] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+	SDL_FreeSurface(l_sprite);
+
+	l_sprite = IMG_Load("./assets/sprite/cursor.png");
+	p_interface->cursor = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 	SDL_FreeSurface(l_sprite);
 
 	p_interface->backgroundSprite = SDL_CreateTexture(p_interface->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);

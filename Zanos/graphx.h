@@ -28,7 +28,7 @@ typedef struct s_player {
 } sPlayer;
 
 typedef struct s_effect {
-	SDL_Texture *particleSprite;
+	SDL_Texture *particleSprite[3];
 	struct s_particleSystem *particle;
 }sEffect;
 
@@ -39,6 +39,7 @@ typedef struct s_interface {
 
 	SDL_Texture *caseSprite[CASE_TYPE_AMOUNT];
 	SDL_Texture *backgroundSprite;
+	SDL_Texture *cursor;
 
 	struct s_player player;
 	struct s_effect effect;

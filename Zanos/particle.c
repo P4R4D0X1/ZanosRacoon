@@ -65,7 +65,7 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 	if ((*p_particleSystem)) {
 		for (l_i = 0; l_i < (*p_particleSystem)->particleAmount; ++l_i) {
 			if ((*p_particleSystem)->particle[l_i]) {
-				SDL_RenderCopy(p_interface->renderer, p_interface->effect.particleSprite, NULL, &((*p_particleSystem)->particle[l_i]->position));
+				SDL_RenderCopy(p_interface->renderer, p_interface->effect.particleSprite[2], NULL, &((*p_particleSystem)->particle[l_i]->position));
 				//on update la particule
 				(*p_particleSystem)->particle[l_i]->position.x += (int)(*p_particleSystem)->particle[l_i]->velocity.x;
 				(*p_particleSystem)->particle[l_i]->position.y += (int)(*p_particleSystem)->particle[l_i]->velocity.y;
