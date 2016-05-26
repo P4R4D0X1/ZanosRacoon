@@ -16,7 +16,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 
-	p_interface->window = SDL_CreateWindow("-RACCOON ZANOS-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	p_interface->window = SDL_CreateWindow("-RACCOON ZANOS-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
 	if (!(p_interface->window)) {
 		fprintf(stderr, "[SDL] Window creation error (%s)\n", SDL_GetError());
 		return EXIT_FAILURE;
@@ -106,7 +106,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 							updateGoal(p_interface, p_map, DUP);
 							compteur += 1;
 							printf("CMPT: %d\n", compteur);
-
 							snprintf(txtCmpt, 255, "%d", compteur);
 							createFont(&l_cmptText, p_interface->renderer, txtCmpt);
 							break;
@@ -155,7 +154,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		updateVision(p_interface, p_map);
 
 		SDL_RenderPresent(p_interface->renderer);
-		l_loop = WinOrNot(p_interface, p_map);
+		if (WinOrNot(p_interface, p_map))
+			l_loop = FALSE;
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
@@ -308,10 +308,10 @@ bool WinOrNot(sInterface *p_interface, sMap *p_map) {
 		SDL_Delay(1000);
 		SDL_DestroyTexture(l_texture);
 		SDL_FreeSurface(l_sprite);
-		return FALSE;
+		return TRUE;
 	}
 
-	return TRUE;
+	return FALSE;
 }
 
 SDL_Rect getRealPosition(sPosition p_position) {
