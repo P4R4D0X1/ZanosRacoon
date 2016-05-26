@@ -157,6 +157,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
+
 	return 0;
 }
 
