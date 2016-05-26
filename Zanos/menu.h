@@ -30,6 +30,8 @@ typedef struct s_text {
 typedef struct s_animation {
 	int frameAmount;
 	int actualFrame;
+	int speed;
+	int load;
 
 	SDL_Texture **sprite;
 	SDL_Rect position;
@@ -38,7 +40,7 @@ typedef struct s_animation {
 void createFont(sText *p_text, SDL_Renderer *p_renderer, char *p_message);
 void closeFonts(sText p_text);
 void createMenu(struct s_interface *p_interface, sMap *p_map);
-void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface);
+void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface, int p_speed);
 void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface);
 int getDigit(int p_number, int p_index);
 

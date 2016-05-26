@@ -26,16 +26,15 @@ void closeFonts(sText p_text) {
 	SDL_FreeSurface(p_text.surfaceText);
 	TTF_CloseFont(p_text.font);
 	TTF_Quit();
-
 }
 
 void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	bool l_loop = TRUE;
 
 	sText l_play;
-	sAnimation *l_animation = NULL;
+	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo=NULL;
 
-	SDL_Rect l_posMouse, l_posBG;
+	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo;
 
 	loadInterface(p_interface, p_map);	
 	createFont(&l_play, p_interface->renderer, "PLAY");
@@ -45,7 +44,20 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_posBG.h = WINDOW_HEIGHT;
 	l_posBG.w = WINDOW_WIDTH;
 
-	loadAnimation(&l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface);
+	l_posRaccoon.x = WINDOW_WIDTH - 300;
+	l_posRaccoon.y = WINDOW_HEIGHT - 350;
+	l_posRaccoon.h = 400;
+	l_posRaccoon.w = 400;
+
+	l_posLogo.x = 0;
+	l_posLogo.y = 0;
+	l_posLogo.h = 400;
+	l_posLogo.w = 400;
+
+
+	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", p_interface, 2);
+	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", p_interface, 10);
+	loadAnimation(1, &l_logo, 1, l_posLogo, "./assets/sprite/anim/raccoonzanos_", p_interface, 2);
 
 	while (l_loop) {
 
@@ -73,6 +85,8 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 		}
 
 		updateAnimation(l_animation, p_interface);
+		updateAnimation(l_raccoon, p_interface);
+		updateAnimation(l_logo, p_interface);
 		SDL_RenderCopy(p_interface->renderer, l_play.fontTexture, NULL, &l_play.posText);
 		SDL_RenderPresent(p_interface->renderer);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
@@ -84,7 +98,7 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	return;
 }
 
-void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface) {
+void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface, int p_speed) {
 	int l_i, l_j, l_digitAmount = 0, l_tmp = p_frameAmount;
 	char l_path[100] = "", l_tmpy[50] = "";
 
@@ -98,6 +112,8 @@ void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_posit
 	(*p_animation)->actualFrame = 0;
 	(*p_animation)->position = p_position;
 	(*p_animation)->sprite = malloc(sizeof(SDL_Texture*) * p_frameAmount);
+	(*p_animation)->speed = p_speed;
+	(*p_animation)->load = 0;
 
 	while (l_tmp != 0) {
 		l_digitAmount++;
@@ -112,9 +128,16 @@ void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_posit
 			memset(l_tmpy, getDigit(l_i, l_j)+48, 1);
 			strcat_s(l_path, sizeof(l_path), l_tmpy);
 		}
-		strcat_s(l_path, sizeof(l_path), ".bmp");
 
-		l_sprite = SDL_LoadBMP(l_path);
+		if (type == 0) {
+			strcat_s(l_path, sizeof(l_path), ".bmp");
+			l_sprite = SDL_LoadBMP(l_path);
+		}
+		else if (type == 1) {
+			strcat_s(l_path, sizeof(l_path), ".png");
+			l_sprite = IMG_Load(l_path);
+		}
+		
 		(*p_animation)->sprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_FreeSurface(l_sprite);
 
@@ -124,9 +147,17 @@ void loadAnimation(sAnimation **p_animation, int p_frameAmount, SDL_Rect p_posit
 }
 
 void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface) {
+	if (p_animation->load == 0) {
+		p_animation->actualFrame++;
+		p_animation->actualFrame %= p_animation->frameAmount;
+		p_animation->load++;
+	}
+
+	else {
+		p_animation->load++;
+		p_animation->load %= p_animation->speed;
+	}
 	SDL_RenderCopy(p_interface->renderer, p_animation->sprite[p_animation->actualFrame], NULL, &(p_animation->position));
-	p_animation->actualFrame++;
-	p_animation->actualFrame %= p_animation->frameAmount;
 }
 
 int getDigit(int p_number, int p_digit) {
