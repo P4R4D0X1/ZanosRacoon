@@ -88,6 +88,15 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	char txtCmpt[32];
 	sSonor l_sonor;
 	sText l_cmptText;
+	sAnimation *l_snow = NULL;
+	SDL_Rect l_animPos;
+
+	l_animPos.x = 0;
+	l_animPos.y = 0;
+	l_animPos.h = WINDOW_HEIGHT;
+	l_animPos.w = WINDOW_WIDTH;
+
+	loadAnimation(1, &l_snow, 20, l_animPos, "./assets/sprite/anim/snow_", p_interface, 10);
 
 	p_interface->player.mapPosition.x = p_map->starting.x;
 	p_interface->player.mapPosition.y = p_map->starting.y;
@@ -153,7 +162,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		renderParticle(&(p_interface->effect.particle), p_interface, p_map, TRUE);
 
 		updateVision(p_interface, p_map);
-	
+		updateAnimation(l_snow, p_interface);
+
 		SDL_RenderPresent(p_interface->renderer);
 		if (WinOrNot(p_interface, p_map))
 			l_loop = FALSE;

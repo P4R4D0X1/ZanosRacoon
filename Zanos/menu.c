@@ -115,7 +115,6 @@ void createMenu() {
 		}
 
 
-
 		updateAnimation(l_animation, &l_interface);
 		updateAnimation(l_raccoon, &l_interface);
 		updateAnimation(l_logo, &l_interface);
