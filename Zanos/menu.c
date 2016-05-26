@@ -41,13 +41,15 @@ void createMenu(struct s_interface *p_interface, sMap *p_map) {
 	l_posBG.h = WINDOW_HEIGHT;
 	l_posBG.w = WINDOW_WIDTH;
 
-	l_posRaccoon.h = 400;
-	l_posRaccoon.w = 400;
-	l_offset.x = (WINDOW_WIDTH * 20) / 500;
-	l_offset.y = (WINDOW_HEIGHT * 20) / 500;
-	l_offset.w = 5;
-	l_offset.h = 5;
-	centrerPosition(&l_posRaccoon, l_offset);
+	l_posRaccoon.h = 250;
+	l_posRaccoon.w = 250;
+	l_posRaccoon.x = WINDOW_HEIGHT - l_posRaccoon.h;
+	l_posRaccoon.y = WINDOW_WIDTH - l_posRaccoon.w;
+	l_offset.x = 1000;
+	l_offset.y = 1000;
+	l_offset.w = -1;
+	l_offset.h = -1;
+	//centrerPosition(&l_posRaccoon, l_offset);
 
 	l_posLogo.h = 400;
 	l_posLogo.w = 400;
