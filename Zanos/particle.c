@@ -2,7 +2,7 @@
 #include "particle.h"
 
 
-int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p_particleAmount, SDL_Rect p_position){
+int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p_particleAmount, SDL_Rect p_position, eDirection p_direction){
 	int l_i;
 	
 	srand((unsigned int)time(NULL));
