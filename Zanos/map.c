@@ -1,4 +1,5 @@
 #include "map.h"
+#include <time.h>
 
 int loadMap(sMap **p_map, char *p_recipePath) {
 	int l_i, l_j;
@@ -153,5 +154,108 @@ void printMap(sMap *p_map) {
 }
 
 void mapGenerator() {
+	int l_i, l_j, l_k;
+	int l_type, l_allowedAmount, l_sort;
+	int **l_map, *l_allowedCase;
+
+	l_allowedCase = calloc(17, sizeof(int));
+
+	l_map = malloc(sizeof(int*) * 10);
+	for (l_i = 0; l_i < 10; ++l_i) {
+		l_map[l_i] = calloc(10, sizeof(int));
+	}
+
+	for (l_i = 0; l_i < 10; ++l_i) {
+		for (l_j = 0; l_j < 10; ++l_j) {
+			l_map[l_i][l_j] = -1;
+
+			if(l_i == 0 || l_j == 0)
+				l_map[l_i][l_j] = 2;
+		}
+	}
+
+	l_map[9][3] = 14;
+	l_map[0][7] = 16;
+
+	for (l_i = 1; l_i < 9; ++l_i) {
+		for (l_j = 1; l_j < 9; ++l_j) {
+			
+			for (l_k = 0; l_k < 17; ++l_k)
+				l_allowedCase[l_k] = 1;
+
+			l_allowedCase[0] = 0;
+			l_allowedAmount = 17 - 1;
+			srand(time(NULL));
+				
+			l_type = l_map[l_i - 1][l_j];
+			
+			if (l_type == 2 || l_type == 3 || l_type == 7 || l_type == 10 || l_type == 11 || l_type == 13 || l_type == 14 || l_type == 15) {
+				l_allowedCase[1] = 0;
+				l_allowedCase[4] = 0;
+				l_allowedCase[6] = 0;
+				l_allowedCase[7] = 0;
+				l_allowedCase[8] = 0;
+				l_allowedCase[10] = 0;
+				l_allowedCase[11] = 0;
+				l_allowedCase[14] = 0;
+				l_allowedAmount -= 8;
+			}
+
+			l_type = l_map[l_i][l_j + 1];
+
+			if (l_type == 2 || l_type == 4 || l_type == 8 || l_type == 11 || l_type == 12 || l_type == 14 || l_type == 15 || l_type == 16) {
+				l_allowedCase[1] = 0;
+				l_allowedCase[3] = 0;
+				l_allowedCase[5] = 0;
+				l_allowedCase[7] = 0;
+				l_allowedCase[11] = 0;
+				l_allowedCase[12] = 0;
+				l_allowedCase[15] = 0;
+				l_allowedAmount -= 7;
+
+			}
+
+			l_type = l_map[l_i + 1][l_j];
+
+			if (l_type == 2 || l_type == 3 || l_type == 5 || l_type == 9 || l_type == 12 || l_type == 13 || l_type == 15 || l_type == 16) {
+				l_allowedCase[1] = 0;
+				l_allowedCase[4] = 0;
+				l_allowedCase[5] = 0;
+				l_allowedCase[6] = 0;
+				l_allowedCase[8] = 0;
+				l_allowedCase[10] = 0;
+				l_allowedCase[11] = 0;
+				l_allowedCase[14] = 0;
+				l_allowedAmount -= 8;
+
+			}
+
+			l_type = l_map[l_i][l_j-1];
+
+			if (l_type == 2 || l_type == 4 || l_type == 6 || l_type == 9 || l_type == 10 || l_type == 13 || l_type == 14 || l_type == 16) {
+				l_allowedCase[1] = 0;
+				l_allowedCase[3] = 0;
+				l_allowedCase[5] = 0;
+				l_allowedCase[6] = 0;
+				l_allowedCase[7] = 0;
+				l_allowedCase[9] = 0;
+				l_allowedCase[10] = 0;
+				l_allowedCase[13] = 0;
+				l_allowedAmount -= 8;
+			}
+
+			l_sort = rand() % l_allowedAmount;
+			for (l_k = 0; l_k < 17; ++l_k) {
+				if (l_allowedCase[l_k] == 1) {
+					l_allowedAmount--;
+				}
+				if (l_allowedAmount == 0) {
+					l_map[l_i][l_j] = l_k;
+				}
+			}
+		}
+	}
+
+
 
 }
