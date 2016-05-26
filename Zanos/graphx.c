@@ -253,8 +253,8 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 				SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_i][l_j].type], NULL, &l_posCase );
 				if ((l_i == 0 || l_j == 0 || l_i == 9 || l_j == 9) && (p_map->path[l_i][l_j].type == 2)) {
 					l_arbre = l_posCase;
-					l_arbre.x += (rand() % 10) - 5;
-					l_arbre.y += (rand() % 10) - 5;
+					//l_arbre.x += (rand() % 10) - 5;
+					//l_arbre.y += (rand() % 10) - 5;
 					l_sprite = IMG_Load("./assets/sprite/tree_0.png");
 					l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 					SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_arbre);
