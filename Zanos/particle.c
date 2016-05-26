@@ -35,12 +35,20 @@ int initParticle(sParticle **p_particle, SDL_Rect p_position, eDirection p_direc
 
 	switch (p_direction) {
 		case(DUP):
+			(*p_particle)->velocity.x = ((float)((rand() % 100) - 50) / 10);
+			(*p_particle)->velocity.y = ((float)((rand() % 50) - 50) / 10);
 			break;
 		case(DRIGHT):
+			(*p_particle)->velocity.x = ((float)((rand() % 50)) / 10);
+			(*p_particle)->velocity.y = ((float)((rand() % 100) - 50) / 10);
 			break;
 		case(DDOWN):
+			(*p_particle)->velocity.x = ((float)((rand() % 100) - 50) / 10);
+			(*p_particle)->velocity.y = ((float)((rand() % 50)) / 10);
 			break;
 		case(DLEFT):
+			(*p_particle)->velocity.x = ((float)((rand() % 50) - 50) / 10);
+			(*p_particle)->velocity.y = ((float)((rand() % 100) - 50) / 10);
 			break;
 		default:
 			(*p_particle)->velocity.x = ((float)((rand() % 100)-50)/10);

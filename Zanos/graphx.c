@@ -212,7 +212,7 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 		p_interface->player.isSliding = FALSE;
 	}else {
 		if(!(p_interface->effect.particle))
-			initParticleSystem(&(p_interface->effect.particle), PATRICLE_SYSTEM_LIFETIME, PARTICLE_AMOUNT, p_interface->player.realPosition, 4);
+			initParticleSystem(&(p_interface->effect.particle), PATRICLE_SYSTEM_LIFETIME, PARTICLE_AMOUNT, p_interface->player.realPosition, p_interface->player.direction);
 
 		SDL_RenderCopy(p_interface->renderer, p_interface->player.playerSprite[p_interface->player.direction], NULL, &(p_interface->player.realPosition));
 		
