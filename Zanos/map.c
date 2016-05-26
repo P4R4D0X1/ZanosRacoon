@@ -1,4 +1,5 @@
 #include "map.h"
+#include <time.h>
 
 int loadMap(sMap **p_map, char *p_recipePath) {
 	int l_i, l_j;
@@ -150,8 +151,4 @@ void printMap(sMap *p_map) {
 	}
 
 	return;
-}
-
-void mapGenerator() {
-
 }
