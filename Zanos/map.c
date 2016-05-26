@@ -151,3 +151,7 @@ void printMap(sMap *p_map) {
 
 	return;
 }
+
+void mapGenerator() {
+
+}

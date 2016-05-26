@@ -231,12 +231,15 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int l_i, l_j;
-	SDL_Rect posCase;
+	
+	SDL_Rect l_posCase;
+	SDL_Surface *l_sprite;
+	SDL_Texture *l_startGoal;
 
-	posCase.x = 0;
-	posCase.y = 0;
-	posCase.h = WINDOW_HEIGHT / CASE_LINE_AMOUNT;
-	posCase.w = WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
+	l_posCase.x = 0;
+	l_posCase.y = 0;
+	l_posCase.h = WINDOW_HEIGHT / CASE_LINE_AMOUNT;
+	l_posCase.w = WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
 
 	SDL_SetRenderTarget(p_interface->renderer, p_interface->backgroundSprite);
 	SDL_SetRenderDrawColor(p_interface->renderer, 0, 0, 0, 0);
@@ -244,11 +247,21 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 
 	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
 		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
-			SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_i][l_j].type], NULL, &posCase);
-			posCase.x += WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
+			SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_i][l_j].type], NULL, &l_posCase);
+			if (p_map->starting.y == l_i && p_map->starting.x == l_j) {
+				l_sprite = IMG_Load("./assets/sprite/start.png");
+				l_startGoal = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+				SDL_RenderCopy(p_interface->renderer, l_startGoal, NULL, &l_posCase);
+			}
+			if (p_map->ending.y == l_i && p_map->ending.x == l_j) {
+				l_sprite = IMG_Load("./assets/sprite/goal.png");
+				l_startGoal = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+				SDL_RenderCopy(p_interface->renderer, l_startGoal, NULL, &l_posCase);
+			}
+			l_posCase.x += WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
 		}
-		posCase.x = 0;
-		posCase.y += WINDOW_HEIGHT / CASE_LINE_AMOUNT;
+		l_posCase.x = 0;
+		l_posCase.y += WINDOW_HEIGHT / CASE_LINE_AMOUNT;
 	}
 
 	SDL_SetRenderTarget(p_interface->renderer, NULL);
