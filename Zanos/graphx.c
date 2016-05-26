@@ -5,7 +5,7 @@
 
 int loadInterface(sInterface *p_interface, sMap *p_map) {
 	int l_i;
-	char l_casePath[50] = "./assets/sprite/case_01.bmp", l_persoPath[50] = "./assets/sprite/perso_0.png";
+	char l_casePath[50] = "./assets/sprite/case_01.png", l_persoPath[50] = "./assets/sprite/perso_0.png";
 
 	SDL_Surface *l_sprite;
 
@@ -27,7 +27,7 @@ int loadInterface(sInterface *p_interface, sMap *p_map) {
 	for (l_i = 0; l_i < CASE_TYPE_AMOUNT; ++l_i) {
 		l_casePath[21] = (int)(l_i / 10) + 48; 
 		l_casePath[22] = (l_i - (int)(l_i / 10)*10) + 48;
-		l_sprite = SDL_LoadBMP(l_casePath);
+		l_sprite = IMG_Load(l_casePath);
 		p_interface->caseSprite[l_i] = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_FreeSurface(l_sprite);
 	}
@@ -83,31 +83,6 @@ void compteur(sInterface *p_interface, int *cmpt) {
 
 }
 
-void displayTree(sInterface *p_interface) {
-	int i;
-	SDL_Surface *l_sprite;
-	SDL_Rect l_posSprite;
-	SDL_Texture *l_texture;
-
-	if (l_sprite = IMG_Load("./assets/sprite/tree_0.png") == NULL)
-		printf("ERROR: Tree load failed.\n");
-
-	l_posSprite.w = 100;
-	l_posSprite.h = 146;
-	l_posSprite.x = 0;
-	l_posSprite.y = 0;
-	
-	for (i = 0; i < 2; i++) {
-		l_posSprite.x = WINDOW_WIDTH/2;
-		l_posSprite.y += WINDOW_HEIGHT/2;
-		l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
-		SDL_FreeSurface(l_sprite);
-		SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_posSprite);
-
-	}
-
-	return;
-}
 
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
@@ -119,7 +94,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 
 
 	displayMap(p_interface, p_map);
-	displayTree(p_interface);
 	playSonor(&l_sonor);
 
 	while (l_loop){
@@ -258,9 +232,9 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int l_i, l_j;
 	
-	SDL_Rect l_posCase;
+	SDL_Rect l_posCase, l_arbre;
 	SDL_Surface *l_sprite;
-	SDL_Texture *l_startGoal;
+	SDL_Texture *l_texture;
 
 	l_posCase.x = 0;
 	l_posCase.y = 0;
@@ -272,17 +246,31 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 	SDL_RenderClear(p_interface->renderer);
 
 	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
-		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
-			SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_i][l_j].type], NULL, &l_posCase);
+			for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
+			/*	
+				if ((l_i == 0 || l_j == 0 || l_i == 9 || l_j == 9) && (p_map->path[l_i][l_j].type == 2)) {
+					l_arbre = l_posCase;
+					l_arbre.x += (rand() % 10)-5;
+					l_arbre.y += (rand() % 10)-5;
+					l_sprite = IMG_Load("./assets/sprite/tree_0.png");
+					l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+					SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_arbre);
+				}
+				else {
+				}*/
+				SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[0], NULL, &l_posCase);
+				SDL_RenderCopy(p_interface->renderer, p_interface->caseSprite[p_map->path[l_i][l_j].type], NULL, &l_posCase );
+				
+
 			if (p_map->starting.y == l_i && p_map->starting.x == l_j) {
 				l_sprite = IMG_Load("./assets/sprite/start.png");
-				l_startGoal = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
-				SDL_RenderCopy(p_interface->renderer, l_startGoal, NULL, &l_posCase);
+				l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+				SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_posCase);
 			}
 			if (p_map->ending.y == l_i && p_map->ending.x == l_j) {
 				l_sprite = IMG_Load("./assets/sprite/goal.png");
-				l_startGoal = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
-				SDL_RenderCopy(p_interface->renderer, l_startGoal, NULL, &l_posCase);
+				l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+				SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_posCase);
 			}
 			l_posCase.x += WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
 		}
