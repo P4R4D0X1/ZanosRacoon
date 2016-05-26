@@ -81,12 +81,12 @@ void compteur(sInterface *p_interface, int *cmpt) {
 }
 
 
-int gameLoop(sInterface *p_interface, sMap *p_map) {
+int gameLoop(sInterface *p_interface, sMap *p_map, sSonor *p_song) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
 	int compteur = 0;
 	char txtCmpt[32];
-	sSonor l_sonor;
+
 	sText l_cmptText;
 	sAnimation *l_snow = NULL;
 	SDL_Rect l_animPos;
@@ -104,7 +104,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	p_interface->player.realDestination = getRealPosition(p_interface->player.mapPosition);
 
 	displayMap(p_interface, p_map);
-	playSonor(&l_sonor);
 
 	while (l_loop){
 		if(SDL_PollEvent(&(p_interface->event))) {
@@ -112,7 +111,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 				case(SDL_KEYDOWN):
 					switch (p_interface->event.key.keysym.sym) {
 						case(SDLK_z):
-							Mix_PlayChannel(-1, l_sonor.slide, 0);
+							Mix_PlayChannel(-1, p_song->slide, 0);
 							updateGoal(p_interface, p_map, DUP);
 							compteur += 1;
 							printf("CMPT: %d\n", compteur);
@@ -121,21 +120,21 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 							break;
 
 						case(SDLK_d):
-							Mix_PlayChannel(-1, l_sonor.slide, 0);
+							Mix_PlayChannel(-1, p_song->slide, 0);
 							updateGoal(p_interface, p_map, DRIGHT);
 							compteur += 1;
 							printf("CMPT: %d\n", compteur);
 							break;
 
 						case(SDLK_s):
-							Mix_PlayChannel(-1, l_sonor.slide, 0);
+							Mix_PlayChannel(-1, p_song->slide, 0);
 							updateGoal(p_interface, p_map, DDOWN);
 							compteur += 1;
 							printf("CMPT: %d\n", compteur);
 							break;
 
 						case(SDLK_q):
-							Mix_PlayChannel(-1, l_sonor.slide, 0);
+							Mix_PlayChannel(-1, p_song->slide, 0);
 							updateGoal(p_interface, p_map, DLEFT);	
 							compteur += 1;
 							printf("CMPT: %d\n", compteur);

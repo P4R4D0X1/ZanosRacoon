@@ -50,7 +50,7 @@ typedef struct s_interface {
 int loadInterface(sInterface *p_interface);
 int closeInterface(sInterface *p_interface);
 
-int gameLoop(sInterface *p_interface, sMap *p_map);
+int gameLoop(sInterface *p_interface, sMap *p_map, sSonor *p_song);
 int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int updateVision(sInterface *p_interface, sMap *p_map);
 

@@ -74,6 +74,9 @@ void createMenu() {
 	loadAnimation(1, &l_logo, 2, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 100);
 	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
 
+	sSonor l_sonor;
+	playSonor(&l_sonor);
+
 	while (l_loop) {
 
 		while (SDL_PollEvent(&(l_interface.event))) {
@@ -84,19 +87,19 @@ void createMenu() {
 					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
 						loadMap(&l_map, "map0.txt");
 						generateGraph(l_map);
-						gameLoop(&l_interface, l_map);
+						gameLoop(&l_interface, l_map, &l_sonor);
 
 						free(l_map);
 
 						loadMap(&l_map, "map1.txt");
 						generateGraph(l_map);
-						gameLoop(&l_interface, l_map);
+						gameLoop(&l_interface, l_map, &l_sonor);
 					
 						free(l_map);
 
 						loadMap(&l_map, "map2.txt");
 						generateGraph(l_map);
-						gameLoop(&l_interface, l_map);
+						gameLoop(&l_interface, l_map, &l_sonor);
 						l_loop = 0;
 					}
 					break;
