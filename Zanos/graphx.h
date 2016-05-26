@@ -29,7 +29,7 @@ typedef struct s_player {
 
 typedef struct s_effect {
 	SDL_Texture *particleSprite;
-
+	struct s_particleSystem *particle;
 }sEffect;
 
 typedef struct s_interface {
@@ -38,8 +38,11 @@ typedef struct s_interface {
 	SDL_Event event;
 
 	SDL_Texture *caseSprite[CASE_TYPE_AMOUNT];
+	SDL_Texture *backgroundSprite;
+
 	struct s_player player;
 	struct s_effect effect;
+	sList *solution;
 	sPosition origin;
 } sInterface;
 
@@ -52,7 +55,7 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction);
 int updateVision(sInterface *p_interface, sMap *p_map);
 
 int displayMap(sInterface *p_interface, sMap *p_map);
-int solveGame(sInterface *p_interface, sMap *p_map);
+int showSolution(sInterface *p_interface, sList *p_solutionPath);
 
 bool WinOrNot(sInterface *p_interface, sMap *p_map);
 SDL_Rect getRealPosition(sPosition p_position);
