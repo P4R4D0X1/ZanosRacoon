@@ -83,6 +83,32 @@ void compteur(sInterface *p_interface, int *cmpt) {
 
 }
 
+void displayTree(sInterface *p_interface) {
+	int i;
+	SDL_Surface *l_sprite;
+	SDL_Rect l_posSprite;
+	SDL_Texture *l_texture;
+
+	if (l_sprite = IMG_Load("./assets/sprite/tree_0.png") == NULL)
+		printf("ERROR: Tree load failed.\n");
+
+	l_posSprite.w = 100;
+	l_posSprite.h = 146;
+	l_posSprite.x = 0;
+	l_posSprite.y = 0;
+	
+	for (i = 0; i < 2; i++) {
+		l_posSprite.x = WINDOW_WIDTH/2;
+		l_posSprite.y += WINDOW_HEIGHT/2;
+		l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+		SDL_FreeSurface(l_sprite);
+		SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_posSprite);
+
+	}
+
+	return;
+}
+
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
@@ -93,10 +119,10 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 
 
 	displayMap(p_interface, p_map);
+	displayTree(p_interface);
 	playSonor(&l_sonor);
 
 	while (l_loop){
-
 		if(SDL_PollEvent(&(p_interface->event))) {
 			switch (p_interface->event.type) {
 				case(SDL_KEYDOWN):
@@ -153,7 +179,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		renderParticle(&(p_interface->effect.particle), p_interface, p_map);
 
 		updateVision(p_interface, p_map);
-
+	
 		SDL_RenderPresent(p_interface->renderer);
 		l_loop = WinOrNot(p_interface, p_map);
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
