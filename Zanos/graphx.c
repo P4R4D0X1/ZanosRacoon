@@ -148,8 +148,10 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		SDL_RenderClear(p_interface->renderer);
 		SDL_RenderCopy(p_interface->renderer, p_interface->backgroundSprite, NULL, NULL);
 
-		showSolution(p_interface, p_interface->solution);
+		if(l_solve)
+			showSolution(p_interface, p_interface->solution);
 		renderParticle(&(p_interface->effect.particle), p_interface, p_map);
+
 		updateVision(p_interface, p_map);
 
 		SDL_RenderPresent(p_interface->renderer);
@@ -283,7 +285,7 @@ bool WinOrNot(sInterface *p_interface, sMap *p_map) {
 	SDL_Surface *l_sprite = NULL;
 	SDL_Texture *l_texture = NULL;
 
-	SDL_Rect l_position = { 0, 0, 500, 500 };
+	SDL_Rect l_position = { (WINDOW_WIDTH - 500)/2, (WINDOW_HEIGHT - 500)/2, 500, 500 };
 
 	if (comparePositionRect(getRealPosition(p_map->ending), p_interface->player.realPosition)) {
 		l_sprite = IMG_Load("./assets/sprite/congratulation.png");
