@@ -32,7 +32,7 @@ void createMenu() {
 	sInterface l_interface;
 
 	bool l_loop = TRUE;
-	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo = NULL, *l_play = NULL;
+	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo = NULL, *l_play = NULL, *l_tuto = NULL;
 
 	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offset, l_posPlay;
 
@@ -76,6 +76,7 @@ void createMenu() {
 	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", &l_interface, 10);
 	loadAnimation(1, &l_logo, 2, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 100);
 	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
+	loadAnimation(1, &l_tuto, 6, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 100);
 
 	sSonor l_sonor;
 	loadSonor(&l_sonor);
@@ -89,6 +90,7 @@ void createMenu() {
 					SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
 
 					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
+						while()
 						loadMap(&l_map, "map0.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map, &l_sonor);
