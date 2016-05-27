@@ -164,7 +164,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		//updateAnimation(l_snow, p_interface);
 
 		sprintf_s(txtCmpt, 30, "%d", p_interface->compteur);
-		printf("%s\n", txtCmpt);
 		displayText(p_interface->renderer, txtCmpt, l_color, l_posText);
 
 

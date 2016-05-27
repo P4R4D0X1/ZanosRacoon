@@ -87,6 +87,9 @@ void createMenu() {
 
 					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
 					
+						Mix_PauseMusic();
+						Mix_PlayMusic(l_interface.sonor.musicGame, -1);
+
 						while (l_tuto->actualFrame != l_tuto->frameAmount - 1){
 							updateAnimation(l_tuto, &l_interface);
 							SDL_RenderPresent(l_interface.renderer);
@@ -97,10 +100,6 @@ void createMenu() {
 							}
 							SDL_Delay(100);
 						} 
-						
-
-						Mix_PauseMusic();
-						Mix_PlayMusic(l_interface.sonor.musicGame, -1);
 
 						loadMap(&l_map, "map0.txt");
 						generateGraph(l_map);
@@ -117,6 +116,7 @@ void createMenu() {
 						gameLoop(&l_interface, l_map);
 						free(l_map);
 						Mix_PauseMusic();
+						Mix_PlayMusic(l_interface.sonor.musicMenu, -1);
 					}
 					break;
 
