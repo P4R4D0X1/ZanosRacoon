@@ -86,10 +86,11 @@ void createMenu() {
 					SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
 
 					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
-						while (l_tuto->actualFrame <= l_tuto->frameAmount) {
+						do{
 							updateAnimation(l_tuto, &l_interface);
+							SDL_RenderPresent(l_interface.renderer);
 							SDL_Delay(SDL_ANIMATION_FRAMETIME);
-						}
+						} while (l_tuto->load != 0);
 
 						loadMap(&l_map, "map0.txt");
 						generateGraph(l_map);
