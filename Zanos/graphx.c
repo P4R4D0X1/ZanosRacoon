@@ -58,6 +58,7 @@ int loadInterface(sInterface *p_interface) {
 
 	p_interface->player.isSliding = FALSE;
 	p_interface->player.direction = DUP;
+	p_interface->compteur = 0;
 
 	p_interface->solution = NULL;
 
@@ -90,11 +91,15 @@ int closeInterface(sInterface *p_interface) {
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
-	char txtCmpt[32];
+	char txtCmpt[32] = "";
 
-	sText l_cmptText;
 	sAnimation *l_snow = NULL, *l_renard=NULL;
-	SDL_Rect l_animPos;
+	SDL_Rect l_animPos, l_posText;
+	SDL_Color l_color = {255, 0, 0};
+
+
+	l_posText.x = (WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / 2;
+	l_posText.y = (WINDOW_HEIGHT / CASE_LINE_AMOUNT) / 2;
 
 	l_animPos.x = 0;
 	l_animPos.y = 0;
@@ -158,7 +163,10 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		updateVision(p_interface, p_map);
 		//updateAnimation(l_snow, p_interface);
 
-		createFont(&l_cmptText, p_interface->renderer, txtCmpt);
+		sprintf_s(txtCmpt, 30, "%d", p_interface->compteur);
+		printf("%s\n", txtCmpt);
+		displayText(p_interface->renderer, txtCmpt, l_color, l_posText);
+
 
 		SDL_RenderPresent(p_interface->renderer);
 		if (WinOrNot(p_interface, p_map)) {
