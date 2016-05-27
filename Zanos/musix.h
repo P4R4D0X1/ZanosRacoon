@@ -13,7 +13,8 @@
 #include "include\SDL2\SDL_mixer.h"
 
 typedef struct s_sonor {
-	Mix_Music *music;
+	Mix_Music *musicMenu;
+	Mix_Music *musicGame;
 	Mix_Chunk *slide;
 	Mix_Chunk *applause;
 
