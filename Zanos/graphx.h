@@ -46,6 +46,7 @@ typedef struct s_interface {
 	sSonor sonor;
 	sList *solution;
 	sPosition origin;
+	int compteur;
 } sInterface;
 
 
