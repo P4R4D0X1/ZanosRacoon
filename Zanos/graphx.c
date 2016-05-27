@@ -1,8 +1,23 @@
+/**
+* \file graphx.c
+* \brief Programme de rendu de l'enigme et des graphismes
+* \date 27 mai 2016
+*
+* Programme qui realise le rendu, l'affichage et l'interface avec l'utilisateur.
+*
+*/
 #include "particle.h"
 #include "menu.h"
 #include "graphx.h"
 
 
+/**
+* \fn int loadInterface(sInterface *p_interface)
+* \brief Fonction d'initialisation de structure de type sInterface
+*
+* \param *p_interface pointeur vers une structure de type sInterface
+* \return int représentant le déroulement de la fonction
+*/
 int loadInterface(sInterface *p_interface) {
 	int l_i;
 	char l_casePath[50] = "./assets/sprite/case_01.png", l_persoPath[50] = "./assets/sprite/perso_0.png";
@@ -70,6 +85,13 @@ int loadInterface(sInterface *p_interface) {
 	return 0;
 }
 
+/**
+* \fn int closeInterface(sInterface *p_interface)
+* \brief Fonction de desallocation de structure de type sInterface
+*
+* \param *p_interface pointeur vers une structure de type sInterface
+* \return int représentant le déroulement de la fonction
+*/
 int closeInterface(sInterface *p_interface) {
 	int l_i;
 
@@ -87,7 +109,14 @@ int closeInterface(sInterface *p_interface) {
 	return 0;
 }
 
-
+/**
+* \fn int gameLoop(sInterface *p_interface, sMap *p_map)
+* \brief Fonction de rendu de l'enigme et d'interfacage avec l'utilisateur
+*
+* \param *p_interface pointeur vers une structure de type sInterface
+* \param *p_map pointeur vers une structure de type sMap
+* \return int représentant le déroulement de la fonction
+*/
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
@@ -178,6 +207,15 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	return 0;
 }
 
+/**
+* \fn int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction)
+* \brief Fonction de gestion des deplacements du personnage
+*
+* \param *p_interface pointeur vers une structure de type sInterface
+* \param *p_map pointeur vers une structure de type sMap
+* \param p_direction enum de type eDirection definissant le sens du deplacement
+* \return int représentant le déroulement de la fonction
+*/
 int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	sNode *l_neighbour = NULL;
 
@@ -215,6 +253,14 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	return 0;
 }
 
+/**
+* \fn int updateVision(sInterface *p_interface, sMap *p_map)
+* \brief Fonction de mise à jour de la position du joueur
+*
+* \param *p_interface pointeur vers une structure de type sInterface
+* \param *p_map pointeur vers une structure de type sMap
+* \return int représentant le déroulement de la fonction
+*/
 int updateVision(sInterface *p_interface, sMap *p_map) {
 
 	if (!(p_interface->player.isSliding)) {
@@ -246,6 +292,14 @@ int updateVision(sInterface *p_interface, sMap *p_map) {
 	return 0;
 }
 
+/**
+* \fn int displayMap(sInterface *p_interface, sMap *p_map)
+* \brief Fonction qui initialise les graphismes de la map
+*
+* \param *p_interface pointeur vers une structure de type sInterface
+* \param *p_map pointeur vers une structure de type sMap
+* \return int représentant le déroulement de la fonction
+*/
 int displayMap(sInterface *p_interface, sMap *p_map) {
 	int l_i, l_j;
 	
@@ -297,7 +351,14 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 	return 0;
 }	
 
-
+/**
+* \fn int showSolution(sInterface *p_interface, sList *p_solutionPath)
+* \brief Fonction qui permet l'affichage de la solution du labyrinthe
+*
+* \param *p_interface pointeur vers une structure de type sInterface
+* \param *p_solutionPath pointeur vers une structure de type sList, structure de listes chainées
+* \return int représentant le déroulement de la fonction
+*/
 int showSolution(sInterface *p_interface, sList *p_solutionPath) {
 
 	SDL_Rect l_posA, l_posB, l_middleOffset;
@@ -322,27 +383,42 @@ int showSolution(sInterface *p_interface, sList *p_solutionPath) {
 	return 0;
 }
 
+/**
+* \fn bool WinOrNot(sInterface *p_interface, sMap *p_map)
+* \brief Fonction qui deduit si l'utilisateur a gagné ou non
+*
+* \param *p_interface pointeur vers une structure de type sInterface
+* \param *p_map pointeur vers une structure de type sMap
+* \return bool enum de type eBool vaut 1 si l'utilisateur a gagné 0 sinon
+*/
 bool WinOrNot(sInterface *p_interface, sMap *p_map) {
-	SDL_Surface *l_sprite = NULL;
-	SDL_Texture *l_texture = NULL;
+	sAnimation *l_congrate = NULL;
 
 	SDL_Rect l_position = { (WINDOW_WIDTH - 500)/2, (WINDOW_HEIGHT - 500)/2, 500, 500 };
 
 	if (comparePositionRect(getRealPosition(p_map->ending), p_interface->player.realPosition)) {
-		l_sprite = IMG_Load("./assets/sprite/congratulation.png");
-		l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
-		SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_position);
+		loadAnimation(1, &l_congrate, 4, l_position, "./assets/sprite/anim/congratulation_", p_interface, 1);
 		Mix_PlayChannel(-1, p_interface->sonor.applause, 0);
-		SDL_RenderPresent(p_interface->renderer);
+		while (l_congrate->actualFrame != l_congrate->frameAmount - 1) {
+			SDL_RenderCopy(p_interface->renderer, p_interface->backgroundSprite, NULL, NULL);
+			updateAnimation(l_congrate, p_interface);
+			SDL_RenderPresent(p_interface->renderer);
+			SDL_Delay(100);
+		}
 		SDL_Delay(1000);
-		SDL_DestroyTexture(l_texture);
-		SDL_FreeSurface(l_sprite);
 		return TRUE;
 	}
 
 	return FALSE;
 }
 
+/**
+* \fn SDL_Rect getRealPosition(sPosition p_position)
+* \brief Fonction qui convertit des position d'index en position réelles
+*
+* \param p_position structure de type sPosition
+* \return SDL_Rect structure représentant des positions réelles
+*/
 SDL_Rect getRealPosition(sPosition p_position) {
 	SDL_Rect l_position;
 
@@ -354,6 +430,13 @@ SDL_Rect getRealPosition(sPosition p_position) {
 	return l_position;
 }
 
+/**
+* \fn sPosition getMapPosition(SDL_Rect p_position)
+* \brief Fonction qui convertit des réelles en position d'index
+*
+* \param p_position structure représentant des positions réelles
+* \return sPosition structure de type sPosition
+*/
 sPosition getMapPosition(SDL_Rect p_position) {
 	sPosition l_position;
 
@@ -363,6 +446,14 @@ sPosition getMapPosition(SDL_Rect p_position) {
 	return l_position;
 }
 
+/**
+* \fn bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition)
+* \brief Fonction qui compare des position réelles
+*
+* \param p_firstPosition structure représentant une position réelle
+* \param p_secondPosition structure représentant une position réelle
+* \return bool enum de type eBool vaut 1 si les positions son égales 0 sinon
+*/
 bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition) {
 	if (p_firstPosition.x != p_secondPosition.x || p_firstPosition.y != p_secondPosition.y) {
 		return FALSE;
@@ -371,6 +462,14 @@ bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition) {
 	return TRUE;
 }
 
+/**
+* \fn bool comparePositionMap(sPosition p_firstPosition, sPosition p_secondPosition)
+* \brief Fonction qui compare des position d'index
+*
+* \param p_firstPosition structure représentant une position d'index
+* \param p_secondPosition structure représentant une position d'index
+* \return bool enum de type eBool vaut 1 si les positions son égales 0 sinon
+*/
 bool comparePositionMap(sPosition p_firstPosition, sPosition p_secondPosition) {
 	if (p_firstPosition.x != p_secondPosition.x || p_firstPosition.y != p_secondPosition.y) {
 		return FALSE;

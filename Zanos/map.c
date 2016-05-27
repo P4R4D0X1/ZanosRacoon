@@ -1,6 +1,22 @@
+/**
+* \file map.c
+* \brief Programme de chargement de la map et du graph associé
+* \date 27 mai 2016
+*
+* Programme qui realise le chargement de la map et de generation du graph associé
+*
+*/
 #include "map.h"
 #include <time.h>
 
+/**
+* \fn int loadMap(sMap **p_map, char *p_recipePath)
+* \brief Fonction de chargement de la map
+*
+* \param **p_map double pointeur vers un structure de type sMap représentant la map de l'enigme
+* \param *p_recipepath chemin du fichier de configuration de la map
+* \return int représentant le déroulement de la fonction
+*/
 int loadMap(sMap **p_map, char *p_recipePath) {
 	int l_i, l_j;
 	
@@ -38,6 +54,13 @@ int loadMap(sMap **p_map, char *p_recipePath) {
 	return 0;
 }
 
+/**
+* \fn int generateGraph(sMap *p_map)
+* \brief Fonction generation du graph associé à une map
+*
+* \param *p_map pointeur vers un structure de type sMap représentant la map de l'enigme
+* \return int représentant le déroulement de la fonction
+*/
 int generateGraph(sMap *p_map) {
 	int l_i, l_j;
 

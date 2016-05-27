@@ -59,9 +59,6 @@
     <ClInclude Include="liste.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="graphix.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="graphx.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>

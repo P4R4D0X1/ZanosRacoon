@@ -1,3 +1,11 @@
+/**
+* \file graphx.h
+* \brief Header des fonctions de rendu, d'affichage et d'interfacage avec l'utilisateur
+* \date 27 mai 2016
+*
+* Header qui contient les definitions des fonctions et des structures de rendu, d'affichage et d'interfacage
+*
+*/
 #ifndef GRAPHX_H
 #define GRAPHX_H
 
@@ -17,6 +25,10 @@
 #include "include\SDL2\SDL_ttf.h"
 
 
+/**
+* \struct sPlayer
+* \brief Structure qui représente le personnage que l'on incarne
+*/
 typedef struct s_player {
 	SDL_Texture *playerSprite[4];
 	SDL_Rect realPosition;
@@ -27,11 +39,19 @@ typedef struct s_player {
 	eDirection direction;
 } sPlayer;
 
+/**
+* \struct sEffect
+* \brief Structure qui représente les effets de l'enigme
+*/
 typedef struct s_effect {
 	SDL_Texture *particleSprite[3];
 	struct s_particleSystem *particle;
 }sEffect;
 
+/**
+* \struct sInterface
+* \brief Structure qui représente l'interface de l'enigme
+*/
 typedef struct s_interface {
 	SDL_Window *window;
 	SDL_Renderer *renderer;
@@ -65,7 +85,5 @@ SDL_Rect getRealPosition(sPosition p_position);
 sPosition getMapPosition(SDL_Rect p_position);
 bool comparePositionRect(SDL_Rect p_firstPosition, SDL_Rect p_secondPosition);
 bool comparePositionMap(sPosition p_firstPosition, sPosition p_secondPosition);
-
-//void playSong();
 
 #endif

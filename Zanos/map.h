@@ -1,3 +1,11 @@
+/**
+* \file map.h
+* \brief Header des fonctions chargement de la map et du graph associé
+* \date 27 mai 2016
+*
+* Header qui contient les definitions des fonctions et des structures de chargement de la map et de generation du graph associé
+*
+*/
 #ifndef MAP_H
 #define MAP_H
 
@@ -8,6 +16,10 @@
 #include "metric.h"
 #include "graphe.h"
 
+/**
+* \struct sMap
+* \brief Structure qui représente une map 
+*/
 typedef struct s_map {
 	FILE *recipe;
 	struct s_case **path;
@@ -18,6 +30,10 @@ typedef struct s_map {
 	sPosition ending;
 }sMap;
 
+/**
+* \struct sCase
+* \brief Structure qui représente une case de map
+*/
 typedef struct s_case {
 	eCase_type type;
 	bool noded;

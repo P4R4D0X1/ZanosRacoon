@@ -1,6 +1,23 @@
+/**
+* \file menu.c
+* \brief Programme de rendu du menu de l'enigme
+* \date 27 mai 2016
+*
+* Programme qui realise le rendu, l'affichage et l'interfacage du menu de l'enigme
+*
+*/
 #include "graphx.h"
 #include "menu.h"
 
+/**
+* \fn void displayText(SDL_Renderer *p_renderer, char *p_message, SDL_Color p_color, SDL_Rect p_position)
+* \brief Fonction d'afficahge de text
+*
+* \param *p_renderer pointeur vers une structure de type SDL_Renderer
+* \param *p_message chaine de caractère à afficher
+* \param p_color structure de type SDL_Color représentant une couleur d'affichage
+* \param p_position structure de type SDL_Rect représentant des positions réelles
+*/
 void displayText(SDL_Renderer *p_renderer, char *p_message, SDL_Color p_color, SDL_Rect p_position) {
 	SDL_Surface *l_surface;
 	TTF_Font *font;
@@ -21,11 +38,22 @@ void displayText(SDL_Renderer *p_renderer, char *p_message, SDL_Color p_color, S
 	return;
 }
 
+/**
+* \fn void centrerPosition(SDL_Rect *p_posSprite, SDL_Rect p_offset)
+* \brief Fonction de calcul de position
+*
+* \param *p_posSprite pointeur vers une structure de type SDL_Rect représentant une positions réelles
+* \param *p_offset structure de type SDL_Rect représentant l'offset de la position
+*/
 void centrerPosition(SDL_Rect *p_posSprite, SDL_Rect p_offset) {
 	p_posSprite->x = ((WINDOW_WIDTH - p_posSprite->w)/2) + (p_offset.w * (WINDOW_WIDTH / p_offset.x));
 	p_posSprite->y = ((WINDOW_HEIGHT - p_posSprite->h)/2) + (p_offset.h * (WINDOW_HEIGHT / p_offset.y));
 }
 
+/**
+* \fn void createMenu()
+* \brief Fonction rendu graphique du menu
+*/
 void createMenu() {
 	
 	sMap *l_map = NULL;
@@ -101,7 +129,7 @@ void createMenu() {
 							SDL_Delay(100);
 						} 
 
-						loadMap(&l_map, "map0.txt");
+						loadMap(&l_map, "map2.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map);
 						free(l_map);
@@ -111,7 +139,7 @@ void createMenu() {
 						gameLoop(&l_interface, l_map);
 						free(l_map);
 
-						loadMap(&l_map, "map2.txt");
+						loadMap(&l_map, "map0.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map);
 						free(l_map);
@@ -159,6 +187,18 @@ void createMenu() {
 	return;
 }
 
+/**
+* \fn void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface, int p_speed)
+* \brief Fonction d'initialisation d'animation
+*
+* \param type à 0 si l'animation est composée de BMP, à 1 si elle est composée de PNG
+* \param **p_animation double pointeur vers une animation
+* \param p_frameAmount nombre de frame que contient l'animation
+* \param p_position position d'affichage de l'animation
+* \param *p_path prefixe du chemin des fichiers d'animations
+* \param *p_interface interface de l'enigme
+* \param p_speed vitesse d'animation 
+*/
 void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Rect p_position, char *p_path, struct s_interface *p_interface, int p_speed) {
 	int l_i, l_j, l_digitAmount = 0, l_tmp = p_frameAmount;
 	char l_path[100] = "", l_tmpy[50] = "";
@@ -207,6 +247,14 @@ void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Re
 	
 }
 
+/**
+* \fn void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface)
+* \brief Fonction qui met a jour une animation
+*
+* \param type à 0 si l'animation est composée de BMP, à 1 si elle est composée de PNG
+* \param *p_animation pointeur vers une animation
+* \param *p_interface interface de l'enigme
+*/
 void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface) {
 	if (p_animation->load == 0) {
 		p_animation->actualFrame++;
@@ -221,6 +269,13 @@ void updateAnimation(sAnimation *p_animation, struct s_interface *p_interface) {
 	SDL_RenderCopy(p_interface->renderer, p_animation->sprite[p_animation->actualFrame], NULL, &(p_animation->position));
 }
 
+/**
+* \fn int getDigit(int p_number, int p_digit)
+* \brief Fonction qui récupère un chiffre à un index donné dans un nombre
+*
+* \param p_number un nombre dont on veut extraire un chiffre
+* \param p_digit index du chiffre que l'ont  veut extraire
+*/
 int getDigit(int p_number, int p_digit) {
 	return (int)(((p_number / (int)pow(10, p_digit)) - (((p_number / (int)pow(10, p_digit)) /10) * 10)));
 }

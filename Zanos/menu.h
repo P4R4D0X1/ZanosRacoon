@@ -1,3 +1,11 @@
+/**
+* \file menu.h
+* \brief Header des fonctions de rendu, d'affichage et d'interfacage entre l'utilisateur et le menu de l'enigme
+* \date 27 mai 2016
+*
+* Header qui contient les definitions des fonctions et des structures de rendu, d'affichage et d'interfacage
+*
+*/
 #ifndef MENU_H
 #define MENU_H
 
@@ -18,6 +26,10 @@
 #include "include\SDL2\SDL_image.h"
 #include "include\SDL2\SDL_ttf.h"
 
+/**
+* \struct sAnimation
+* \brief Structure qui représente une animation
+*/
 typedef struct s_animation {
 	int frameAmount;
 	int actualFrame;
