@@ -75,8 +75,9 @@ void createMenu() {
 	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", &l_interface, 10);
 	loadAnimation(1, &l_logo, 2, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 100);
 	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
-	loadAnimation(1, &l_tuto, 6, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 200);
+	loadAnimation(1, &l_tuto, 8, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 1);
 
+	Mix_PlayMusic(l_interface.sonor.musicMenu, -1);
 
 	while (l_loop) {
 
@@ -87,27 +88,29 @@ void createMenu() {
 
 					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
 						do{
-							updateAnimation(l_tuto, &l_interface);
+							updateAnimation(l_tuto, &l_interface);					
 							SDL_RenderPresent(l_interface.renderer);
-							SDL_Delay(SDL_ANIMATION_FRAMETIME);
+							while (!SDL_GetMouseState);
 						} while (l_tuto->actualFrame != 0);
+
+						Mix_PauseMusic();
+						Mix_PlayMusic(l_interface.sonor.musicGame, -1);
 
 						loadMap(&l_map, "map0.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map);
-
 						free(l_map);
 
 						loadMap(&l_map, "map1.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map);
-					
 						free(l_map);
 
 						loadMap(&l_map, "map2.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map);
-						l_loop = 0;
+						free(l_map);
+						Mix_PauseMusic();
 					}
 					break;
 
