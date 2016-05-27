@@ -86,16 +86,10 @@ int closeInterface(sInterface *p_interface) {
 	return 0;
 }
 
-void compteur(sInterface *p_interface, int *cmpt) {
-
-
-}
-
 
 int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
-	int compteur = 0;
 	char txtCmpt[32];
 
 	sText l_cmptText;
@@ -125,7 +119,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 						case(SDLK_z):
 							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DUP);
-							createFont(&l_cmptText, p_interface->renderer, txtCmpt);
 							break;
 
 						case(SDLK_d):
@@ -169,6 +162,7 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		updateVision(p_interface, p_map);
 		//updateAnimation(l_snow, p_interface);
 
+		createFont(&l_cmptText, p_interface->renderer, txtCmpt);
 
 		SDL_RenderPresent(p_interface->renderer);
 		if (WinOrNot(p_interface, p_map)) {
@@ -207,6 +201,7 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	if (!l_neighbour) {
 		p_interface->player.realDestination = p_interface->player.realPosition;
 	}else{
+		p_interface->compteur += 1;
 		p_interface->player.realDestination = getRealPosition(l_neighbour->position);
 		p_interface->player.mapPosition = l_neighbour->position;
 	}
