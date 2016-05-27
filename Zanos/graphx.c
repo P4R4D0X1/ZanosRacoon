@@ -92,7 +92,7 @@ void compteur(sInterface *p_interface, int *cmpt) {
 }
 
 
-int gameLoop(sInterface *p_interface, sMap *p_map, sSonor *p_song) {
+int gameLoop(sInterface *p_interface, sMap *p_map) {
 	
 	bool l_loop = TRUE, l_solve = FALSE;
 	int compteur = 0;
