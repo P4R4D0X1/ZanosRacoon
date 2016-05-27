@@ -170,7 +170,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 
 		SDL_RenderPresent(p_interface->renderer);
 		if (WinOrNot(p_interface, p_map)) {
-			Mix_PlayChannel(-1, p_interface->sonor.applause, 0);
 			l_loop = FALSE;
 		}
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
@@ -332,6 +331,7 @@ bool WinOrNot(sInterface *p_interface, sMap *p_map) {
 		l_sprite = IMG_Load("./assets/sprite/congratulation.png");
 		l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 		SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_position);
+		Mix_PlayChannel(-1, p_interface->sonor.applause, 0);
 		SDL_RenderPresent(p_interface->renderer);
 		SDL_Delay(1000);
 		SDL_DestroyTexture(l_texture);
