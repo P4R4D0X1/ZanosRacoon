@@ -28,16 +28,13 @@ void centrerPosition(SDL_Rect *p_posSprite, SDL_Rect p_offset) {
 }
 
 void createMenu() {
+	
 	sMap *l_map = NULL;
 	sInterface l_interface;
-
 	bool l_loop = TRUE;
 	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo = NULL, *l_play = NULL, *l_tuto = NULL;
 
 	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offset, l_posPlay;
-
-	l_posMouse.w = 19;
-	l_posMouse.h = 19;
 
 	loadInterface(&l_interface);
 
@@ -71,6 +68,8 @@ void createMenu() {
 	l_offset.h = 0;
 	centrerPosition(&l_posPlay, l_offset);
 
+	l_posMouse.w = 19;
+	l_posMouse.h = 19;
 
 	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", &l_interface, 3);
 	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", &l_interface, 10);
@@ -78,9 +77,6 @@ void createMenu() {
 	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
 	loadAnimation(1, &l_tuto, 6, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 100);
 
-	sSonor l_sonor;
-	loadSonor(&l_sonor);
-	//Mix_PlayMusic(l_sonor->music, -1);
 
 	while (l_loop) {
 
