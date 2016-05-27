@@ -1,25 +1,24 @@
 #include "graphx.h"
 #include "menu.h"
 
-void createFont(sText *p_text, SDL_Renderer *p_renderer, char *p_message) {
-	p_text->font = TTF_OpenFont("./assets/fonts/m12.ttf", 25);
-	p_text->color.r = 0;
-	p_text->color.g = 0;
-	p_text->color.b = 0;
-	
-	p_text->surfaceText = TTF_RenderText_Blended(p_text->font, p_message, p_text->color);
+void displayText(SDL_Renderer *p_renderer, char *p_message, SDL_Color p_color, SDL_Rect p_position) {
+	SDL_Surface *l_surface;
+	TTF_Font *font;
+	SDL_Texture *fontTexture;
 
-	p_text->fontTexture = SDL_CreateTextureFromSurface(p_renderer, p_text->surfaceText);
-	SDL_QueryTexture(p_text->fontTexture, NULL, NULL, &(p_text->posText.w), &(p_text->posText.h));
+	font = TTF_OpenFont("./assets/fonts/m12.ttf", 25);
+	
+	l_surface = TTF_RenderText_Blended(font, p_message, p_color);
+
+	fontTexture = SDL_CreateTextureFromSurface(p_renderer, l_surface);
+	SDL_QueryTexture(fontTexture, NULL, NULL, &(p_position.w), &(p_position.h));
+	SDL_RenderCopy(p_renderer, fontTexture, NULL, &p_position);
+	SDL_FreeSurface(l_surface);
+	SDL_DestroyTexture(fontTexture); // Libération de la mémoire associée à la texture
+	TTF_CloseFont(font);
+	//TTF_Quit();
 
 	return;
-}
-
-void closeFonts(sText p_text) {
-	SDL_DestroyTexture(p_text.fontTexture); // Libération de la mémoire associée à la texture
-	SDL_FreeSurface(p_text.surfaceText);
-	TTF_CloseFont(p_text.font);
-	TTF_Quit();
 }
 
 void centrerPosition(SDL_Rect *p_posSprite, SDL_Rect p_offset) {
