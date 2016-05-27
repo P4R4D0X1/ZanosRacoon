@@ -75,7 +75,7 @@ void createMenu() {
 	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", &l_interface, 10);
 	loadAnimation(1, &l_logo, 2, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 100);
 	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
-	loadAnimation(1, &l_tuto, 6, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 200);
+	loadAnimation(1, &l_tuto, 6, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 120);
 
 
 	while (l_loop) {
