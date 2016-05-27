@@ -19,7 +19,7 @@ typedef struct s_sonor {
 
 }sSonor;
 
-void playSonor(sSonor *p_sonor);
+void loadSonor(sSonor *p_sonor);
 void closeMixer(sSonor *p_sonor);
 
 #endif

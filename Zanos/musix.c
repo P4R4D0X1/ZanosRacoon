@@ -2,7 +2,7 @@
 
 
 
-void playSonor(sSonor *p_sonor)
+void loadSonor(sSonor *p_sonor)
 {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) == -1) //Initialisation de l'API Mixer
 	{
@@ -13,13 +13,12 @@ void playSonor(sSonor *p_sonor)
 
 	p_sonor->music = Mix_LoadMUS("./assets/songs/SuperMarioBrosCuted.wav");
 	Mix_VolumeMusic(MIX_MAX_VOLUME/2);
-	Mix_PlayMusic(p_sonor->music, -1);
 
 	p_sonor->slide = Mix_LoadWAV("./assets/songs/slide.wav");
 	Mix_VolumeChunk(p_sonor->slide, MIX_MAX_VOLUME/2);
 
-
-
+	p_sonor->applause = Mix_LoadWAV("./assets/songs/levelUp.wav");
+	Mix_VolumeChunk(p_sonor->applause, MIX_MAX_VOLUME / 2);
 }
 
 void closeMixer(sSonor *p_sonor) {
