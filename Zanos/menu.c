@@ -78,7 +78,8 @@ void createMenu() {
 	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
 
 	sSonor l_sonor;
-	playSonor(&l_sonor);
+	loadSonor(&l_sonor);
+	//Mix_PlayMusic(l_sonor->music, -1);
 
 	while (l_loop) {
 

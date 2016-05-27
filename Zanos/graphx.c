@@ -173,8 +173,10 @@ int gameLoop(sInterface *p_interface, sMap *p_map, sSonor *p_song) {
 		updateAnimation(l_snow, p_interface);
 
 		SDL_RenderPresent(p_interface->renderer);
-		if (WinOrNot(p_interface, p_map))
+		if (WinOrNot(p_interface, p_map)) {
+			Mix_PlayChannel(-1, p_song->applause, 0);
 			l_loop = FALSE;
+		}
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
