@@ -117,22 +117,18 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 				case(SDL_KEYDOWN):
 					switch (p_interface->event.key.keysym.sym) {
 						case(SDLK_z):
-							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DUP);
 							break;
 
 						case(SDLK_d):
-							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DRIGHT);
 							break;
 
 						case(SDLK_s):
-							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DDOWN);
 							break;
 
 						case(SDLK_q):
-							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DLEFT);	
 							break;
 
@@ -201,6 +197,7 @@ int updateGoal(sInterface *p_interface, sMap *p_map, eDirection p_direction) {
 	if (!l_neighbour) {
 		p_interface->player.realDestination = p_interface->player.realPosition;
 	}else{
+		Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 		p_interface->compteur += 1;
 		p_interface->player.realDestination = getRealPosition(l_neighbour->position);
 		p_interface->player.mapPosition = l_neighbour->position;
