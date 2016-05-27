@@ -95,19 +95,18 @@ void createMenu() {
 						loadMap(&l_map, "map0.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map);
-
 						free(l_map);
 
 						loadMap(&l_map, "map1.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map);
-					
 						free(l_map);
 
 						loadMap(&l_map, "map2.txt");
 						generateGraph(l_map);
 						gameLoop(&l_interface, l_map);
-						l_loop = 0;
+						free(l_map);
+
 					}
 					break;
 
