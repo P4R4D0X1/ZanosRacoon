@@ -61,6 +61,8 @@ int loadInterface(sInterface *p_interface) {
 
 	p_interface->solution = NULL;
 
+	loadSonor(&(p_interface->sonor));
+
 	SDL_SetRenderDrawColor(p_interface->renderer, 255, 0, 0, 255);
 	SDL_RenderClear(p_interface->renderer);
 
@@ -120,42 +122,36 @@ int gameLoop(sInterface *p_interface, sMap *p_map, sSonor *p_song) {
 				case(SDL_KEYDOWN):
 					switch (p_interface->event.key.keysym.sym) {
 						case(SDLK_z):
-							Mix_PlayChannel(-1, p_song->slide, 0);
+							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DUP);
-							compteur += 1;
-							printf("CMPT: %d\n", compteur);
-							snprintf(txtCmpt, 255, "%d", compteur);
 							createFont(&l_cmptText, p_interface->renderer, txtCmpt);
 							break;
 
 						case(SDLK_d):
-							Mix_PlayChannel(-1, p_song->slide, 0);
+							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DRIGHT);
-							compteur += 1;
-							printf("CMPT: %d\n", compteur);
 							break;
 
 						case(SDLK_s):
-							Mix_PlayChannel(-1, p_song->slide, 0);
+							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DDOWN);
-							compteur += 1;
-							printf("CMPT: %d\n", compteur);
 							break;
 
 						case(SDLK_q):
-							Mix_PlayChannel(-1, p_song->slide, 0);
+							Mix_PlayChannel(-1, p_interface->sonor.slide, 0);
 							updateGoal(p_interface, p_map, DLEFT);	
-							compteur += 1;
-							printf("CMPT: %d\n", compteur);
 							break;
+
 						case(SDLK_x):
 							l_solve = !l_solve;
 							break;
+
 						case(SDLK_ESCAPE):
 							l_loop = FALSE;
 							break;
 					}
 					break;
+
 				case(SDL_MOUSEBUTTONDOWN):
 					break;
 			}

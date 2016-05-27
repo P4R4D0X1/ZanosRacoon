@@ -43,6 +43,7 @@ typedef struct s_interface {
 
 	struct s_player player;
 	struct s_effect effect;
+	sSonor sonor;
 	sList *solution;
 	sPosition origin;
 } sInterface;
