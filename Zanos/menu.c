@@ -75,7 +75,7 @@ void createMenu() {
 	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", &l_interface, 10);
 	loadAnimation(1, &l_logo, 2, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 100);
 	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
-	loadAnimation(1, &l_tuto, 6, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 100);
+	loadAnimation(1, &l_tuto, 6, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 200);
 
 
 	while (l_loop) {
@@ -90,7 +90,7 @@ void createMenu() {
 							updateAnimation(l_tuto, &l_interface);
 							SDL_RenderPresent(l_interface.renderer);
 							SDL_Delay(SDL_ANIMATION_FRAMETIME);
-						} while (l_tuto->load != 0);
+						} while (l_tuto->actualFrame != 0);
 
 						loadMap(&l_map, "map0.txt");
 						generateGraph(l_map);
