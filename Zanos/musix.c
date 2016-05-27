@@ -11,8 +11,11 @@ void loadSonor(sSonor *p_sonor)
 
 	Mix_AllocateChannels(3);
 
-	p_sonor->music = Mix_LoadMUS("./assets/songs/SuperMarioBrosCuted.wav");
+	p_sonor->musicMenu = Mix_LoadMUS("./assets/songs/menu.wav");
 	Mix_VolumeMusic(MIX_MAX_VOLUME/2);
+
+	p_sonor->musicGame = Mix_LoadMUS("./assets/songs/game.wav");
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
 
 	p_sonor->slide = Mix_LoadWAV("./assets/songs/slide.wav");
 	Mix_VolumeChunk(p_sonor->slide, MIX_MAX_VOLUME/2);
@@ -22,6 +25,7 @@ void loadSonor(sSonor *p_sonor)
 }
 
 void closeMixer(sSonor *p_sonor) {
-	Mix_FreeMusic(p_sonor->music); 
+	Mix_FreeMusic(p_sonor->musicGame);
+	Mix_FreeMusic(p_sonor->musicMenu);
 	Mix_CloseAudio(); 
 }
