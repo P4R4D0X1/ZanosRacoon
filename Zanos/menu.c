@@ -31,7 +31,7 @@ void createMenu() {
 	
 	sMap *l_map = NULL;
 	sInterface l_interface;
-	bool l_loop = TRUE;
+	bool l_loop = TRUE, l_littleLoop = TRUE;
 	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo = NULL, *l_play = NULL, *l_tuto = NULL;
 
 	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offset, l_posPlay;
@@ -87,11 +87,18 @@ void createMenu() {
 					SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
 
 					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
-						do{
-							updateAnimation(l_tuto, &l_interface);					
+					
+						while (l_tuto->actualFrame != l_tuto->frameAmount - 1){
+							updateAnimation(l_tuto, &l_interface);
 							SDL_RenderPresent(l_interface.renderer);
-							while (!SDL_GetMouseState);
-						} while (l_tuto->actualFrame != 0);
+
+							SDL_PumpEvents();
+							while (!(SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
+								SDL_PumpEvents();
+							}
+							SDL_Delay(100);
+						} 
+						
 
 						Mix_PauseMusic();
 						Mix_PlayMusic(l_interface.sonor.musicGame, -1);
