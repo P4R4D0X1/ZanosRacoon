@@ -73,6 +73,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>.\include\SDL2;$(IncludePath)</IncludePath>
     <LibraryPath>.\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)\bin</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
