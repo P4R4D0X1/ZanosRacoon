@@ -23,6 +23,7 @@ int loadInterface(sInterface *p_interface) {
 	char l_casePath[50] = "./assets/sprite/case_01.png", l_persoPath[50] = "./assets/sprite/perso_0.png";
 
 	SDL_Surface *l_sprite;
+	SDL_Rect l_posAnim, l_offset;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING)) {
 		fprintf(stdout, "[SDL] Initialization Error (%s)\n", SDL_GetError());
@@ -68,6 +69,42 @@ int loadInterface(sInterface *p_interface) {
 	p_interface->cursor = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
 	SDL_FreeSurface(l_sprite);
 
+	l_posAnim.x = 0;
+	l_posAnim.y = 0;
+	l_posAnim.h = WINDOW_HEIGHT;
+	l_posAnim.w = WINDOW_WIDTH;
+	loadAnimation(0, &(p_interface->effect.l_mountain), 159, l_posAnim, "./assets/sprite/anim/mountain_", p_interface, 3);
+	loadAnimation(1, &(p_interface->effect.l_tuto), 8, l_posAnim, "./assets/sprite/anim/tuto_", p_interface, 1);
+	loadAnimation(1, &(p_interface->effect.l_congrate), 4, l_posAnim, "./assets/sprite/anim/congratulation_", p_interface, 1);
+
+	l_posAnim.h = 250;
+	l_posAnim.w = 250;
+	l_posAnim.x = WINDOW_HEIGHT - l_posAnim.h;
+	l_posAnim.y = WINDOW_WIDTH - l_posAnim.w;
+	l_offset.x = 1000;
+	l_offset.y = 1000;
+	l_offset.w = -1;
+	l_offset.h = -1;
+	loadAnimation(1, &(p_interface->effect.l_raccoon), 3, l_posAnim, "./assets/sprite/anim/raccoon-skate_", p_interface, 10);
+
+	l_posAnim.h = 400;
+	l_posAnim.w = 400;
+	l_offset.x = 10;
+	l_offset.y = 10;
+	l_offset.w = 0;
+	l_offset.h = -1;
+	centrerPosition(&l_posAnim, l_offset);
+	loadAnimation(1, &(p_interface->effect.l_logo), 2, l_posAnim, "./assets/sprite/anim/raccoonzanos_", p_interface, 100);
+
+	l_posAnim.w = 200;
+	l_posAnim.h = 100;
+	l_offset.x = 10;
+	l_offset.y = 10;
+	l_offset.w = 0;
+	l_offset.h = 0;
+	centrerPosition(&l_posAnim, l_offset);
+	loadAnimation(1, &(p_interface->effect.l_play), 4, l_posAnim, "./assets/sprite/anim/play_", p_interface, 5);
+
 	p_interface->backgroundSprite = SDL_CreateTexture(p_interface->renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
 
 
@@ -103,6 +140,13 @@ int closeInterface(sInterface *p_interface) {
 		SDL_DestroyTexture(p_interface->player.playerSprite[l_i]);
 	}
 
+	freeAnimation(p_interface->effect.l_mountain);
+	freeAnimation(p_interface->effect.l_tuto);
+	freeAnimation(p_interface->effect.l_raccoon);
+	freeAnimation(p_interface->effect.l_logo);
+	freeAnimation(p_interface->effect.l_play);
+	freeAnimation(p_interface->effect.l_congrate);
+
 	SDL_DestroyRenderer(p_interface->renderer);
 	SDL_DestroyWindow(p_interface->window);
 
@@ -122,21 +166,8 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 	bool l_loop = TRUE, l_solve = FALSE;
 	char txtCmpt[32] = "";
 
-	sAnimation *l_snow = NULL, *l_renard=NULL;
-	SDL_Rect l_animPos, l_posText;
+	SDL_Rect l_posText = {(WINDOW_WIDTH / CASE_COLUMN_AMOUNT)/2, (WINDOW_HEIGHT / CASE_LINE_AMOUNT)/2, 50, 50};
 	SDL_Color l_color = {255, 0, 0};
-
-
-	l_posText.x = (WINDOW_WIDTH / CASE_COLUMN_AMOUNT) / 2;
-	l_posText.y = (WINDOW_HEIGHT / CASE_LINE_AMOUNT) / 2;
-
-	l_animPos.x = 0;
-	l_animPos.y = 0;
-	l_animPos.h = WINDOW_HEIGHT;
-	l_animPos.w = WINDOW_WIDTH;
-
-	loadAnimation(1, &l_snow, 20, l_animPos, "./assets/sprite/anim/snow_", p_interface, 1);
-	//loadAnimation(1, &l_renard, 2, l_animPos, "./assets/sprite/anim/congratulation_", p_interface, 1);
 
 	p_interface->player.mapPosition.x = p_map->starting.x;
 	p_interface->player.mapPosition.y = p_map->starting.y;
@@ -190,7 +221,6 @@ int gameLoop(sInterface *p_interface, sMap *p_map) {
 		renderParticle(&(p_interface->effect.particle), p_interface, p_map, TRUE);
 
 		updateVision(p_interface, p_map);
-		//updateAnimation(l_snow, p_interface);
 
 		sprintf_s(txtCmpt, 30, "%d", p_interface->compteur);
 		displayText(p_interface->renderer, txtCmpt, l_color, l_posText);
@@ -327,17 +357,20 @@ int displayMap(sInterface *p_interface, sMap *p_map) {
 					//l_arbre.y += (rand() % 10) - 5;
 					l_sprite = IMG_Load("./assets/sprite/tree_0.png");
 					l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+					SDL_FreeSurface(l_sprite);
 					SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_arbre);
 				}
 
 			if (p_map->starting.y == l_i && p_map->starting.x == l_j) {
 				l_sprite = IMG_Load("./assets/sprite/start.png");
 				l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+				SDL_FreeSurface(l_sprite);
 				SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_posCase);
 			}
 			if (p_map->ending.y == l_i && p_map->ending.x == l_j) {
 				l_sprite = IMG_Load("./assets/sprite/goal.png");
 				l_texture = SDL_CreateTextureFromSurface(p_interface->renderer, l_sprite);
+				SDL_FreeSurface(l_sprite);
 				SDL_RenderCopy(p_interface->renderer, l_texture, NULL, &l_posCase);
 			}
 			l_posCase.x += WINDOW_WIDTH / CASE_COLUMN_AMOUNT;
@@ -392,19 +425,17 @@ int showSolution(sInterface *p_interface, sList *p_solutionPath) {
 * \return bool enum de type eBool vaut 1 si l'utilisateur a gagné 0 sinon
 */
 bool WinOrNot(sInterface *p_interface, sMap *p_map) {
-	sAnimation *l_congrate = NULL;
-
-	SDL_Rect l_position = { (WINDOW_WIDTH - 500)/2, (WINDOW_HEIGHT - 500)/2, 500, 500 };
 
 	if (comparePositionRect(getRealPosition(p_map->ending), p_interface->player.realPosition)) {
-		loadAnimation(1, &l_congrate, 4, l_position, "./assets/sprite/anim/congratulation_", p_interface, 1);
 		Mix_PlayChannel(-1, p_interface->sonor.applause, 0);
-		while (l_congrate->actualFrame != l_congrate->frameAmount - 1) {
+		while (p_interface->effect.l_congrate->actualFrame != p_interface->effect.l_congrate->frameAmount - 1) {
 			SDL_RenderCopy(p_interface->renderer, p_interface->backgroundSprite, NULL, NULL);
-			updateAnimation(l_congrate, p_interface);
+			updateAnimation(p_interface->effect.l_congrate, p_interface);
 			SDL_RenderPresent(p_interface->renderer);
 			SDL_Delay(100);
 		}
+		p_interface->effect.l_congrate->actualFrame = 0;
+
 		SDL_Delay(1000);
 		return TRUE;
 	}

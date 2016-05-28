@@ -25,7 +25,7 @@ int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p
 	
 	srand((unsigned int)time(NULL));
 
-	(*p_particleSystem) = malloc(sizeof(sParticleSystem));
+	(*p_particleSystem) = (sParticleSystem*)malloc(sizeof(sParticleSystem));
 
 	(*p_particleSystem)->lifeTime = p_lifeTime;
 	(*p_particleSystem)->particleAmount = p_particleAmount;
@@ -34,7 +34,7 @@ int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p
 	(*p_particleSystem)->alive = TRUE;
 	(*p_particleSystem)->position = p_position;
 
-	(*p_particleSystem)->particle = malloc(sizeof(sParticle*) * p_particleAmount);
+	(*p_particleSystem)->particle = (sParticle**)malloc(sizeof(sParticle*) * p_particleAmount);
 
 	for (l_i = 0; l_i < (*p_particleSystem)->particleAmount; ++l_i) {
 		initParticle(&((*p_particleSystem)->particle[l_i]), p_position, p_direction);
@@ -53,7 +53,7 @@ int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p
 * \return int représentant le déroulement de la fonction
 */
 int initParticle(sParticle **p_particle, SDL_Rect p_position, eDirection p_direction) {
-	(*p_particle) = malloc(sizeof(sParticle));
+	(*p_particle) = (sParticle*)malloc(sizeof(sParticle));
 
 	(*p_particle)->lifeTime = (rand() % (PARTICLE_LIFETIME_MAX - PARTICLE_LIFETIME_MIN)) + PARTICLE_LIFETIME_MIN;
 	(*p_particle)->position = p_position;
@@ -133,11 +133,10 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 	}
 
 	if ((*p_particleSystem)->particleAliveAmount <= 0) {
-		//free((*p_particleSystem)->particle);
+		free((*p_particleSystem)->particle);
 		(*p_particleSystem)->particle = NULL;
 		free((*p_particleSystem));
 		(*p_particleSystem) = NULL;
-		p_particleSystem = NULL;
 
 	}
 

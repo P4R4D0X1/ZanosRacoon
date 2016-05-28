@@ -1,4 +1,7 @@
+#define _CRTDBG_MAP_ALLOC
+
 #include <stdlib.h>
+#include <crtdbg.h>
 #include <stdio.h>
 
 #include "liste.h"
@@ -15,5 +18,6 @@ int main(int argc, char **argv) {
 
 	createMenu();
 
+	_CrtDumpMemoryLeaks();
 	return EXIT_SUCCESS;
 }

@@ -46,6 +46,13 @@ typedef struct s_player {
 typedef struct s_effect {
 	SDL_Texture *particleSprite[3];
 	struct s_particleSystem *particle;
+
+	struct s_animation *l_mountain;
+	struct s_animation *l_tuto;
+	struct s_animation *l_raccoon;
+	struct s_animation *l_logo;
+	struct s_animation *l_play;
+	struct s_animation *l_congrate;
 }sEffect;
 
 /**

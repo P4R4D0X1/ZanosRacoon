@@ -59,50 +59,10 @@ void createMenu() {
 	sMap *l_map = NULL;
 	sInterface l_interface;
 	bool l_loop = TRUE, l_littleLoop = TRUE;
-	sAnimation *l_animation = NULL, *l_raccoon = NULL, *l_logo = NULL, *l_play = NULL, *l_tuto = NULL;
 
-	SDL_Rect l_posMouse, l_posBG, l_posRaccoon, l_posLogo, l_offset, l_posPlay;
+	SDL_Rect l_posMouse = {0, 0, 20, 20};
 
 	loadInterface(&l_interface);
-
-	l_posBG.x = 0;
-	l_posBG.y = 0;
-	l_posBG.h = WINDOW_HEIGHT;
-	l_posBG.w = WINDOW_WIDTH;
-
-	l_posRaccoon.h = 250;
-	l_posRaccoon.w = 250;
-	l_posRaccoon.x = WINDOW_HEIGHT - l_posRaccoon.h;
-	l_posRaccoon.y = WINDOW_WIDTH - l_posRaccoon.w;
-	l_offset.x = 1000;
-	l_offset.y = 1000;
-	l_offset.w = -1;
-	l_offset.h = -1;
-
-	l_posLogo.h = 400;
-	l_posLogo.w = 400;
-	l_offset.x = 10;
-	l_offset.y = 10;
-	l_offset.w = 0;
-	l_offset.h = -1;
-	centrerPosition(&l_posLogo, l_offset);
-
-	l_posPlay.w = 200;
-	l_posPlay.h = 100;
-	l_offset.x = 10;
-	l_offset.y = 10;
-	l_offset.w = 0;
-	l_offset.h = 0;
-	centrerPosition(&l_posPlay, l_offset);
-
-	l_posMouse.w = 19;
-	l_posMouse.h = 19;
-
-	loadAnimation(0, &l_animation, 159, l_posBG, "./assets/sprite/anim/mountain_", &l_interface, 3);
-	loadAnimation(1, &l_raccoon, 3, l_posRaccoon, "./assets/sprite/anim/raccoon-skate_", &l_interface, 10);
-	loadAnimation(1, &l_logo, 2, l_posLogo, "./assets/sprite/anim/raccoonzanos_", &l_interface, 100);
-	loadAnimation(1, &l_play, 4, l_posPlay, "./assets/sprite/anim/play_", &l_interface, 5);
-	loadAnimation(1, &l_tuto, 8, l_posBG, "./assets/sprite/anim/tuto_", &l_interface, 1);
 
 	Mix_PlayMusic(l_interface.sonor.musicMenu, -1);
 
@@ -113,13 +73,13 @@ void createMenu() {
 				case SDL_MOUSEBUTTONDOWN:
 					SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
 
-					if (l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h) {
+					if (l_interface.effect.l_play->position.x < l_posMouse.x && l_posMouse.x < l_interface.effect.l_play->position.x + l_interface.effect.l_play->position.w && l_interface.effect.l_play->position.y < l_posMouse.y && l_posMouse.y < l_interface.effect.l_play->position.y + l_interface.effect.l_play->position.h) {
 					
 						Mix_PauseMusic();
 						Mix_PlayMusic(l_interface.sonor.musicGame, -1);
 
-						while (l_tuto->actualFrame != l_tuto->frameAmount - 1){
-							updateAnimation(l_tuto, &l_interface);
+						while (l_interface.effect.l_tuto->actualFrame != l_interface.effect.l_tuto->frameAmount - 1){
+							updateAnimation(l_interface.effect.l_tuto, &l_interface);
 							SDL_RenderPresent(l_interface.renderer);
 
 							SDL_PumpEvents();
@@ -162,17 +122,17 @@ void createMenu() {
 		}
 
 
-		updateAnimation(l_animation, &l_interface);
-		updateAnimation(l_raccoon, &l_interface);
-		updateAnimation(l_logo, &l_interface);
+		updateAnimation(l_interface.effect.l_mountain, &l_interface);
+		updateAnimation(l_interface.effect.l_raccoon, &l_interface);
+		updateAnimation(l_interface.effect.l_logo, &l_interface);
 		
 		SDL_GetMouseState(&(l_posMouse.x), &(l_posMouse.y));
 
-		if (!(l_posPlay.x < l_posMouse.x && l_posMouse.x < l_posPlay.x + l_posPlay.w && l_posPlay.y < l_posMouse.y && l_posMouse.y < l_posPlay.y + l_posPlay.h)) {
-			l_play->load = 1;
+		if (!(l_interface.effect.l_play->position.x < l_posMouse.x && l_posMouse.x < l_interface.effect.l_play->position.x + l_interface.effect.l_play->position.w && l_interface.effect.l_play->position.y < l_posMouse.y && l_posMouse.y < l_interface.effect.l_play->position.y + l_interface.effect.l_play->position.h)) {
+			l_interface.effect.l_play->load = 1;
 		}
 
-		updateAnimation(l_play, &l_interface);
+		updateAnimation(l_interface.effect.l_play, &l_interface);
 
 		l_posMouse.x -= l_posMouse.w / 2;
 		l_posMouse.y -= l_posMouse.h / 2;
@@ -182,6 +142,7 @@ void createMenu() {
 		SDL_Delay(SDL_ANIMATION_FRAMETIME);
 	}
 
+	
 	closeInterface(&l_interface);
 	SDL_Quit();
 	return;
@@ -245,6 +206,24 @@ void loadAnimation(int type, sAnimation **p_animation, int p_frameAmount, SDL_Re
 		printf("%s\n", l_path);
 	}
 	
+}
+
+/**
+* \fn void freeAnimation(sAnimation *p_animation)
+* \brief Fonction de desallocation d'animation
+*
+* \param *p_animation une animation
+*/
+void freeAnimation(sAnimation *p_animation) {
+	int l_i;
+
+	for (l_i = 0; l_i < p_animation->frameAmount; ++l_i) {
+		SDL_DestroyTexture(p_animation->sprite[l_i]);
+	}
+	
+	free(p_animation->sprite);
+	p_animation->sprite = NULL;
+	free(p_animation);
 }
 
 /**
