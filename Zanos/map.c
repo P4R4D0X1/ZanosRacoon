@@ -102,6 +102,15 @@ int generateGraph(sMap *p_map) {
 	return 0;
 }
 
+/**
+* \fn sNode *findNeighbour(sMap *p_map, sPosition p_position, eDirection p_direction)
+* \brief Fonction qui genere les arete d'un noeud de graph
+*
+* \param *p_map pointeur vers un structure de type sMap représentant la map de l'enigme
+* \param p_position position d'index du noeud 
+* \param p_direction direction du voisin que l'on cherche
+* \return sNode* pointeur vers un noeud de graph
+*/
 sNode *findNeighbour(sMap *p_map, sPosition p_position, eDirection p_direction) {
 	int l_i, l_j;
 
@@ -156,22 +165,4 @@ sNode *findNeighbour(sMap *p_map, sPosition p_position, eDirection p_direction) 
 			return NULL;
 			break;
 	}
-}
-
-void printMap(sMap *p_map) {
-	int l_i, l_j;
-
-	for (l_i = 0; l_i < p_map->mapDimension.height; ++l_i) {
-		for (l_j = 0; l_j < p_map->mapDimension.width; ++l_j) {
-			if (p_map->path[l_i][l_j].noded) {
-				printf("X\t");
-			}
-			else {
-				printf("%d\t", p_map->path[l_i][l_j].type);
-			}
-		}
-		printf("\n");
-	}
-
-	return;
 }

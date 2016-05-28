@@ -1,3 +1,11 @@
+/**
+* \file pathfinding.h
+* \brief Header des fonctions de calcul du plus court chemin
+* \date 27 mai 2016
+*
+* Header qui contient les definitions des fonctions de calcul du plus court chemin dans un graph 
+*
+*/
 #ifndef PATHFINDING_H
 #define PATHFINDING_H
 

@@ -31,7 +31,7 @@ int loadInterface(sInterface *p_interface) {
 	IMG_Init(IMG_INIT_PNG);
 	TTF_Init();
 
-	p_interface->window = SDL_CreateWindow("-RACCOON ZANOS-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_BORDERLESS);
+	p_interface->window = SDL_CreateWindow("-RACCOON ZANOS-", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN );
 	if (!(p_interface->window)) {
 		fprintf(stderr, "[SDL] Window creation error (%s)\n", SDL_GetError());
 		return EXIT_FAILURE;

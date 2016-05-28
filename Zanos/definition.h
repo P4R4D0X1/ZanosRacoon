@@ -1,3 +1,11 @@
+/**
+* \file definition.h
+* \brief Header qui contient les definitions et enumerations du programme
+* \date 27 mai 2016
+*
+* Header qui contient les definitions et enumerations du programme
+*
+*/
 #ifndef DEFINITION_H
 #define DEFINITION_H
 
@@ -17,6 +25,10 @@
 #define PARTICLE_AMOUNT 50
 #define PARTICLE_LOOP 0
 
+/**
+* \enum eCase_type
+* \brief Représentation des différents types de case
+*/
 typedef enum e_caseType{
 	MAGICALKIWI,
 	FREE, 
@@ -37,11 +49,19 @@ typedef enum e_caseType{
 	UPRIGHTLEFT
 }eCase_type;
 
+/**
+* \enum bool
+* \brief Représentation des booléens
+*/
 typedef enum e_bool {
 	FALSE,
 	TRUE
 }bool;
 
+/**
+* \enum eDirection
+* \brief Représentation des directions
+*/
 typedef enum e_direction {
 	DUP,
 	DRIGHT,

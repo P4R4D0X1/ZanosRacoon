@@ -1,6 +1,6 @@
 /**
 * \file map.h
-* \brief Header des fonctions chargement de la map et du graph associé
+* \brief Header des fonctions de chargement de la map et du graph associé
 * \date 27 mai 2016
 *
 * Header qui contient les definitions des fonctions et des structures de chargement de la map et de generation du graph associé
@@ -45,6 +45,5 @@ typedef struct s_case {
 int loadMap(sMap **p_map, char *p_recipePath);
 int generateGraph(sMap *p_map);
 sNode *findNeighbour(sMap *p_map, sPosition p_position, eDirection p_direction);
-void printMap(sMap *p_map);
 
 #endif

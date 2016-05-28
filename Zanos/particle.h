@@ -1,3 +1,11 @@
+/**
+* \file particle.h
+* \brief Header des fonctions de systeme de particules
+* \date 27 mai 2016
+*
+* Header qui contient les definitions des fonctions d'initialisation et de rendu de syteme de particules
+*
+*/
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
@@ -11,7 +19,10 @@
 
 #include "include\SDL2\SDL.h"
 
-
+/**
+* \struct sParticle
+* \brief Structure qui représente une particule
+*/
 typedef struct s_particle {
 	int lifeTime;
 
@@ -19,6 +30,10 @@ typedef struct s_particle {
 	sVelocity velocity;
 }sParticle;
 
+/**
+* \struct sParticleSystem
+* \brief Structure qui représente un systeme de particules
+*/
 typedef struct s_particleSystem {
 	int lifeTime;
 	int particleAmount;

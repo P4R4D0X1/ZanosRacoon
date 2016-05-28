@@ -1,5 +1,21 @@
+/**
+* \file pathfinding.c
+* \brief Programme de calcul du plus court chemin
+* \date 27 mai 2016
+*
+* Programme qui realise le calcul du plus court chemin dans un graph 
+*
+*/
 #include "pathfinding.h"
 
+/**
+* \fn sList *dijkstra(sMap *p_map, sPosition p_startPoint)
+* \brief Fonction d'initialisation d'animation
+*
+* \param *p_map pointeur vers un structure de type sMap représentant la map de l'enigme
+* \param p_startPoint position d'index du noeud d'ou l'on part
+* \return sList* liste chainée contenant le chemin le plus court
+*/
 sList *dijkstra(sMap *p_map, sPosition p_startPoint) {
 	int l_i, l_j, l_k;
 
@@ -81,6 +97,14 @@ sList *dijkstra(sMap *p_map, sPosition p_startPoint) {
 	return l_solutionPath;
 }
 
+/**
+* \fn int nodeDistance(sNode *p_node, eDirection p_direction)
+* \brief Fonction de calcul de distance entre un noeud et son voisin d'une direction donnée
+*
+* \param *p_node Noeud de graphe
+* \param p_direction direction ou se situe le voisin du noeud
+* \return int distance entre le noeud et son voisin
+*/
 int nodeDistance(sNode *p_node, eDirection p_direction) {
 	int distance;
 

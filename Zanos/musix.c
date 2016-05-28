@@ -1,7 +1,19 @@
+/**
+* \file musix.c
+* \brief Programme de rendu sonor
+* \date 27 mai 2016
+*
+* Programme qui initialise les structures de son et charge les musiques
+*
+*/
 #include "musix.h"
 
-
-
+/**
+* \fn void loadSonor(sSonor *p_sonor)
+* \brief Fonction de chargement des son du jeu
+*
+* \param *p_sonor structure qui contient les sons du jeu
+*/
 void loadSonor(sSonor *p_sonor)
 {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4096) == -1) //Initialisation de l'API Mixer
@@ -24,6 +36,12 @@ void loadSonor(sSonor *p_sonor)
 	Mix_VolumeChunk(p_sonor->applause, MIX_MAX_VOLUME / 2);
 }
 
+/**
+* \fn void closeMixer(sSonor *p_sonor)
+* \brief Fonction de dechargement des son du jeu
+*
+* \param *p_sonor structure qui contient les sons du jeu
+*/
 void closeMixer(sSonor *p_sonor) {
 	Mix_FreeMusic(p_sonor->musicGame);
 	Mix_FreeMusic(p_sonor->musicMenu);

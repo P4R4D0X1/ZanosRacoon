@@ -1,3 +1,11 @@
+/**
+* \file graphe.h
+* \brief Header de definition des noeuds de graphe
+* \date 27 mai 2016
+*
+* Header qui contient la strcture d'un noeud de graphe
+*
+*/
 #ifndef GRAPHE_H
 #define GRAPHE_H
 
@@ -7,6 +15,10 @@
 #include "definition.h"
 #include "metric.h"
 
+/**
+* \struct sNode
+* \brief Structure qui un noeud de graphe
+*/
 typedef struct s_node {
 	int poids;
 	bool checked;

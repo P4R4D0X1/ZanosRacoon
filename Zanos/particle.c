@@ -1,8 +1,26 @@
+/**
+* \file particle.c
+* \brief Programme de systeme de particules
+* \date 27 mai 2016
+*
+* Programme qui initialise et realise le rendu des particules
+*
+*/
 #include "graphx.h"
 #include "particle.h"
 
-
-int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p_particleAmount, SDL_Rect p_position, eDirection p_direction){
+/**
+* \fn int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p_particleAmount, SDL_Rect p_position, eDirection p_direction)
+* \brief Fonction d'initialisation de systeme de particule
+*
+* \param **p_particleSystem system de particule
+* \param p_lifeTime temps de vie du système de particule
+* \param p_particleAmount nombre de particule du systeme de particule
+* \param p_position position du sytème de particule
+* \param p_direction direction de propagation des particules
+* \return int représentant le déroulement de la fonction
+*/
+int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p_particleAmount, SDL_Rect p_position, eDirection p_direction) {
 	int l_i;
 	
 	srand((unsigned int)time(NULL));
@@ -25,6 +43,15 @@ int initParticleSystem(sParticleSystem **p_particleSystem, int p_lifeTime, int p
 	return 0;
 }
 
+/**
+* \fn int initParticle(sParticle **p_particle, SDL_Rect p_position, eDirection p_direction)
+* \brief Fonction d'initialisation de particule
+*
+* \param **p_particle particule
+* \param p_position position du sytème de particule
+* \param p_direction direction de propagation de la particule
+* \return int représentant le déroulement de la fonction
+*/
 int initParticle(sParticle **p_particle, SDL_Rect p_position, eDirection p_direction) {
 	(*p_particle) = malloc(sizeof(sParticle));
 
@@ -59,6 +86,15 @@ int initParticle(sParticle **p_particle, SDL_Rect p_position, eDirection p_direc
 	return 0;
 }
 
+/**
+* \fn int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface, bool p_followPlayer)
+* \brief Fonction de mise à jour du système de particule
+*
+* \param **p_particleSystem system de particule
+* \param *p_interface interface de l'enigme
+* \param p_followPlayer vaut 1 si les particules doivent suivre le joueur, 0 sinon
+* \return int représentant le déroulement de la fonction
+*/
 int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface, bool p_followPlayer) {
 	int l_i;
 
@@ -108,6 +144,16 @@ int updateParticle(sParticleSystem **p_particleSystem, struct s_interface *p_int
 	return 0;
 }
 
+/**
+* \fn int renderParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface, sMap *p_map, bool p_followPlayer)
+* \brief Fonction de rendu des particules
+*
+* \param **p_particleSystem system de particule
+* \param *p_interface interface de l'enigme
+* \param *p_map map de l'enigme
+* \param p_followPlayer vaut 1 si les particules doivent suivre le joueur, 0 sinon
+* \return int représentant le déroulement de la fonction
+*/
 int renderParticle(sParticleSystem **p_particleSystem, struct s_interface *p_interface, sMap *p_map, bool p_followPlayer) {
 	if ((*p_particleSystem)) 
 		updateParticle(p_particleSystem, p_interface, p_followPlayer);
